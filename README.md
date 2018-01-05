@@ -17,10 +17,10 @@ Goto *Databases* tab, enter the *Database name* in *Create database* option, for
 and click on Create.
 
 Once created, click on the *Database name* i.e. `egarage`, so that the Database gets selected
-for import.
-Click on *Import*.
-Click on *Chose File* and browse the file *C:\xampp\htdocs\egarage\db\egarage.sql* and click on *Go* at the bottom of page.
-This takes few minutes and once completed list of tables could be found in egarage database.
+for import.<br />
+Click on *Import*.<br />
+Click on *Chose File* and browse the file *C:\xampp\htdocs\egarage\db\egarage.sql* and click on *Go* at the bottom of page.<br />
+This takes few minutes and once completed list of tables could be found in egarage database.<br />
 This completes the Database Setup.
 
 ## Project Installation:
