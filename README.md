@@ -19,7 +19,7 @@ and click on Create.
 Once created, click on the *Database name* i.e. `egarage`, so that the Database gets selected
 for import.
 Click on *Import*.
-Click on *Chose File* and browse the *.sql* file provided and click on *Go* at the bottom of page.
+Click on *Chose File* and browse the file *C:\xampp\htdocs\egarage\db\egarage.sql* and click on *Go* at the bottom of page.
 This takes few minutes and once completed list of tables could be found in egarage database.
 This completes the Database Setup.
 
@@ -61,5 +61,5 @@ This will land the application **eGarage v1.0**
 
 To run the application make sure the XAMPP is running as described in Server Installation.
 <br />
-> Install the fonts *segoi\*.\** stored at *C:\xampp\htdocs\egarage\assets\fonts* for better UI.
+> Install the fonts *segoi\*.\** stored at *C:\xampp\htdocs\egarage\assets\fonts\* for better UI.
 <br />
