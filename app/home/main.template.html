@@ -1,0 +1,80 @@
+<div id="home_main_container">
+<div class="row">
+	<div class="tiles-table" ng-if="!(homeMainFormData.isFirstTimeVisit || homeMainFormData.isStats)">
+		<div class="tiles-row">
+			<div class="text-center tiles-cell" style="width: 100%; color: initial; opacity: 0.75;">
+				<h4>Welcome to</h4>
+				<div class="lead font-light lead-lg">
+					eGarage
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="tiles-table" ng-if="homeMainFormData.isFirstTimeVisit">
+		<div class="tiles-row">
+			<div class="text-center tiles-cell" style="width: 100%; color: initial; opacity: 0.75;">
+				<div class="lead font-light lead-lg">Hi {{ homeMainRESTData.name }},</div>
+				<h2 class="font-light">You are logging in for the first time.</h2>
+				<h2 class="font-light">
+					Please <span class="text-info cursor-pointer" ui-sref="home.changepassword">Change Password</span> for better security.
+				</h2>
+			</div>
+		</div>
+	</div>
+
+	<!-- Ref: https://sarasoueidan.com/demos/windows8-animations/ -->
+	<div class="tiles-table" ng-if="(!homeMainFormData.isFirstTimeVisit && homeMainFormData.isStats)">
+		<div class="tiles-row" style="height: 50%;">
+			<div
+				class="text-center tiles-cell"
+				style="width: 33%;"
+				ng-style="{ 'background-color': homeMainFormData.colorsAr[0] }">
+				<h6>Service Requests</h6>
+				<h6>Open</h6>
+				<h1>{{ homeMainRESTData.stats.reqsOpen }}</h1>
+			</div>
+			<div
+				class="text-center tiles-cell"
+				style="width: 33%;"
+				ng-style="{ 'background-color': homeMainFormData.colorsAr[1] }">
+				<h6>Service Requests</h6>
+				<h6>InProgress</h6>
+				<h1>{{ homeMainRESTData.stats.reqsInprogress }}</h1>
+			</div>
+			<div
+				class="text-center tiles-cell"
+				style="width: 33%;"
+				ng-style="{ 'background-color': homeMainFormData.colorsAr[2] }">
+				<h6>Service Requests</h6>
+				<h6>Closed</h6>
+				<h1>{{ homeMainRESTData.stats.reqsClosed }}</h1>
+			</div>
+		</div>
+		<div class="tiles-row" style="height: 50%;">
+			<div
+				class="text-center tiles-cell"
+				style="width: 33%;"
+				ng-style="{ 'background-color': homeMainFormData.colorsAr[3] }">
+				<h6>Clients</h6>
+				<h1>{{ homeMainRESTData.stats.clients }}</h1>
+			</div>
+			<div
+				class="text-center tiles-cell"
+				style="width: 33%;"
+				ng-style="{ 'background-color': homeMainFormData.colorsAr[4] }">
+				<h6>Employees</h6>
+				<h1>{{ homeMainRESTData.stats.employees }}</h1>
+			</div>
+			<div
+				class="text-center tiles-cell"
+				style="width: 33%;"
+				ng-style="{ 'background-color': homeMainFormData.colorsAr[5] }">
+				<h6>Storage Items</h6>
+				<h6>Installed</h6>
+				<h1>{{ homeMainRESTData.stats.storageItems }}</h1>
+			</div>
+		</div>
+	</div>
+</div>
+</div>

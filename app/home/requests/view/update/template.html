@@ -1,0 +1,557 @@
+<div id="home_servicereq_update_container">
+<div class="row">
+	<div class="col-xs-12">
+		<div class="page-header">
+			<h3>
+				{{ tabName }} <small class="hidden-xs">{{ tabDesc }}</small>
+				<span class="glyphicon glyphicon-file text-info pull-right" style="margin-left: 5px;"></span>
+				<span class="text-info pull-right">
+					<strong>{{ reqUpdateSbmtData.request }}</strong>
+				</span>
+			</h3>
+		</div>
+	</div>
+</div>
+
+<dir-alert alert-type="infoObj.name" alert-msg="infoObj.msg" ng-if="infoObj.msg"></dir-alert>
+
+<form name="overviewForm" novalidate>
+<div class="row">
+	<div class="col-xs-12">
+		<div class="form-horizontal well">
+			<div class="form-group">
+				<div class="col-xs-offset-1 col-xs-2">
+					<label>Status</label>
+					<div class="form-control-static">{{ reqUpdateSbmtData.status }}</div>
+				</div>
+				<div class="col-xs-3">
+					<label>Client</label>
+					<div class="form-control-static">
+						<span class="glyphicon glyphicon-user text-muted"></span>
+						{{ reqUpdateSbmtData.client }}
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<label>Vehicle Type</label>
+					<div class="form-control-static">{{ reqUpdateSbmtData.vehicleType }}</div>
+				</div>
+				<div class="col-xs-3">
+					<label>Vehicle No</label>
+					<div class="form-control-static">{{ reqUpdateSbmtData.vehicleNo }}</div>
+				</div>
+			</div>
+			<div class="form-group" style="margin-bottom: 0;">
+				<div class="col-xs-offset-1 col-xs-2">
+					<label>Received on</label>
+					<div class="form-control-static">
+						<span
+							class="glyphicon glyphicon-time text-muted"
+							ng-if="reqUpdateSbmtData.receivedOn">
+						</span>
+						<dir-epoch-to-datetime
+							ng-if="reqUpdateSbmtData.receivedOn"
+							input-data="reqUpdateSbmtData.receivedOn">
+						</dir-epoch-to-datetime>
+						<span ng-if="!reqUpdateSbmtData.receivedOn">-</span>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<label>Received by</label>
+					<div class="form-control-static">
+						<span class="glyphicon glyphicon-user text-muted"></span>
+						{{ reqUpdateSbmtData.createdBy }}
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<label>Assigned to</label>
+					<div ng-class="{ 'has-error': (overviewForm.assignee.$dirty && overviewForm.assignee.$invalid) }">
+						<select
+							class="form-control input-sm"
+							id="assignee"
+							name="assignee"
+							style="width: 80%;"
+							ng-model="reqUpdateSbmtData.assigneeID"
+							ng-options="assignee.id as assignee.name group by assignee.ucategory for assignee in reqUpdateRESTData.assigneesAr"
+							ng-required="true">
+							<option value="">Select</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<label>Approver</label>
+					<div ng-class="{ 'has-error': (overviewForm.approver.$dirty && overviewForm.approver.$invalid) }">
+						<select
+							class="form-control input-sm"
+							id="approver"
+							name="approver"
+							style="width: 80%;"
+							ng-model="reqUpdateSbmtData.approverID"
+							ng-options="approver.id as approver.name group by approver.ucategory for approver in reqUpdateRESTData.approversAr"
+							ng-required="true">
+							<option value="">Select</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row margin-bottom">
+	<div class="col-xs-12">
+		<hr class="no-margin" />
+	</div>
+</div>
+</form>
+
+<form name="manageForm" novalidate>
+<div
+	class="row margin-bottom cursor-pointer"
+	data-toggle="collapse"
+	data-target="#managejobs"
+	ng-click="reqUpdateFormData.isManage = !reqUpdateFormData.isManage">
+	<div class="col-xs-12 lead-sm font-light">
+		<span class="accordion-icon" ng-if="!reqUpdateFormData.isManage">+</span>
+		<span class="accordion-icon" ng-if="reqUpdateFormData.isManage">-</span>
+		Manage
+		<span
+			class="glyphicon glyphicon-remove-circle pull-right text-danger validity-icon"
+			tooltip-placement="left"
+			uib-tooltip="Invalid Job Details"
+			ng-if="!manageForm.$valid">
+		</span>
+		<span
+			class="glyphicon glyphicon-ok-circle pull-right text-success validity-icon"
+			tooltip-placement="left"
+			uib-tooltip="Valid Job Details"
+			ng-if="manageForm.$valid">
+		</span>
+	</div>
+</div>
+<div
+	class="row margin-bottom"
+	class="collapse"
+	id="managejobs"
+	ng-show="reqUpdateFormData.isManage">
+	<div class="col-xs-12">
+		<ul class="list-group no-margin" style="margin-top: 15px;">
+			<li class="list-group-item" ng-repeat="job in reqUpdateSbmtData.jobsAr">
+				<div class="row">
+					<div class="col-xs-1 lead">
+						<span class="pull-right">
+							#{{ ((($index + 1) < 10) ? ("0" + ($index + 1)) : ($index + 1)) }}
+						</span>
+					</div>
+					<div class="col-xs-10">
+						<div class="row margin-bottom" style="margin-top: 20px;">
+							<div class="col-xs-2">
+								<label for="job_{{ $index }}">
+									<dir-compile-template
+										input-data="filterData(jobDetailsManageLabelsAr, 'code', 'jobType')[0].name">
+									</dir-compile-template>
+								</label>
+								<div ng-if="!job.isAddJob">
+									<div>
+										<select
+											class="form-control input-sm"
+											id="job_{{ $index }}"
+											name="job_{{ $index }}"
+											style="margin-bottom: 5px;"
+											ng-model="job.jobTypeID"
+											ng-options="jobtype.id as jobtype.name for jobtype in reqUpdateRESTData.jobTypesAr | orderBy: 'name'"
+											ng-required="true">
+											<option value="">Select</option>
+										</select>
+									</div>
+									<div>
+										<span
+											class="glyphicon glyphicon-plus-sign cursor-pointer text-primary"
+											tooltip-placement="right"
+											uib-tooltip="Enter new job"
+											ng-click="(job.isAddJob = !job.isAddJob); (job.jobTypeID = 0); (job.jobType = '');">
+										</span>
+									</div>
+								</div>
+								<div ng-if="job.isAddJob">
+									<div>
+										<input
+											type="text"
+											class="form-control input-sm"
+											id="job_{{ $index }}"
+											name="job_{{ $index }}"
+											list="job_list_{{ $index }}"
+											placeholder="Job"
+											style="margin-bottom: 5px;"
+											ng-model="job.jobType"
+											ng-required="true" />
+											<datalist id="job_list_{{ $index }}">
+												<option ng-repeat="jobtype in reqUpdateRESTData.jobTypesAr" value="{{ jobtype.name }}">
+											</datalist>
+									</div>
+									<div>
+										<span
+											class="glyphicon glyphicon-search cursor-pointer text-primary"
+											tooltip-placement="right"
+											uib-tooltip="Select a job from the list"
+											ng-click="(job.isAddJob = !job.isAddJob); (job.jobTypeID = 0); (job.jobType = '');">
+										</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-3">
+								<label for="clientremark_{{ $index }}">
+									<dir-compile-template
+										input-data="filterData(jobDetailsManageLabelsAr, 'code', 'clientRemark')[0].name">
+									</dir-compile-template>
+								</label>
+								<div>
+									<textarea
+										class="form-control input-sm"
+										id="clientremark_{{ $index }}"
+										name="clientremark_{{ $index }}"
+										placeholder="Client Remark"
+										ng-model="job.clientRemark"
+										ng-required="true">
+									</textarea>
+								</div>
+							</div>
+							<div class="col-xs-3">
+								<label for="assigneeremark_{{ $index }}">
+									<dir-compile-template
+										input-data="filterData(jobDetailsManageLabelsAr, 'code', 'assigneeRemark')[0].name">
+									</dir-compile-template>
+									<em class="text-muted"> - Optional</em>
+								</label>
+								<div>
+									<textarea
+										class="form-control input-sm"
+										id="assigneeremark_{{ $index }}"
+										name="assigneeremark_{{ $index }}"
+										placeholder="Assignee Remark"
+										ng-model="job.assigneeRemark">
+									</textarea>
+								</div>
+							</div>
+							<div class="col-xs-2">
+								<label for="fdate_{{ $index }}">
+									<dir-compile-template
+										input-data="filterData(jobDetailsManageLabelsAr, 'code', 'startedOn')[0].name">
+									</dir-compile-template>
+									<em class="text-muted"> - Optional</em>
+								</label>
+								<div>
+									<input
+										type="text"
+										class="form-control input-sm"
+										id="fdate_{{ $index }}"
+										name="fdate_{{ $index }}"
+										placeholder="Started on"
+										ng-model="job.startedOn"
+										datetimepicker
+										datetimepicker-options="{{ dateTimePickerConf }}" />
+								</div>
+							</div>
+							<div class="col-xs-2">
+								<label for="tdate_{{ $index }}">
+									<dir-compile-template
+										input-data="filterData(jobDetailsManageLabelsAr, 'code', 'endedOn')[0].name">
+									</dir-compile-template>
+									<em class="text-muted"> - Optional</em>
+								</label>
+								<div>
+									<input
+										type="text"
+										class="form-control input-sm"
+										id="tdate_{{ $index }}"
+										name="tdate_{{ $index }}"
+										ng-model="job.endedOn"
+										placeholder="Ended by"
+										datetimepicker
+										datetimepicker-options="{{ dateTimePickerConf }}" />
+								</div>
+							</div>
+						</div>
+						<div class="row margin-bottom">
+							<div class="col-xs-12">
+								<hr class="no-margin" />
+							</div>
+						</div>
+						<div class="row margin-bottom">
+							<div class="col-xs-4">
+								<label for="item_{{ $index }}">Item<em class="text-muted"> - Optional</em></label>
+								<div>
+									<select
+										class="form-control input-sm"
+										id="item_{{ $index }}"
+										name="item_{{ $index }}"
+										ng-model="job.itemID"
+										ng-options="item.id as ('(' + item.code + ') ' + item.name) group by ('(' + item.catCode + ') ' + item.cat) for item in job.storageItemsAr  | filter: item.isItemQuantity = 'true' | orderBy: 'name'"
+										ng-change="(job.itemID && (job.itemQuantity = 1)); refreshStorageItems();">
+										<option value="">Select</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-xs-2">
+								<label for="itemquantity_{{ $index }}">
+									<dir-compile-template
+										input-data="filterData(jobDetailsManageLabelsAr, 'code', 'itemQuantity')[0].name">
+									</dir-compile-template>
+									<em class="text-muted" ng-if="job.itemID">
+										(Max: {{ job.itemMaxQuantity }})
+									</em>
+								</label>
+								<div>
+									<input
+										type="number"
+										class="form-control input-sm"
+										id="itemquantity_{{ $index }}"
+										name="itemquantity_{{ $index }}"
+										ng-min="((job.itemID && 1) || 0)"
+										ng-max="job.itemMaxQuantity"
+										step="1"
+										ng-pattern="/^\d+$/"
+										ng-change="refreshStorageItems()"
+										ng-model="job.itemQuantity"
+										ng-disabled="!job.itemID"
+										ng-required="job.itemID" />
+								</div>
+							</div>
+							<div class="col-xs-2">
+								<label>
+									<dir-compile-template
+										input-data="filterData(jobDetailsManageLabelsAr, 'code', 'itemPrice')[0].name">
+									</dir-compile-template>
+								</label>
+								<div>
+									{{ getItemPrice(job) }}
+									<span
+										class="glyphicon glyphicon-info-sign text-primary cursor-pointer"
+										ng-if="getItemPrice(job)"
+										tooltip-placement="top-right"
+										uib-tooltip="{{ getItemPriceDetails(job) }}">
+									</span>
+								</div>
+							</div>
+							<div class="col-xs-4">
+								<label for="itemdiscount_{{ $index }}">
+									<dir-compile-template
+										input-data="filterData(jobDetailsManageLabelsAr, 'code', 'itemDiscount')[0].name">
+									</dir-compile-template>
+									<em class="text-muted"> - Optional</em>
+								</label>
+								<div>
+									<input
+										type="number"
+										class="form-control input-sm"
+										id="itemdiscount_{{ $index }}"
+										name="itemdiscount_{{ $index }}"
+										min="0"
+										max="100"
+										style="width: 50%;"
+										ng-model="job.itemDiscount"
+										ng-disabled="!job.itemID" />
+								</div>
+							</div>
+						</div>
+						<div class="row margin-bottom">
+							<div class="col-xs-12">
+								<hr class="no-margin" />
+							</div>
+						</div>
+						<div class="row margin-bottom">
+							<div class="col-xs-3">
+								<label>
+									<dir-compile-template
+										input-data="filterData(jobDetailsManageLabelsAr, 'code', 'itemTotal')[0].name">
+									</dir-compile-template>
+									<span
+										class="glyphicon glyphicon-info-sign text-primary cursor-pointer"
+										tooltip-placement="top-right"
+										uib-tooltip="Discount&nbsp;on&nbsp;(Price&nbsp;X&nbsp;Quantity)">
+									</span>
+								</label>
+								<div>{{ getItemTotal(job) }}</div>
+							</div>
+							<div class="col-xs-3">
+								<label for="servicecharge_{{ $index }}">
+									<dir-compile-template
+										input-data="filterData(jobDetailsManageLabelsAr, 'code', 'serviceCharge')[0].name">
+									</dir-compile-template>
+									<em class="text-muted"> - Optional</em>
+								</label>
+								<div>
+									<input
+										type="number"
+										class="form-control input-sm"
+										id="servicecharge_{{ $index }}"
+										name="servicecharge_{{ $index }}"
+										min="0"
+										style="width: 75%;"
+										ng-model="job.serviceCharge" />
+								</div>
+							</div>
+							<div class="col-xs-3">
+								<label for="vat_{{ $index }}">
+									<dir-compile-template
+										input-data="filterData(jobDetailsManageLabelsAr, 'code', 'vat')[0].name">
+									</dir-compile-template>
+									<em class="text-muted"> - Optional</em>
+									<span
+										class="glyphicon glyphicon-info-sign text-primary cursor-pointer"
+										tooltip-placement="top-right"
+										uib-tooltip="VAT on (Item Total&nbsp;+&nbsp;Service Charge)">
+									</span>
+								</label>
+								<div>
+									<input
+										type="number"
+										class="form-control input-sm"
+										id="vat_{{ $index }}"
+										name="vat_{{ $index }}"
+										min="0"
+										max="100"
+										style="width: 75%;"
+										ng-model="job.vat" />
+								</div>
+							</div>
+							<div class="col-xs-3">
+								<label>
+									<dir-compile-template
+										input-data="filterData(jobDetailsManageLabelsAr, 'code', 'total')[0].name">
+									</dir-compile-template>
+									<span
+										class="glyphicon glyphicon-info-sign text-primary cursor-pointer"
+										tooltip-placement="top-right"
+										uib-tooltip="var&nbsp;amount&nbsp;=&nbsp;(Item Total&nbsp;+&nbsp;Service Charge); Total:&nbsp;(amount&nbsp;+&nbsp;(VAT&nbsp;on&nbsp;amount))">
+									</span>
+								</label>
+								<div>{{ getTotal(job) }}</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-1 lead">
+						<span
+							class="pull-right text-danger cursor-pointer"
+							tooltip-placement="left"
+							uib-tooltip="Remove row"
+							ng-if="(reqUpdateSbmtData.jobsAr.length > 1)"
+							ng-click="removeRow($index);">
+							&otimes;
+						</span>
+					</div>
+				</div>
+			</li>
+			<li class="list-group-item lead">
+				<div class="row">
+					<div class="col-xs-offset-11 col-xs-1">
+						<span
+							class="pull-right text-primary cursor-pointer"
+							tooltip-placement="left"
+							uib-tooltip="Add row"
+							ng-click="addRow(); refreshStorageItems();">
+							&oplus;
+						</span>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+</form>
+<div class="row margin-bottom">
+	<div class="col-xs-12">
+		<hr class="no-margin" />
+	</div>
+</div>
+<div
+	class="row margin-bottom cursor-pointer"
+	data-toggle="collapse"
+	data-target="#jobssummary"
+	ng-click="reqUpdateFormData.isSummary = !reqUpdateFormData.isSummary">
+	<div class="col-xs-12 lead-sm font-light">
+		<span class="accordion-icon" ng-if="!reqUpdateFormData.isSummary">+</span>
+		<span class="accordion-icon" ng-if="reqUpdateFormData.isSummary">-</span>
+		Summary
+	</div>
+</div>
+<div
+	class="row margin-bottom"
+	class="collapse"
+	id="jobssummary"
+	ng-show="reqUpdateFormData.isSummary">
+	<div class="col-xs-12">
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>S.No</th>
+					<th ng-repeat="thead in jobDetailsSummaryTHeadAr">
+						<dir-compile-template input-data="thead.name"></dir-compile-template>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="tbody in reqUpdateSbmtData.jobsAr">
+					<th scope="row">{{ ($index + 1) }}</th>
+					<td>
+						<span ng-if="!tbody.isAddJob">
+							{{ (filterData(reqUpdateRESTData.jobTypesAr, 'id', tbody.jobTypeID)[0].name || "-") }}
+						</span>
+						<span ng-if="tbody.isAddJob">{{ (tbody.jobType || "-") }}</span>
+					</td>
+					<td>{{ (tbody.clientRemark || "-") }}</td>
+					<td>{{ (tbody.assigneeRemark || "-") }}</td>
+					<td>{{ (tbody.startedOn || "-") }}</td>
+					<td>{{ (tbody.endedOn || "-") }}</td>
+					<td><span class="pull-right">{{ getDuration(tbody) }}</span></td>
+					<td>{{ (filterData(reqUpdateRESTData.storageItemsAr, 'id', tbody.itemID)[0].name || "-") }}</td>
+					<td><span class="pull-right">{{ tbody.itemPrice }}</span></td>
+					<td><span class="pull-right">{{ tbody.itemQuantity }}</span></td>
+					<td><span class="pull-right">{{ tbody.itemDiscount }}</span></td>
+					<td><span class="pull-right">{{ tbody.itemTotal }}</span></td>
+					<td><span class="pull-right">{{ tbody.serviceCharge }}</span></td>
+					<td><span class="pull-right">{{ tbody.vat }}</span></td>
+					<td><span class="pull-right">{{ tbody.total }}</span></td>
+				</tr>
+				<tfoot>
+					<tr>
+						<th colspan="6"><span class="pull-right">Total Duration</span></th>
+						<th><span class="pull-right">{{ getTotalDuration() }}</span></th>
+						<th colspan="7"><span class="pull-right">Grand Total</span></th>
+						<th><span class="pull-right">{{ getGrandTotal() }}</span></th>
+					</tr>
+				</tfoot>
+			</tbody>
+		</table>
+	</div>
+</div>
+<div class="row margin-bottom">
+	<div class="col-xs-12">
+		<hr class="no-margin" />
+	</div>
+</div>
+<div class="row margin-bottom">
+	<div class="col-xs-12 text-center">
+		<button type="button" class="btn btn-default btn-sm" ui-sref="home.requests.view">View Requests</button>
+		<button
+			type="button"
+			class="btn btn-primary btn-sm"
+			ng-click="updateRequestDetails()"
+			ng-disabled="!(overviewForm.$valid && manageForm.$valid)">
+			Update
+		</button>
+		<button
+			type="button"
+			class="btn btn-success btn-sm"
+			ng-if="(canClose() && reqUpdateSbmtData.statusID !== 3)"
+			ng-click="closeRequest()"
+			ng-disabled="!(overviewForm.$valid && manageForm.$valid)">
+			Close Request
+		</button>
+		<button type="button" class="btn btn-default btn-sm" ng-click="reset()">Reset</button>
+	</div>
+</div>
+<div class="row margin-bottom">
+	<div class="col-xs-12">
+		<hr class="no-margin" />
+	</div>
+</div>
+</div>

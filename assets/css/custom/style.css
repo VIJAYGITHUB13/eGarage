@@ -1,0 +1,343 @@
+/* Framework Level CSS =>> */
+/* ======================= */
+@font-face {
+	font-family: "Segoi UI";
+	src: url("../../fonts/segoeui.ttf");
+}
+
+@font-face {
+	font-family: "Segoi UI Light";
+	src: url("../../fonts/segoeuil.ttf");
+}
+
+@font-face {
+	font-family: "Segoi UI Semilight";
+	src: url("../../fonts/segoeuisl.ttf");
+}
+
+@font-face {
+	font-family: "Segoi UI Bold";
+	src: url("../../fonts/segoeuib.ttf");
+}
+
+@font-face {
+	font-family: "Segoi UI Semibold";
+	src: url("../../fonts/segoeuisb.ttf");
+}
+
+body {
+	font-family: "Segoi UI", "Halvetica", "Tahoma", "Arial";
+}
+
+.page-header {
+	margin: 0;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+	background-color: initial;
+}
+
+.table-striped > thead,
+.table-striped > tbody > tr:nth-of-type(even) {
+	background-color: #f9f9f9;
+}
+
+.active-tr {
+	background-color: rgba(49, 112, 143, 0.25) !important;
+	font-weight: bold;
+}
+
+.no-margin {
+	margin: 0;
+}
+
+.margin-bottom {
+	margin-bottom: 15px;
+}
+
+.cursor-pointer {
+	cursor: pointer;
+}
+
+.container-border-left {
+	border-left: 1px solid #ddd;
+}
+
+.table-cell {
+	display: table-cell;
+	padding-right: 15px;
+	padding-left: 15px;
+}
+
+.table-cell:not(:first-child) {
+	border-left: 1px solid #ddd;
+}
+
+hr.gradience { 
+	border: 0; 
+	height: 1px; 
+	background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+	background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+	background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+	background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); 
+}
+
+/* Public CSS >> */
+.dir-alert {
+	border: 1px solid; 
+	border-left: none; 
+	border-right: none; 
+	border-radius: initial; 
+	padding-top: 10px; 
+	padding-bottom: 10px;
+}
+
+.dir-alert .media {
+	margin-top: initial;
+}
+
+.dir-alert .alert-msg {
+	margin-left: 5px;
+}
+/* << */
+
+.font-light {
+	font-family: "Segoe UI Light", "Segoi UI", "Halvetica", "Tahoma", "Arial";;
+}
+
+.lead-xs {
+	font-size: 100%;
+}
+
+.lead-sm {
+	font-size: 150%;
+}
+
+.lead-md {
+	font-size: 200%;
+}
+
+.lead-lg {
+	font-size: 300%;
+}
+/* <<= */
+
+/* Page Level CSS =>> */
+/* ================== */
+/* Public CSS >> */
+#public_container .app_header_container {
+	border: 1px solid #ddd;
+	border-radius: 0 0 3px 3px;
+	background-color: #f5f5f5;
+	color: #333;
+}
+
+#public_container .app_body_container {
+	margin: 15px auto 50px auto;
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	color: #333;
+}
+
+#public_container .navbar {
+	border-radius: 0;
+	margin-bottom: 7px;
+}
+/* << */
+
+/* Home CSS >> */
+#home_container .app_header_container {
+	border: 1px solid #ddd;
+	border-radius: 0 0 3px 3px;
+	background-color: #f5f5f5;
+	color: #333;
+}
+
+#home_container .app_body_container {
+	margin: 15px auto 50px auto;
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	min-height: 450px;
+	color: #333;
+}
+
+#home_container .navbar {
+	border-radius: 0;
+	margin-bottom: 7px;
+}
+/* << */
+
+/* Home > Main CSS */
+#home_main_container .tiles-table {
+	display: table;
+	margin: 50px auto;
+	width: 90%;
+	height: 345px;
+	border-spacing: 5px;
+}
+
+#home_main_container .tiles-row {
+	display: table-row;
+}
+
+#home_main_container .tiles-cell {
+	display: table-cell;
+	vertical-align: middle;
+	color: #fff;
+}
+/* << */
+
+/* Home > Users > View CSS */
+#home_users_view_container .table-cell:first-child .form-group {
+	margin-right: 0;
+}
+/* << */
+
+/* Home > Manage > Storage Item Categories CSS */
+#home_manage_storageitemcats_container .table-cell:first-child .form-group {
+	margin-right: 0;
+}
+/* << */
+
+/* Home > Manage > Storage Items CSS */
+#home_manage_storageitems_container .table-cell:first-child .form-group {
+	margin-right: 0;
+}
+/* << */
+
+/* Home > Manage > Suppliers CSS */
+#home_manage_suppliers_container .table-cell:first-child .form-group {
+	margin-right: 0;
+}
+/* << */
+
+/* Home > Accounts > Purchase Order CSS */
+#home_accounts_purchaseorder_container .table-cell:first-child .form-group {
+	margin-right: 0;
+}
+
+.modal-body.purchase-order .form-horizontal .form-group {
+	margin-bottom: 0;
+	padding: 15px;
+}
+
+.modal-body.purchase-order .form-horizontal .form-group:nth-of-type(even) {
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	background-color: #f9f9f9;
+}
+/* << */
+
+/* Home > Reports > Orders by Duration CSS */
+#home_manage_reports_container .table-cell:first-child .form-group {
+	margin-right: 0;
+}
+/* << */
+
+/* Home > Reset Password CSS */
+#home_resetpassword_container .table-cell:first-child .form-group {
+	margin-right: 0;
+}
+/* << */
+
+/* Home > Service Requests > View CSS */
+#home_servicereq_view_container .table-cell:first-child .form-group {
+	margin-right: 0;
+}
+/* << */
+
+/* Home > Service Requests > View > Details CSS */
+/* >> */
+#home_servicereq_details_container .accordion-icon {
+	display: inline-block;
+	width: 20px;
+	font-size: 36px;
+	opacity: 0.75;
+}
+
+#home_servicereq_details_container .list-group .list-group-item {
+	border-radius: 0;
+	border-left: 0;
+	border-right: 0;
+}
+
+#home_servicereq_details_container .table-cell:not(:first-child) .form-group,
+#home_servicereq_details_container_print .table-cell:not(:first-child) .form-group {
+	margin: 0;
+}
+
+#home_servicereq_details_container .table-cell:first-child .form-group:last-child,
+#home_servicereq_details_container_print .table-cell:first-child .form-group:last-child {
+	margin-bottom: 0;
+}
+
+#home_servicereq_details_container .table-cell .form-group:not(:last-child),
+#home_servicereq_details_container_print .table-cell .form-group:not(:last-child) {
+	margin-bottom: 15px;
+}
+
+#home_servicereq_details_container .lead,
+#home_servicereq_details_container_print .lead {
+	margin-bottom: 0;
+}
+/* << */
+
+/* Home > Service Requests > View > Details CSS */
+/* >> */
+#home_servicereq_update_container #managejobs .list-group .list-group-item {
+	border-radius: 0;
+	border-left: 0;
+	border-right: 0;
+}
+
+#home_servicereq_update_container #managejobs .list-group .list-group-item:last-child {
+	border-bottom: 0;
+}
+/* << */
+
+/* Home > Service Requests > Create CSS */
+/* >> */
+#home_servicereq_create_container h5.lead .accordion-icon {
+	display: inline-block;
+	width: 20px;
+	font-size: 36px;
+	opacity: 0.75;
+}
+
+#home_servicereq_create_container h5.lead .validity-icon {
+	margin-top: 20px;
+	opacity: 0.75;
+}
+
+#home_servicereq_create_container #vehicledetails .table-cell .form-group:last-child {
+	margin-bottom: 0;
+}
+
+#home_servicereq_create_container #jobdetails .list-group .list-group-item,
+#home_servicereq_create_container #summary .list-group .list-group-item {
+	border-radius: 0;
+	border-left: 0;
+	border-right: 0;
+}
+
+#home_servicereq_create_container #jobdetails .list-group .list-group-item:last-child {
+	border-bottom: 0;
+}
+
+#home_servicereq_create_container #summary .table-cell:not(:first-child) .form-group {
+	margin: 0;
+}
+
+#home_servicereq_create_container #summary .table-cell:first-child .form-group:last-child {
+	margin-bottom: 0;
+}
+
+#home_servicereq_create_container #summary .table-cell .form-group:not(:last-child) {
+	margin-bottom: 15px;
+}
+
+#home_servicereq_create_container #summary .lead {
+	margin-bottom: 0;
+}
+/* << */
+/* <<= */

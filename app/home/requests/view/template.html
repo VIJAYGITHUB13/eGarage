@@ -1,0 +1,230 @@
+<div id="home_servicereq_view_container">
+<div class="row">
+	<div class="col-xs-12">
+		<dir-page-header tab-name="tabName" tab-desc="tabDesc"></dir-page-header>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12">
+		<div style="display: table; margin: 15px 0; width: 100%;">
+			<div style="display: table-row;">
+				<div class="table-cell" style="width: 20%;">
+					<form class="form-horizontal" name="formSearch" ng-submit="searchFormSubmit()" novalidate>
+						<div class="form-group">
+							<h5><strong>Search Criteria</strong></h5>
+						</div>
+						<div class="form-group">
+							<label for="requestid">Request ID</label>
+							<div>
+								<input
+									type="text"
+									class="form-control input-sm"
+									id="requestid"
+									name="requestid"
+									placeholder="EGREQXXXX1"
+									ng-model="requestsViewSbmtData.requestIDModel" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="requestid">Client Mobile No</label>
+							<div>
+								<input
+									type="number"
+									class="form-control input-sm"
+									id="mobileno"
+									name="mobileno"
+									placeholder="Ex: 9XX6XX3XX0"
+									ng-model="requestsViewSbmtData.mobileNoModel"
+									ng-pattern="/^[0-9]{10,10}$/" />
+							</div>
+						</div>
+						<div class="form-group" ng-if="requestsViewRESTData.statusesAr.length">
+							<label for="status">Status</label>
+							<div>
+								<select
+									class="form-control input-sm"
+									id="status"
+									name="status"
+									ng-model="requestsViewSbmtData.statusModel"
+									ng-options="status.code as status.name for status in requestsViewRESTData.statusesAr">
+									<option value="">Select</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group" ng-if="requestsViewRESTData.assigneesAr.length">
+							<label for="assignee">Assignee</label>
+							<div>
+								<select
+									class="form-control input-sm"
+									id="assignee"
+									name="assignee"
+									ng-model="requestsViewSbmtData.assigneeModel"
+									ng-options="assignee.code as assignee.name for assignee in requestsViewRESTData.assigneesAr">
+									<option value="">Select</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="fdate">From Date</label>
+							<div>
+								<input
+									type="text"
+									class="form-control input-sm"
+									id="fdate"
+									name="fdate"
+									placeholder="From Date"
+									ng-model="requestsViewSbmtData.fdateModel"
+									datetimepicker
+									datetimepicker-options="{{ dateTimePickerConf }}" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="tdate">To Date</label>
+							<div>
+								<input
+									type="text"
+									class="form-control input-sm"
+									id="tdate"
+									name="tdate"
+									ng-model="requestsViewSbmtData.tdateModel"
+									placeholder="To Date"
+									datetimepicker
+									datetimepicker-options="{{ dateTimePickerConf }}" />
+							</div>
+						</div>
+						<div class="form-group">
+							<button type="submit" class="btn btn-primary btn-sm">Search</button>
+							<button type="button" class="btn btn-default btn-sm" ng-click="reset()">Reset</button>
+						</div>
+					</form>
+				</div>
+				<div class="table-cell" style="width: 80%;">
+					<h2 class="lead text-center font-light text-muted lead-md" style="opacity: 0.5;" ng-if="infoObj.msg">
+						{{ infoObj.msg }}
+					</h2>
+					<div ng-if="!infoObj.msg">
+					<dir-alert alert-type="msgObj.name" alert-msg="msgObj.msg" ng-if="msgObj.msg"></dir-alert>
+					<div class="row margin-bottom">
+						<div class="col-sm-3 col-lg-2">
+							<h5><strong>Search Result</strong></h5>
+						</div>
+					</div>
+					<div class="row margin-bottom">
+						<div class="col-sm-6 col-md-5 col-lg-4">
+							<h5>
+								<strong style="margin-right: 5px;" ng-repeat="status in requestsViewRESTData.statusesAr">
+									<span class="glyphicon glyphicon-stop" ng-style="{ 'color': status.cssBorderColor }"></span>
+									<span ng-style="{ 'color': status.cssColor }">{{ status.name }}</span>
+								</strong>
+							</h5>
+						</div>
+						<label for="noofpages" class="col-sm-1 col-md-2 col-lg-3">
+							<span class="hidden-sm form-control-static pull-right">No of pages</span>
+							<span
+								class="visible-sm form-control-static pull-right"
+								tooltip-placement="top-right"
+								uib-tooltip="No of pages">
+								#
+							</span>
+						</label>
+						<div class="col-sm-2 col-md-2 col-lg-2">
+							<input
+								type="number"
+								class="form-control input-sm"
+								id="noofpages"
+								name="noofpages"
+								min="1"
+								max="100"
+								ng-model="noofPages" />
+						</div>
+						<div class="col-sm-3 col-md-3 col-lg-3">
+							<input type="text" class="form-control input-sm" placeholder="Search results" ng-model="tableSearch" />
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<table class="table table-bordered table-striped">
+								<thead>
+									<tr style="border-left: 5px solid grey;">
+										<th>S.No</th>
+										<th
+											class="cursor-pointer"
+											ng-repeat="thead in rSearchColAr"
+											ng-click="sortColumn(thead.code)">
+											{{ thead.name }}
+											<span
+												class="glyphicon glyphicon-triangle-top pull-right"
+												ng-if="(orderBy === thead.code) && orderByDir">
+											</span>
+											<span
+												class="glyphicon glyphicon-triangle-bottom pull-right"
+												ng-if="(orderBy === thead.code) && !orderByDir">
+											</span>
+										</th>
+										<th class="text-center">Options</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr
+										dir-paginate="tbody in tbodyAr | orderBy: orderBy : orderByDir | filter: tableSearch | itemsPerPage: noofPages"
+										current-page="currentPage"
+										ng-style="{ 'border-left': '5px solid ' + tbody.cssBorderColor }"
+										pagination-id="requestsViewPagination">
+										<th scope="row">{{ ((noofPages * (currentPage - 1)) + ($index + 1)) }}</th>
+										<td>
+											<button
+												type="button"
+												class="btn btn-link"
+												style="padding: 0;"
+												ng-click="viewRequestDetails(tbody.id)">
+												<strong>{{ tbody.requestID }}</strong>
+											</button>
+										</td>
+										<td>
+											<strong ng-style="{ 'color': tbody.cssColor }">{{ tbody.status }}</strong>
+										</td>
+										<td>{{ tbody.client }}</td>
+										<td>{{ tbody.vehicleNo }}</td>
+										<td>
+											<dir-epoch-to-datetime input-data="tbody.createdOn"></dir-epoch-to-datetime>
+										</td>
+										<td class="text-center">
+											<button
+												type="button"
+												class="btn btn-link"
+												style="padding: 0;"
+												ng-if="(tbody.statusID !== 3)"
+												ng-click="updateRequestDetails(tbody.id)">
+												<span class="glyphicon glyphicon-edit"></span>
+											</button>
+											<button
+												type="button"
+												class="btn btn-link"
+												style="padding: 0;"
+												ng-if="(canDeleteRequest() && (tbody.statusID !== 3))"
+												ng-click="deleteRequest(tbody)">
+												<span class="glyphicon glyphicon-trash text-danger"></span>
+											</button>
+											<span ng-if="(tbody.statusID === 3)">NA</span>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12 text-center">
+							<dir-pagination-controls
+								boundary-links="true"
+								on-page-change="pageChangeHandler(newPageNumber)"
+								pagination-id="requestsViewPagination">
+							</dir-pagination-controls>
+						</div>
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> 
+</div>
+</div>

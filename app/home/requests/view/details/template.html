@@ -1,0 +1,284 @@
+<div id="home_servicereq_details_container">
+<div class="row">
+	<div class="col-xs-12">
+		<div class="page-header">
+			<h3>
+				<span class="glyphicon glyphicon-file text-primary"></span>
+				<span class="text-info"><strong>{{ reqDetailsSbmtData.request }}</strong></span>
+				<span
+					class="glyphicon glyphicon-stop pull-right"
+					ng-style="{ 'color': reqDetailsSbmtData.statusCSS }"></span>
+				<span class="pull-right" ng-style="{ 'color': reqDetailsSbmtData.statusCSS }">
+					{{ reqDetailsSbmtData.status }}
+				</span>
+			</h3>
+		</div>
+	</div>
+</div>
+
+<dir-alert alert-type="infoObj.name" alert-msg="infoObj.msg" ng-if="infoObj.msg"></dir-alert>
+
+<div class="row" class="collapse" id="summary">
+	<div class="col-xs-12">
+		<div class="form-horizontal">
+			<div
+				class="form-group cursor-pointer"
+				data-toggle="collapse"
+				data-target="#clientdetails"
+				ng-click="reqDetailsFormData.accordion.isClientDetails = !reqDetailsFormData.accordion.isClientDetails">
+				<div class="col-xs-12 lead-md font-light">
+					<span class="accordion-icon" ng-if="!reqDetailsFormData.accordion.isClientDetails">+</span>
+					<span class="accordion-icon" ng-if="reqDetailsFormData.accordion.isClientDetails">-</span>
+					Client Details
+				</div>
+			</div>
+			<div
+				class="form-group"
+				class="collapse"
+				id="clientdetails"
+				ng-show="reqDetailsFormData.accordion.isClientDetails">
+				<div class="col-xs-offset-1 col-xs-11">
+					<div class="col-xs-2">
+						<label>Client ID</label>
+						<div class="font-light lead">{{ reqDetailsSbmtData.clientID }}</div>
+					</div>
+					<div class="col-xs-3">
+						<label>Name</label>
+						<div class="font-light lead">{{ reqDetailsSbmtData.client }}</div>
+					</div>
+					<div class="col-xs-2">
+						<label>Mobile No</label>
+						<div class="font-light lead">{{ reqDetailsSbmtData.mobileNo }}</div>
+					</div>
+					<div class="col-xs-5">
+						<label>Email ID</label>
+						<div class="font-light lead">{{ reqDetailsSbmtData.emailID }}</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-xs-12">
+					<hr class="no-margin" />
+				</div>
+			</div>
+			<div
+				class="form-group cursor-pointer"
+				data-toggle="collapse"
+				data-target="#vehicledetails"
+				ng-click="reqDetailsFormData.accordion.isVehicleDetails = !reqDetailsFormData.accordion.isVehicleDetails">
+				<div class="col-xs-12 lead-md font-light">
+					<span class="accordion-icon" ng-if="!reqDetailsFormData.accordion.isVehicleDetails">+</span>
+					<span class="accordion-icon" ng-if="reqDetailsFormData.accordion.isVehicleDetails">-</span>
+					Vehicle Details
+				</div>
+			</div>
+			<div
+				class="form-group"
+				class="collapse"
+				id="vehicledetails"
+				ng-show="reqDetailsFormData.accordion.isVehicleDetails">
+				<div class="col-xs-offset-1 col-xs-11">
+					<div class="col-xs-12">
+						<div style="display: table; width: 100%;">
+							<div style="display: table-row;">
+								<div class="table-cell" style="width: 33%;">
+									<div class="form-group">
+										<label>Vehicle Type</label>
+										<div class="font-light lead">{{ reqDetailsSbmtData.vehicleType }}</div>
+									</div>
+									<div class="form-group">
+										<label>Vehicle No</label>
+										<div class="font-light lead">{{ reqDetailsSbmtData.vehicleNo }}</div>
+									</div>
+									<div class="form-group">
+										<label>Model No</label>
+										<div class="font-light lead">{{ reqDetailsSbmtData.modelNo }}</div>
+									</div>
+								</div>
+								<div class="table-cell" style="width: 34%;">
+									<div class="form-group">
+										<label>Chasis No</label>
+										<div class="font-light lead">{{ reqDetailsSbmtData.chasisNo }}</div>
+									</div>
+									<div class="form-group">
+										<label>Engine No</label>
+										<div class="font-light lead">{{ reqDetailsSbmtData.engineNo }}</div>
+									</div>
+								</div>
+								<div class="table-cell" style="width: 33%;">
+									<div class="form-group">
+										<label>Manufactured Year</label>
+										<div class="font-light lead">{{ reqDetailsSbmtData.manufacturedYear }}</div>
+									</div>
+									<div class="form-group">
+										<label>Odometer Reading</label>
+										<div class="font-light lead">{{ reqDetailsSbmtData.odometerReading }}</div>
+									</div>
+								</div>
+							</div>
+							<!-- div.table-row -->
+						</div>
+						<!-- div.table -->
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-xs-12">
+					<hr class="no-margin" />
+				</div>
+			</div>
+			<div
+				class="form-group cursor-pointer"
+				data-toggle="collapse"
+				data-target="#receivingdetails"
+				ng-click="reqDetailsFormData.accordion.isRecDetails = !reqDetailsFormData.accordion.isRecDetails">
+				<div class="col-xs-12 lead-md font-light">
+					<span class="accordion-icon" ng-if="!reqDetailsFormData.accordion.isRecDetails">+</span>
+					<span class="accordion-icon" ng-if="reqDetailsFormData.accordion.isRecDetails">-</span>
+					Receiving Details
+				</div>
+			</div>
+			<div
+				class="form-group"
+				class="collapse"
+				id="receivingdetails"
+				ng-show="reqDetailsFormData.accordion.isRecDetails">
+				<div class="col-xs-offset-1 col-xs-11">
+					<div class="col-xs-3">
+						<label>Received on</label>
+						<div class="font-light lead">
+							<dir-epoch-to-datetime
+								ng-if="reqDetailsSbmtData.receivedOn"
+								input-data="reqDetailsSbmtData.receivedOn">
+							</dir-epoch-to-datetime>
+							<span ng-if="!reqDetailsSbmtData.receivedOn">-</span>
+						</div>
+					</div>
+					<div class="col-xs-4">
+						<label>Assign to</label>
+						<div class="font-light lead">{{ reqDetailsSbmtData.assignee }}</div>
+					</div>
+					<div class="col-xs-4">
+						<label>Approved by</label>
+						<div class="font-light lead">{{ reqDetailsSbmtData.approver }}</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-xs-12">
+					<hr class="no-margin" />
+				</div>
+			</div>
+			<div
+				class="form-group cursor-pointer"
+				data-toggle="collapse"
+				data-target="#jobdetails"
+				ng-click="reqDetailsFormData.accordion.isJobDetails = !reqDetailsFormData.accordion.isJobDetails">
+				<div class="col-xs-12 lead-md font-light">
+					<span class="accordion-icon" ng-if="!reqDetailsFormData.accordion.isJobDetails">+</span>
+					<span class="accordion-icon" ng-if="reqDetailsFormData.accordion.isJobDetails">-</span>
+					Job Details
+				</div>
+			</div>
+			<div
+				class="form-group"
+				class="collapse"
+				id="jobdetails"
+				ng-show="reqDetailsFormData.accordion.isJobDetails">
+				<div class="col-xs-offset-1 col-xs-11">
+					<div class="col-xs-12">
+						<table class="table table-bordered table-striped">
+							<thead>
+								<tr>
+									<th>S.No</th>
+									<th ng-repeat="thead in jobDetailsTHeadAr">
+										<dir-compile-template input-data="thead.name"></dir-compile-template>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="tbody in reqDetailsSbmtData.jobsAr">
+									<th scope="row">{{ ($index + 1) }}</th>
+									<td>{{ tbody.jobType }}</td>
+									<td>{{ tbody.clientRemark }}</td>
+									<td>{{ tbody.assigneeRemark }}</td>
+									<td>{{ tbody.startedOn }}</td>
+									<td>{{ tbody.endedOn }}</td>
+									<td><span class="pull-right">{{ tbody.duration }}</span></td>
+									<td>{{ tbody.item }}</td>
+									<td><span class="pull-right">{{ tbody.itemPrice }}</span></td>
+									<td><span class="pull-right">{{ tbody.itemQuantity }}</span></td>
+									<td><span class="pull-right">{{ tbody.itemDiscount }}</span></td>
+									<td><span class="pull-right">{{ tbody.itemTotal }}</span></td>
+									<td><span class="pull-right">{{ tbody.serviceCharge }}</span></td>
+									<td><span class="pull-right">{{ tbody.vat }}</span></td>
+									<td><span class="pull-right">{{ tbody.total }}</span></td>
+								</tr>
+							</tbody>
+							<tfoot>
+								<tr>
+									<th colspan="6"><span class="pull-right">Total Duration</span></th>
+									<th><span class="pull-right">{{ reqDetailsSbmtData.totalDuration }}</span></th>
+									<th colspan="7"><span class="pull-right">Grand Total</span></th>
+									<th><span class="pull-right">{{ reqDetailsSbmtData.grandTotal }}</span></th>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+				</div>
+			</div>
+			<!-- div.form-group -->
+		</div>
+		<!-- div.form-horizontal -->
+	</div>
+</div>
+<div class="row margin-bottom">
+	<div class="col-xs-12">
+		<hr class="no-margin" />
+	</div>
+</div>
+<div class="row margin-bottom">
+	<div class="col-xs-12 text-center">
+		<button type="button" class="btn btn-default btn-sm" ui-sref="home.requests.view">View Requests</button>
+		<button
+			type="button"
+			class="btn btn-primary btn-sm"
+			ng-if="reqDetailsSbmtData.statusID !== 3"
+			ng-click="editRequestDetails()">
+			Edit
+		</button>
+		<button
+			type="button"
+			class="btn btn-success btn-sm"
+			ng-if="(canClose() && reqDetailsSbmtData.statusID !== 3)"
+			ng-click="closeRequest()">
+			Close
+		</button>
+		<button
+			type="button"
+			class="btn btn-warning btn-sm"
+			ng-if="(canReopen() && reqDetailsSbmtData.statusID === 3)"
+			ng-click="reopenRequest()">
+			Reopen
+		</button>
+		<button type="button" class="btn btn-info btn-sm" ng-click="refresh()">Refresh</button>
+		<button
+			type="button"
+			class="btn btn-primary btn-sm"
+			ng-if="(reqDetailsSbmtData.statusID === 3)"
+			ng-click="printRequest()">
+			Print
+			<span class="badge" style="margin-left: 5px;">
+				<span class="glyphicon glyphicon-print"></span>
+			</span>
+		</button>
+	</div>
+</div>
+<div class="row margin-bottom">
+	<div class="col-xs-12">
+		<hr class="no-margin" />
+	</div>
+</div>
+</div>
+
+<div ng-include="basePath + 'print.html'" ng-hide="true"></div>

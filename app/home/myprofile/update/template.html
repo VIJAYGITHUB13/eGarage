@@ -1,0 +1,472 @@
+<div class="row">
+	<div class="col-xs-12">
+		<div class="page-header">
+			<h3>
+				{{ tabName }} <small class="hidden-xs">{{ tabDesc }}</small>
+				<span class="glyphicon glyphicon-user text-primary pull-right" style="margin-left: 5px;"></span>
+				<span class="pull-right text-info">{{ myProfileUpdateSbmtData.fullNameModel }}</span>
+			</h3>
+		</div>
+	</div>
+</div>
+
+<form name="userUpdateForm" ng-submit="(userUpdateForm.$valid && myProfileUpdateFormSubmit())" novalidate>
+<div class="row">
+	<div class="col-xs-12">
+		<h5 class="lead text-center font-light lead-md text-muted">Personal Details</h5>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12">
+		<hr class="no-margin" />
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12">
+		<div style="display: table; margin: 15px 0; width: 100%;">
+			<div style="display: table-row;">
+				<div class="table-cell" style="width: 33%;">
+					<div class="form-group">
+						<label>Category</label>
+						<div class="form-control-static">{{ (myProfileUpdateSbmtData.userCategoryNameModel || "-" ) }}</div>
+					</div>
+					<div class="form-group">
+						<label for="dob">Date of Birth</label>
+						<div ng-class="{ 'has-error': (userUpdateForm.$submitted && userUpdateForm.dob.$invalid) }">
+							<input
+								type="text"
+								class="form-control input-sm"
+								id="dob"
+								name="dob"
+								maxlength="10"
+								placeholder="DD-MM-YYYY"
+								style="width: 80%;"
+								ng-model="myProfileUpdateSbmtData.dobModel"
+								ng-required="true"
+								datetimepicker
+								datetimepicker-options="{{ datetimepickerOptions }}" />
+						</div>
+					</div>
+					<div class="form-group" ng-if="myProfileUpdateFormData.isMorePersonalDetails">
+						<label for="pob">Place of Birth<em class="text-muted"> - Optional</em></label>
+						<div ng-class="{ 'has-error': (userUpdateForm.$submitted && userUpdateForm.pob.$invalid) }">
+							<input
+								type="text"
+								class="form-control input-sm"
+								id="pob"
+								name="pob"
+								maxlength="20"
+								placeholder="Place of Birth"
+								style="width: 80%;"
+								ng-model="myProfileUpdateSbmtData.placeOfBirthModel"
+								ng-pattern="/^[a-zA-Z0-9\ ]*$/" />
+						</div>
+					</div>
+					<div class="form-group" ng-if="myProfileUpdateFormData.isMorePersonalDetails">
+						<label for="gender">Gender<em class="text-muted"> - Optional</em></label>
+						<div>
+							<select
+								class="form-control input-sm"
+								id="gender"
+								name="gender"
+								style="width: 80%;"
+								ng-model="myProfileUpdateSbmtData.genderModel"
+								ng-options="gender.id as gender.name for gender in myProfileUpdateRESTData.genderAr">
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="table-cell" style="width: 34%;">
+					<div class="form-group">
+						<label>First Name</label>
+						<div class="form-control-static">{{ (myProfileUpdateSbmtData.firstNameModel || "-" ) }}</div>
+					</div>
+					<div class="form-group">
+						<label for="mobileno">Mobile No</label>
+						<div ng-class="{ 'has-error': (userUpdateForm.$submitted && userUpdateForm.mobileno.$invalid) }">
+							<input
+								type="number"
+								class="form-control input-sm"
+								id="mobileno"
+								name="mobileno"
+								placeholder="Ex: 9XX6XX3XX0"
+								style="width: 80%;"
+								ng-model="myProfileUpdateSbmtData.mobileNoModel"
+								ng-pattern="/^[0-9]{10,10}$/"
+								ng-required="true" />
+						</div>
+					</div>
+					<div class="form-group" ng-if="myProfileUpdateFormData.isMorePersonalDetails">
+						<label for="altmobileno">Alt Mobile No<em class="text-muted"> - Optional</em></label>
+						<div>
+							<input
+								type="number"
+								class="form-control input-sm"
+								id="altmobileno"
+								name="altmobileno"
+								placeholder="Ex: 9XX6XX3XX0"
+								style="width: 80%;"
+								ng-model="myProfileUpdateSbmtData.altMobileNoModel" />
+						</div>
+					</div>
+					<div class="form-group" ng-if="myProfileUpdateFormData.isMorePersonalDetails">
+						<label for="maritalstatus">Marital Status<em class="text-muted"> - Optional</em></label>
+						<div>
+							<select
+								class="form-control input-sm"
+								id="maritalstatus"
+								name="maritalstatus"
+								style="width: 80%;"
+								ng-model="myProfileUpdateSbmtData.maritalStatusModel"
+								ng-options="maritalstatus.id as maritalstatus.name for maritalstatus in myProfileUpdateRESTData.maritalStatusAr">
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="table-cell" style="width: 33%;">
+					<div class="form-group">
+						<label>Last Name (Surname)</label>
+						<div class="form-control-static">{{ (myProfileUpdateSbmtData.lastNameModel || "-" ) }}</div>
+					</div>
+					<div class="form-group">
+						<label for="emailid">Email ID</label>
+						<div ng-class="{ 'has-error': (userUpdateForm.$submitted && userUpdateForm.emailid.$invalid) }">
+							<input
+								type="email"
+								class="form-control input-sm"
+								id="emailid"
+								name="emailid"
+								placeholder="Ex: user@domain.extension"
+								style="width: 80%;"
+								ng-model="myProfileUpdateSbmtData.emailIDModel"
+								ng-required="true" />
+						</div>
+					</div>
+					<div class="form-group" ng-if="myProfileUpdateFormData.isMorePersonalDetails">
+						<label for="altemailid">Alt Email ID<em class="text-muted"> - Optional</em></label>
+						<div>
+							<input
+								type="email"
+								class="form-control input-sm"
+								id="altemailid"
+								name="altemailid"
+								placeholder="Ex: user@domain.extension"
+								style="width: 80%;"
+								ng-model="myProfileUpdateSbmtData.altEmailIDModel" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> 
+</div>
+<div class="row">
+	<div class="col-xs-12">
+		<button
+			type="button"
+			class="btn btn-link"
+			style="margin-top: -20px;"
+			ng-click="myProfileUpdateFormData.isMorePersonalDetails = !myProfileUpdateFormData.isMorePersonalDetails">
+			<span class="lead font-light" ng-if="!myProfileUpdateFormData.isMorePersonalDetails">More</span>
+			<span class="lead font-light" ng-if="myProfileUpdateFormData.isMorePersonalDetails">Less</span>
+		</button>
+	</div>
+</div>
+<div class="row margin-bottom">
+	<div class="col-xs-12">
+		<hr class="no-margin" />
+	</div>
+</div>
+<div ng-if="myProfileUpdateSbmtData.userCategoryID !== 4">
+<div class="row">
+	<div class="col-xs-2">
+		<button
+			type="button"
+			class="btn btn-link"
+			ng-click="myProfileUpdateFormData.areEmployeeDetails = !myProfileUpdateFormData.areEmployeeDetails">
+			<span class="lead font-light" ng-if="!myProfileUpdateFormData.areEmployeeDetails">Show</span>
+			<span class="lead font-light" ng-if="myProfileUpdateFormData.areEmployeeDetails">Hide</span>
+		</button>
+	</div>
+	<div class="col-xs-8">
+		<h5 class="lead text-center font-light lead-md text-muted" style="margin-top: 0;">Employee Details</h5>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12">
+		<hr class="no-margin" />
+	</div>
+</div>
+<div class="row" ng-if="myProfileUpdateFormData.areEmployeeDetails">
+	<div class="col-xs-12">
+		<div style="display: table; margin: 15px 0; width: 100%;">
+			<div style="display: table-row;">
+				<div class="table-cell" style="width: 33%;">
+					<div class="form-group">
+						<label>Salary (per Annum)</label>
+						<div class="form-control-static">{{ (myProfileUpdateSbmtData.salary || "-" ) }}</div>
+					</div>
+				</div>
+				<div class="table-cell" style="width: 34%;">
+					<div class="form-group">
+						<label>Leave Balance</label>
+						<div class="form-control-static">{{ (myProfileUpdateSbmtData.leaveBalance || "-" ) }}</div>
+					</div>
+				</div>
+				<div class="table-cell" style="width: 33%;">
+					<div class="form-group">
+						<label>Extra Hours Worked</label>
+						<div class="form-control-static">{{ (myProfileUpdateSbmtData.extraHoursWorked || "-" ) }}</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> 
+</div>
+<div class="row margin-bottom" ng-if="myProfileUpdateFormData.areEmployeeDetails">
+	<div class="col-xs-12">
+		<hr class="no-margin" />
+	</div>
+</div>
+</div>
+<div class="row">
+	<div class="col-xs-5 text-center">
+		<h5 class="lead font-light lead-md text-muted">Present Address</h5>
+	</div>
+	<div class="col-xs-2 text-center">
+		<h5 class="lead font-light lead-md">
+			<button
+				type="button"
+				class="btn btn-link"
+				ng-click="addressMapping()"
+				tooltip-placement="top"
+				uib-tooltip="Copy Address">
+				<span class="glyphicon glyphicon-arrow-right"></span>
+			</button>
+		</h5>
+	</div>
+	<div class="col-xs-5 text-center">
+		<h5 class="lead font-light lead-md text-muted">Permanent Address</h5>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-6">
+		<hr class="no-margin" />
+	</div>
+	<div class="col-xs-6">
+		<hr class="no-margin" />
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12">
+		<div style="display: table; margin: 15px 0; width: 100%;">
+			<div style="display: table-row;">
+				<div class="table-cell" style="width: 25%;">
+					<div class="form-group">
+						<label for="presentaddline1">Address Line1</label>
+						<div ng-class="{ 'has-error': (userUpdateForm.$submitted && userUpdateForm.presentaddline1.$invalid) }">
+							<textarea
+								class="form-control input-sm max-width"
+								id="presentaddline1"
+								name="presentaddline1"
+								placeholder="Address Line1"
+								ng-model="myProfileUpdateSbmtData.presentAddLine1Model"
+								ng-required="true">
+							</textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label>Address Line2</label>
+						<label for="presentaddline2">Address Line2<em class="text-muted"> - Optional</em></label>
+						<div>
+							<textarea
+								class="form-control input-sm max-width"
+								id="presentaddline2"
+								name="presentaddline2"
+								placeholder="Address Line2"
+								ng-model="myProfileUpdateSbmtData.presentAddLine2Model"></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="presentaddlandmark">Landmark<em class="text-muted"> - Optional</em></label>
+						<div>
+							<input
+								type="text"
+								class="form-control input-sm"
+								id="presentaddlandmark"
+								name="presentaddlandmark"
+								placeholder="Landmark"
+								ng-model="myProfileUpdateSbmtData.presentAddLandmarkModel" />
+						</div>
+					</div>
+				</div>
+				<div class="table-cell" style="width: 25%;">
+					<div class="form-group">
+						<label for="presentaddcountry">Country</label>
+						<div ng-class="{ 'has-error': (userUpdateForm.$submitted && userUpdateForm.presentaddcountry.$invalid) }">
+							<select
+								class="form-control input-sm"
+								id="presentaddcountry"
+								name="presentaddcountry"
+								ng-model="myProfileUpdateSbmtData.presentAddCountryModel"
+								ng-options="country.id as country.name for country in myProfileUpdateRESTData.contriesAr"
+								ng-required="true">
+								<option value="">Select</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="presentaddstate">State</label>
+						<div ng-class="{ 'has-error': (userUpdateForm.$submitted && userUpdateForm.presentaddstate.$invalid) }">
+							<select
+								class="form-control input-sm"
+								id="presentaddstate"
+								name="presentaddstate"
+								ng-model="myProfileUpdateSbmtData.presentAddStateModel"
+								ng-options="state.id as state.name for state in filterData(myProfileUpdateRESTData.statesAr, 'countryid', myProfileUpdateSbmtData.presentAddCountryModel)"
+								ng-change="presentAddStateChange()"
+								ng-required="true">
+								<option value="">Select</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="presentadddistrict">District</label>
+						<div ng-class="{ 'has-error': (userUpdateForm.$submitted && userUpdateForm.presentadddistrict.$invalid) }">
+							<select
+								class="form-control input-sm"
+								id="presentadddistrict"
+								name="presentadddistrict"
+								ng-model="myProfileUpdateSbmtData.presentAddDistrictModel"
+								ng-options="district.id as district.name for district in filterData(myProfileUpdateRESTData.districtsAr, 'stateid', myProfileUpdateSbmtData.presentAddStateModel)"
+								ng-required="true">
+								<option value="">Select</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="presentaddpincode">Pincode<em class="text-muted"> - Optional</em></label>
+						<div>
+							<input
+								type="number"
+								class="form-control input-sm"
+								id="presentaddpincode"
+								name="presentaddpincode"
+								placeholder="Ex: 5X0X0X"
+								ng-model="myProfileUpdateSbmtData.presentAddPincodeModel" />
+						</div>
+					</div>
+				</div>
+				<div class="table-cell" style="width: 25%;">
+					<div class="form-group">
+						<label for="permanentaddline1">Address Line1</label>
+						<div ng-class="{ 'has-error': (userUpdateForm.$submitted && userUpdateForm.permanentaddline1.$invalid) }">
+							<textarea
+								class="form-control input-sm max-width"
+								id="permanentaddline1"
+								name="permanentaddline1"
+								placeholder="Address Line1"
+								ng-model="myProfileUpdateSbmtData.permanentAddLine1Model"
+								ng-required="true">
+							</textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="permanentaddline2">Address Line2<em class="text-muted"> - Optional</em></label>
+						<div>
+							<textarea
+								class="form-control input-sm max-width"
+								id="permanentaddline2"
+								name="permanentaddline2"
+								placeholder="Address Line2"
+								ng-model="myProfileUpdateSbmtData.permanentAddLine2Model"></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="permanentaddlandmark">Landmark<em class="text-muted"> - Optional</em></label>
+						<div>
+							<input
+								type="text"
+								class="form-control input-sm"
+								id="permanentaddlandmark"
+								name="permanentaddlandmark"
+								placeholder="Landmark"
+								ng-model="myProfileUpdateSbmtData.permanentAddLandmarkModel" />
+						</div>
+					</div>
+				</div>
+				<div class="table-cell" style="width: 25%;">
+					<div class="form-group">
+						<label for="permanentaddcountry">Country</label>
+						<div ng-class="{ 'has-error': (userUpdateForm.$submitted && userUpdateForm.permanentaddcountry.$invalid) }">
+							<select
+								class="form-control input-sm"
+								id="permanentaddcountry"
+								name="permanentaddcountry"
+								ng-model="myProfileUpdateSbmtData.permanentAddCountryModel"
+								ng-options="country.id as country.name for country in myProfileUpdateRESTData.contriesAr"
+								ng-change="permanentAddCountryChange()"
+								ng-required="true">
+								<option value="">Select</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="permanentaddstate">State</label>
+						<div ng-class="{ 'has-error': (userUpdateForm.$submitted && userUpdateForm.permanentaddstate.$invalid) }">
+							<select
+								class="form-control input-sm"
+								id="permanentaddstate"
+								name="permanentaddstate"
+								ng-model="myProfileUpdateSbmtData.permanentAddStateModel"
+								ng-options="state.id as state.name for state in filterData(myProfileUpdateRESTData.statesAr, 'countryid', myProfileUpdateSbmtData.permanentAddCountryModel)"
+								ng-change="permanentAddStateChange()"
+								ng-required="true">
+								<option value="">Select</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="permanentadddistrict">District</label>
+						<div ng-class="{ 'has-error': (userUpdateForm.$submitted && userUpdateForm.permanentadddistrict.$invalid) }">
+							<select
+								class="form-control input-sm"
+								id="permanentadddistrict"
+								name="permanentadddistrict"
+								ng-model="myProfileUpdateSbmtData.permanentAddDistrictModel"
+								ng-options="district.id as district.name for district in filterData(myProfileUpdateRESTData.districtsAr, 'stateid', myProfileUpdateSbmtData.permanentAddStateModel)"
+								ng-required="true">
+								<option value="">Select</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="permanentaddpincode">Pincode<em class="text-muted"> - Optional</em></label>
+						<div>
+							<input
+								type="number"
+								class="form-control input-sm"
+								id="permanentaddpincode"
+								name="permanentaddpincode"
+								placeholder="Ex: 5X0X0X"
+								ng-model="myProfileUpdateSbmtData.permanentAddPincodeModel" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> 
+</div>
+<div class="row margin-bottom">
+	<div class="col-xs-12">
+		<hr class="no-margin" />
+	</div>
+</div>
+<div class="row margin-bottom">
+	<div class="col-xs-12 text-center">
+		<button type="button" class="btn btn-default btn-sm" ui-sref="home.myprofile">My Profile</button>
+		<button type="submit" class="btn btn-primary btn-sm">Update</button>
+		<button type="button" class="btn btn-default btn-sm" ng-click="reset()">Reset</button>
+	</div>
+</div>
+</form>

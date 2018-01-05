@@ -1,0 +1,75 @@
+<div class="row">
+	<div class="col-xs-12">
+		<dir-page-header tab-name="tabName" tab-desc="tabDesc"></dir-page-header>
+	</div>
+</div>
+<dir-alert alert-type="infoObj.name" alert-msg="infoObj.msg" ng-if="infoObj.msg"></dir-alert>
+<div class="row">
+	<div class="col-xs-12">
+		<form
+			class="form-horizontal"
+			name="userUploadForm"
+			enctype="multipart/form-data"
+			ng-submit="(userUploadForm.$valid && userUploadFormSbmt())"
+			novalidate>
+			<div class="form-group">
+				<div class="col-sm-offset-4 col-sm-3">
+					<label for="ucategory">User Category</label>
+					<div>
+						<select
+							class="form-control input-sm"
+							id="ucategory"
+							name="ucategory"
+							ng-model="userUploadSbmtData.userCategoryModel"
+							ng-options="ucategory.id as ucategory.name for ucategory in userUploadRESTData.userCategoriesAr"
+							ng-required="true">
+							<option value="">Select</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="form-group" style="margin-bottom: 5px;">
+				<div class="col-sm-offset-4 col-sm-3">
+					<label for="file">Select File</label>
+					<div>
+						<input
+							type="file"
+							class="form-control"
+							id="file"
+							name="file"
+							placeholder="File"
+							ng-model="userUploadSbmtData.fileModel"
+							ng-required="true"
+							dir-valid-file />
+					</div>
+				</div>
+				<div class="col-sm-1">
+					<label>&nbsp;</label>
+					<div class="form-control-static">
+						<a
+							href="\egarage\app\home\users\upload\templates\Template.xls"
+							download>
+							<span
+								class="glyphicon glyphicon-download-alt"
+								data-toggle="tooltip"
+								data-placement="top"
+								title="A template file">
+							</span>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-4 col-sm-3">
+					<small class="pull-right text-primary"><i>Valid format: xls</i></small>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-4 col-sm-3">
+					<button type="submit" class="btn btn-primary btn-sm" ng-disabled="userUploadForm.$invalid">Continue</button>
+					<button type="button" class="btn btn-default btn-sm" ng-click="reset()">Reset</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

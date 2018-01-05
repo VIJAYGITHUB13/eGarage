@@ -1,0 +1,377 @@
+<div id="home_manage_storageitemcats_container">
+<div class="row">
+	<div class="col-xs-12">
+		<div class="page-header">
+			<h3>
+				{{ tabName }} <small class="hidden-xs">{{ tabDesc }}</small>
+				<span class="pull-right text-info cursor-pointer" ng-click="addStorageItemCat()">Add New</span>
+			</h3>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-xs-12">
+		<div style="display: table; margin: 15px 0; width: 100%;">
+			<div style="display: table-row;">
+				<div class="table-cell" style="width: 20%;">
+					<form class="form-horizontal" name="formSearch" ng-submit="searchFormSubmit()" novalidate>
+						<div class="form-group">
+							<h5><strong>Search Criteria</strong></h5>
+						</div>
+						<div class="form-group">
+							<label for="catcode">Code</label>
+							<div>
+								<input
+									type="text"
+									class="form-control input-sm"
+									id="catcode"
+									name="catcode"
+									placeholder="Code"
+									ng-model="storageItemsSbmtData.catCodeModel" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="catname">Name</label>
+							<div>
+								<input
+									type="text"
+									class="form-control input-sm"
+									id="catname"
+									name="catname"
+									placeholder="Name"
+									ng-model="storageItemsSbmtData.catNameModel" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="fdate">From Date</label>
+							<div>
+								<input
+									type="text"
+									class="form-control input-sm"
+									id="fdate"
+									name="fdate"
+									placeholder="From Date"
+									ng-model="storageItemsSbmtData.fdateModel"
+									datetimepicker
+									datetimepicker-options="{{ dateTimePickerConf }}" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="tdate">To Date</label>
+							<div>
+								<input
+									type="text"
+									class="form-control input-sm"
+									id="tdate"
+									name="tdate"
+									ng-model="storageItemsSbmtData.tdateModel"
+									placeholder="To Date"
+									datetimepicker
+									datetimepicker-options="{{ dateTimePickerConf }}" />
+							</div>
+						</div>
+						<div class="form-group">
+							<button type="submit" class="btn btn-primary btn-sm">Search</button>
+							<button type="button" class="btn btn-default btn-sm" ng-click="reset()">Reset</button>
+						</div>
+					</form>
+				</div>
+				<div class="table-cell" style="width: 80%;">
+					<h2 class="lead text-center font-light text-muted lead-md" style="opacity: 0.5;" ng-if="infoObj.msg">
+						{{ infoObj.msg }}
+					</h2>
+					<div ng-if="!infoObj.msg">
+					<dir-alert alert-type="msgObj.name" alert-msg="msgObj.msg" ng-if="msgObj.msg"></dir-alert>
+					<div class="row" style="margin: auto;">
+						<dir-pagination-header
+							noof-pages="noofPages"
+							current-page="currentPage"
+							table-search="tableSearch">
+						</dir-pagination-header>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<table class="table table-bordered table-striped">
+								<caption style="padding-top: 0;">
+									<em class="pull-right">
+										<span class="glyphicon glyphicon-info-sign"></span>
+										Disabled item categories possess Storage Item(s).
+									</em>
+								</caption>
+								<thead>
+									<tr>
+										<th>S.No</th>
+										<th
+											class="cursor-pointer"
+											ng-repeat="thead in theadAr"
+											ng-click="sortColumn(thead.code)">
+											<dir-compile-template input-data="thead.name"></dir-compile-template>
+											<span
+												class="glyphicon glyphicon-triangle-top pull-right"
+												ng-if="(orderBy === thead.code) && orderByDir">
+											</span>
+											<span
+												class="glyphicon glyphicon-triangle-bottom pull-right"
+												ng-if="(orderBy === thead.code) && !orderByDir">
+											</span>
+										</th>
+										<th class="text-center">Options</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr
+										dir-paginate="tbody in tbodyAr | orderBy: orderBy : orderByDir | filter: tableSearch | itemsPerPage: noofPages"
+										current-page="currentPage"
+										pagination-id="storageItemCatsPagination"
+										ng-class="{ 'active-tr': storageItemsFormData.activetr === tbody.id, 'text-muted': tbody.itemCount }">
+										<th scope="row">{{ ((noofPages * (currentPage - 1)) + ($index + 1)) }}</th>
+										<td>{{ tbody.code }}</td>
+										<td>{{ tbody.name }}</td>
+										<td>
+											<button
+												type="button"
+												class="btn btn-link"
+												style="padding: 0;"
+												ng-click="viewStorageItems(tbody)"
+												tooltip-placement="right"
+												uib-tooltip="View and Add Storage Items">
+												{{ tbody.itemCount }}
+											</button>
+										</td>
+										<td>
+											<dir-epoch-to-date input-data="tbody.createdOn"></dir-epoch-to-date>
+										</td>
+										<td class="text-center">
+											<button
+												type="button"
+												class="btn btn-link"
+												style="padding: 0;"
+												ng-if="!tbody.itemCount"
+												ng-click="storageItemsFormData.activetr = tbody.id; updateStorageItemCat(tbody)">
+												<span class="glyphicon glyphicon-edit"></span>
+											</button>
+											<button
+												type="button"
+												class="btn btn-link"
+												style="padding: 0;"
+												ng-if="!tbody.itemCount"
+												ng-click="storageItemsFormData.activetr = tbody.id; deleteStorageItemCat(tbody)">
+												<span class="glyphicon glyphicon glyphicon-trash text-danger"></span>
+											</button>
+											<span ng-if="tbody.itemCount">NA</span>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12 text-center">
+							<dir-pagination-controls
+								boundary-links="true"
+								on-page-change="pageChangeHandler(newPageNumber)"
+								pagination-id="storageItemCatsPagination">
+							</dir-pagination-controls>
+						</div>
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> 
+</div>
+</div>
+
+<script type="text/ng-template" id="storageItemCat.tpl.html">
+	<div class="modal-header">
+		<h5 class="modal-title" id="modal-title" ng-if="(modalSbmtData.type === 'add')">Add Storage Item Category</h5>
+		<h5 class="modal-title" id="modal-title" ng-if="(modalSbmtData.type === 'update')">
+			Update Storage Item Category <strong>{{ modalSbmtData.catCodeModel }}</strong>
+		</h5>
+	</div>
+	<div class="modal-body" id="modal-body">
+		<form class="form-horizontal" name="modalForm" novalidate>
+			<div class="form-group">
+				<div class="col-sm-offset-1 col-sm-10">
+					<label for="catname">Name</label>
+					<div ng-class="{ 'has-error': (modalForm.catname.$dirty && modalForm.catname.$invalid) }">
+						<input
+							type="text"
+							class="form-control input-sm"
+							id="catname"
+							name="catname"
+							maxlength="20"
+							placeholder="Name"
+							ng-model="modalSbmtData.catNameModel"
+							ng-pattern="/^[a-zA-Z0-9\ ]*$/"
+							ng-required="true" />
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button
+			type="button"
+			class="btn btn-primary btn-sm"
+			ng-click="(modalForm.$valid && modalSubmit())"
+			ng-disabled="modalForm.$invalid">
+			<span ng-if="(modalSbmtData.type === 'add')">Add</span>
+			<span ng-if="(modalSbmtData.type === 'update')">Update</span>
+		</button>
+		<button type="button" class="btn btn-default" ng-click="modalClose()">Cancel</button>
+	</div>
+</script>
+
+<script type="text/ng-template" id="storageItems.tpl.html">
+	<div class="modal-header">
+		<h5 class="modal-title" id="modal-title">
+			Storage Items of <strong>{{ modalSbmtData.catCodeModel }}</strong>
+		</h5>
+	</div>
+	<div class="modal-body" id="modal-body">
+		<dir-alert alert-type="msgObj.name" alert-msg="msgObj.msg" ng-if="msgObj.msg"></dir-alert>
+		<form class="form-horizontal" name="modalForm" ng-submit="addStorageItem()" novalidate>
+			<div class="form-group">
+				<h5 class="col-sm-2">
+					<strong>Add New</strong>
+				</h5>
+				<div class="col-sm-2" for="unitname">
+					<div class="form-control-static">
+						<span class="pull-right">Name</span>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<input
+						type="text"
+						class="form-control input-sm"
+						id="unitname"
+						name="unitname"
+						maxlength="20"
+						placeholder="Name"
+						ng-model="modalSbmtData.unitNameModel"
+						ng-pattern="/^[a-zA-Z0-9\ ]*$/"
+						ng-required="true" />
+				</div>
+				<div class="col-sm-2">
+					<button type="submit" class="btn btn-primary btn-sm" ng-disabled="modalForm.$invalid">Submit</button>
+				</div>
+			</div>
+		</form>
+		<div class="row">
+			<div class="col-sm-12">
+				<hr class="no-margin margin-bottom" />
+			</div>
+		</div>
+		<h2 class="lead text-center font-light text-muted lead-md" style="opacity: 0.5;" ng-if="infoObj.msg">
+			{{ infoObj.msg }}
+		</h2>
+		<div ng-if="!infoObj.msg">
+		<div class="row" style="margin: auto;">
+			<dir-pagination-header
+				noof-pages="noofPages"
+				current-page="currentPage"
+				table-search="tableSearch"
+				header-title="'View'">
+			</dir-pagination-header>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<table class="table table-bordered table-striped">
+					<caption style="padding-top: 0;">
+						<em class="pull-right">
+							<span class="glyphicon glyphicon-info-sign"></span>
+							Disabled items are being used by Service Request(s).
+						</em>
+					</caption>
+					<thead>
+						<tr>
+							<th>S.No</th>
+							<th
+								class="cursor-pointer"
+								ng-repeat="thead in theadAr"
+								ng-click="sortColumn(thead.code)">
+								<dir-compile-template input-data="thead.name"></dir-compile-template>
+								<span
+									class="glyphicon glyphicon-triangle-top pull-right"
+									ng-if="(orderBy === thead.code) && orderByDir">
+								</span>
+								<span
+									class="glyphicon glyphicon-triangle-bottom pull-right"
+									ng-if="(orderBy === thead.code) && !orderByDir">
+								</span>
+							</th>
+							<th class="text-center">Options</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr
+							dir-paginate="tbody in tbodyAr | orderBy: orderBy : orderByDir | filter: tableSearch | itemsPerPage: noofPages"
+							current-page="currentPage"
+							pagination-id="storageItemsPagination"
+							ng-class="{ 'active-tr': modalSbmtData.activetr === tbody.id, 'text-muted': tbody.itemInstalledCount }">
+							<th scope="row">{{ ((noofPages * (currentPage - 1)) + ($index + 1)) }}</th>
+							<td>{{ tbody.code }}</td>
+							<td>
+								<input
+									type="text"
+									class="form-control input-sm"
+									maxlength="20"
+									placeholder="Name"
+									ng-if="tbody.isEdit"
+									ng-model="tbody.name"
+									ng-pattern="/^[a-zA-Z0-9\ ]*$/" />
+								<span ng-if="!tbody.isEdit">{{ tbody.name }}</span>
+							</td>
+							<td>
+								<dir-epoch-to-date input-data="tbody.createdOn"></dir-epoch-to-date>
+							</td>
+							<td class="text-center">
+								<button
+									type="button"
+									class="btn btn-link"
+									style="padding: 0;"
+									ng-if="(!tbody.itemInstalledCount && !tbody.isEdit)"
+									ng-click="(modalSbmtData.activetr = tbody.id); (tbody.isEdit = !tbody.isEdit);">
+									<span class="glyphicon glyphicon-edit"></span>
+								</button>
+								<button
+									type="button"
+									class="btn btn-link"
+									style="padding: 0;"
+									ng-if="(!tbody.itemInstalledCount && tbody.isEdit)"
+									ng-click="(modalSbmtData.activetr = tbody.id); updateStorageItem(tbody);"
+									ng-disabled="!tbody.name">
+									<span class="glyphicon glyphicon-floppy-save"></span>
+								</button>
+								<button
+									type="button"
+									class="btn btn-link"
+									style="padding: 0;"
+									ng-if="(!tbody.itemInstalledCount && !tbody.isEdit)"
+									ng-click="(modalSbmtData.activetr = tbody.id); deleteStorageItem(tbody);">
+									<span class="glyphicon glyphicon glyphicon-trash text-danger"></span>
+								</button>
+								<span ng-if="tbody.itemInstalledCount">NA</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12 text-center">
+				<dir-pagination-controls
+					boundary-links="true"
+					on-page-change="pageChangeHandler(newPageNumber)"
+					pagination-id="storageItemsPagination">
+				</dir-pagination-controls>
+			</div>
+		</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-default" ng-click="modalClose()">Close</button>
+	</div>
+</script>

@@ -1,0 +1,172 @@
+<div id="home_servicereq_quotation_container">
+<div class="row">
+	<div class="col-xs-12">
+		<dir-page-header tab-name="tabName" tab-desc="tabDesc"></dir-page-header>
+	</div>
+</div>
+
+<form name="quotationForm" novalidate>
+	<table class="table table-bordered table-striped">
+		<caption style="padding-top: 0;">
+			<button
+				type="button"
+				class="btn btn-default btn-sm pull-right"
+				ng-click="printReport()"
+				ng-disabled="quotationForm.$invalid">
+				Print 
+				<span
+					class="glyphicon glyphicon-print text-muted"
+					style="margin-left: 5px;">
+				</span>
+			</button>
+		</caption>
+		<thead>
+			<tr>
+				<th>S.No</th>
+				<th>Item</th>
+				<th>Max Quantity</th>
+				<th>Quantity</th>
+				<th>Price</th>
+				<th>
+					Discount <span class="text-muted">(in %)</span>
+					<br /><em class="text-muted"> - Optional</em>
+				</th>
+				<th>
+					Item Total
+					<span
+						class="glyphicon glyphicon-info-sign text-primary cursor-pointer"
+						tooltip-placement="top-right"
+						uib-tooltip="Discount&nbsp;on&nbsp;(Price&nbsp;X&nbsp;Quantity)">
+					</span>
+				</th>
+				<th>
+					Service Charge
+					<br /><em class="text-muted"> - Optional</em>
+				</th>
+				<th>
+					VAT <span class="text-muted">(in %)</span>
+					<span
+						class="glyphicon glyphicon-info-sign text-primary cursor-pointer"
+						tooltip-placement="top-right"
+						uib-tooltip="VAT on (Item Total&nbsp;+&nbsp;Service Charge)">
+					</span>
+					<br /><em class="text-muted"> - Optional</em>
+				</th>
+				<th>
+					Total
+					<span
+						class="glyphicon glyphicon-info-sign text-primary cursor-pointer"
+						tooltip-placement="top-right"
+						uib-tooltip="var&nbsp;amount&nbsp;=&nbsp;(Item Total&nbsp;+&nbsp;Service Charge); Total:&nbsp;(amount&nbsp;+&nbsp;(VAT&nbsp;on&nbsp;amount))">
+					</span>
+				</th>
+				<th class="text-center">Options</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="job in reqQuotationSbmtData.jobsAr">
+				<th scope="row">{{ ($index + 1) }}</th>
+				<td>
+					<select
+						class="form-control input-sm"
+						id="item_{{ $index }}"
+						name="item_{{ $index }}"
+						ng-model="job.itemID"
+						ng-options="item.id as ('(' + item.code + ') ' + item.name) group by ('(' + item.catCode + ') ' + item.cat) for item in job.storageItemsAr  | filter: item.isItemQuantity = 'true' | orderBy: 'name'"
+						ng-change="(job.itemID && (job.itemQuantity = 1)); refreshStorageItems();"
+						ng-required="true">
+						<option value="">Select</option>
+					</select>
+				</td>
+				<td>{{ ((job.itemID && job.itemMaxQuantity) || "NA") }}</td>
+				<td>
+					<input
+						type="number"
+						class="form-control input-sm"
+						id="itemquantity_{{ $index }}"
+						name="itemquantity_{{ $index }}"
+						ng-min="((job.itemID && 1) || 0)"
+						ng-max="job.itemMaxQuantity"
+						step="1"
+						ng-pattern="/^\d+$/"
+						ng-change="refreshStorageItems()"
+						ng-model="job.itemQuantity"
+						ng-disabled="!job.itemID"
+						ng-required="true" />
+				</td>
+				<td>
+					{{ getItemPrice(job) }}
+					<span
+						class="glyphicon glyphicon-info-sign text-primary cursor-pointer"
+						ng-if="getItemPrice(job)"
+						tooltip-placement="top-right"
+						uib-tooltip="{{ getItemPriceDetails(job) }}">
+					</span>
+				</td>
+				<td>
+					<input
+						type="number"
+						class="form-control input-sm"
+						id="itemdiscount_{{ $index }}"
+						name="itemdiscount_{{ $index }}"
+						min="0"
+						max="100"
+						ng-model="job.itemDiscount"
+						ng-disabled="!job.itemID" />
+				</td>
+				<td>{{ getItemTotal(job) }}</td>
+				<td>
+					<input
+						type="number"
+						class="form-control input-sm"
+						id="servicecharge_{{ $index }}"
+						name="servicecharge_{{ $index }}"
+						min="0"
+						ng-model="job.serviceCharge" />
+				</td>
+				<td>
+					<input
+						type="number"
+						class="form-control input-sm"
+						id="vat_{{ $index }}"
+						name="vat_{{ $index }}"
+						min="0"
+						max="100"
+						ng-model="job.vat" />
+				</td>
+				<td>{{ getTotal(job) }}</td>
+				<td class="text-center">
+					<span
+						class="pull-right text-danger cursor-pointer lead"
+						style="margin-bottom: 0;"
+						tooltip-placement="left"
+						uib-tooltip="Remove row"
+						ng-if="(reqQuotationSbmtData.jobsAr.length > 1)"
+						ng-click="removeRow($index);">
+						&otimes;
+					</span>
+				</td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="11">
+					<span
+						class="pull-right text-primary cursor-pointer lead"
+						style="margin-bottom: 0;"
+						tooltip-placement="left"
+						uib-tooltip="Add row"
+						ng-click="addRow(); refreshStorageItems();">
+						&oplus;
+					</span>
+				</td>
+			</tr>
+			<tr>
+				<th colspan="9"><span class="pull-right">Grand Total</span></th>
+				<th colspan="2">{{ getGrandTotal() }}</th>
+			</tr>
+		</tfoot>
+	</table>
+</form>
+
+<div ng-include="basePath + 'print.html'" ng-hide="true"></div>

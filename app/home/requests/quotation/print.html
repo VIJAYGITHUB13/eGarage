@@ -1,0 +1,71 @@
+<div id="home_servicereq_quotation_container_print">
+<dir-print-heading></dir-print-heading>
+<hr style="margin: 5px 0;" />
+<div>
+	<h4 style="text-align: center;"><strong>Quotation</strong></h4>
+</div>
+<hr style="margin: 5px 0;" />
+<div>
+	<h5 style="text-align: right;" ng-bind-html="printReportTitle()"></h5>
+</div>
+<hr style="margin: 5px 0;" />
+<div class="row">
+<div class="col-sm-12">
+	<table class="table table-bordered table-striped">
+		<thead>
+			<tr>
+				<th>S.No</th>
+				<th>Item</th>
+				<th>Quantity</th>
+				<th>Price</th>
+				<th>
+					Discount <span class="text-muted">(in %)</span>
+				</th>
+				<th>Item Total</th>
+				<th>Service Charge</th>
+				<th>VAT <span class="text-muted">(in %)</span></th>
+				<th>Total</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="job in reqQuotationSbmtData.jobsAr">
+				<th scope="row">{{ ($index + 1) }}</th>
+				<td>{{ job.item }}</td>
+				<td>{{ job.itemQuantity }}</td>
+				<td>{{ getItemPrice(job) }}</td>
+				<td>{{ job.itemDiscount }}</td>
+				<td>{{ getItemTotal(job) }}</td>
+				<td>{{ job.serviceCharge }}</td>
+				<td>{{ job.vat }}</td>
+				<td>{{ getTotal(job) }}</td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<th colspan="8"><span class="pull-right">Grand Total</span></th>
+				<th>{{ getGrandTotal() }}</th>
+			</tr>
+		</tfoot>
+	</table>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+	<div>
+		<small class="glyphicon glyphicon-info-sign"></small>
+		<label style="margin-left: 5px;"><small>Item Total:</small></label>
+		<small style="margin-left: 5px;">Discount&nbsp;on&nbsp;(Price&nbsp;X&nbsp;Quantity)</small>
+	</div>
+	<div>
+		<small class="glyphicon glyphicon-info-sign"></small>
+		<label style="margin-left: 5px;"><small>VAT:</small></label>
+		<small style="margin-left: 5px;">VAT on (Item Total&nbsp;+&nbsp;Service Charge)</small>
+	</div>
+	<div>
+		<small class="glyphicon glyphicon-info-sign"></small>
+		<label style="margin-left: 5px;"><small>Total:</small></label>
+		<small style="margin-left: 5px;">var&nbsp;amount&nbsp;=&nbsp;(Item Total&nbsp;+&nbsp;Service Charge); Total:&nbsp;(amount&nbsp;+&nbsp;(VAT&nbsp;on&nbsp;amount))</small>
+	</div>
+</div>
+</div>
+</div>

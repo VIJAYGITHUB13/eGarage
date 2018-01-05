@@ -1,0 +1,98 @@
+<div id="home_manage_storageitemcats_container">
+<div class="row">
+	<div class="col-xs-12">
+		<div class="page-header">
+			<h3>
+				{{ tabName }} <small class="hidden-xs">{{ tabDesc }}</small>
+			</h3>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-xs-12">
+		<div style="display: table; margin: 15px 0; width: 100%;">
+			<div style="display: table-row;">
+				<div class="table-cell" style="width: 20%;">
+					<form class="form-horizontal" name="formSearch" ng-submit="searchFormSubmit()" novalidate>
+						<div class="form-group">
+							<label for="catcode">User Categories</label>
+							<div>
+								<select
+									class="form-control input-sm"
+									id="ucategory"
+									name="ucategory"
+									style="width: 80%;"
+									ng-model="menusSbmtData.userSubcategoryModel"
+									ng-options="ucategory.userSubcategoryID as ucategory.userSubcategory group by ucategory.userCategory for ucategory in menusRESTData.userCategoriesAr"
+									ng-required="true">
+									<option value="">Select</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<button type="submit" class="btn btn-primary btn-sm" ng-disabled="formSearch.$invalid">Go</button>
+							<button type="button" class="btn btn-default btn-sm" ng-click="reset()">Reset</button>
+						</div>
+					</form>
+				</div>
+				<div class="table-cell" style="width: 80%;">
+					<h2 class="lead text-center font-light text-muted lead-md" style="opacity: 0.5;" ng-if="infoObj.msg">
+						{{ infoObj.msg }}
+					</h2>
+					<div ng-if="!infoObj.msg">
+					<dir-alert alert-type="msgObj.name" alert-msg="msgObj.msg" ng-if="msgObj.msg"></dir-alert>
+					<div class="row">
+						<div class="col-sm-offset-3 col-sm-6">
+							<h5 class="lead font-light lead-md text-muted" style="margin-top: 0;">Menus</h5>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-12">
+							<hr class="no-margin" />
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-offset-3 col-sm-6">
+							<ul class="list-unstyled" style="margin-top: 20px;">
+								<li ng-repeat="menu in menusAr" style="margin-top: 6px;">
+									<span
+										class="glyphicon cursor-pointer"
+										ng-click="parentMenu(menu)"
+										ng-class="{ 'glyphicon-check': menu.selected, 'glyphicon-unchecked': !menu.selected }">
+									</span>
+									<label style="margin-left: 5px;">{{ menu.name }}</label>
+									<ul
+										class="list-unstyled"
+										style="margin-left: 5px; border-left: 1px solid #ddd; padding-left: 25px;"
+										ng-if="menu.subMenusAr.length">
+										<li ng-repeat="submenu in menu.subMenusAr" style="margin-top: 6px;">
+											<span
+												class="glyphicon cursor-pointer"
+												ng-click="childMenu(menu, submenu)"
+												ng-class="{ 'glyphicon-check': submenu.selected, 'glyphicon-unchecked': !submenu.selected }">
+											</span>
+											<span style="margin-left: 5px;">{{ submenu.name }}</span>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="row" style="margin-bottom: 15px;">
+						<div class="col-sm-12">
+							<hr class="no-margin" />
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-offset-3 col-sm-6">
+							<button type="submit" class="btn btn-primary btn-sm" ng-click="assignMenus()">Assign</button>
+						</div>
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> 
+</div>
+</div>

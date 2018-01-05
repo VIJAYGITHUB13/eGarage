@@ -1,0 +1,10 @@
+<ol class="hidden-xs breadcrumb" style="margin-bottom: 7px; padding: 0; background-color: initial; border-radius: 0; font-size: 80%;">
+	<li ng-repeat="crumb in breadcrumbs" ng-class="{ active: $last }">
+		<a ui-sref="{{ crumb.route }}" ng-if="!$last">{{ crumb.displayName }}&nbsp;</a>
+		<span ng-show="$last">{{ crumb.displayName }}</span>
+	</li>
+</ol>
+
+<div style="margin-bottom: 7px; padding: 0; background-color: initial; border-radius: 0; font-size: 80%;">
+	<span class="visible-xs">{{ breadcrumbs[breadcrumbs.length - 1].displayName }}</span>
+</div>

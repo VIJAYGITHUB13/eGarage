@@ -1,0 +1,163 @@
+<div id="home_resetpassword_container">
+<div class="row">
+	<div class="col-xs-12">
+		<dir-page-header tab-name="tabName" tab-desc="tabDesc"></dir-page-header>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-xs-12">
+		<div style="display: table; margin: 15px 0; width: 100%;">
+			<div style="display: table-row;">
+				<div class="table-cell" style="width: 20%;">
+					<form class="form-horizontal" name="formSearch" ng-submit="searchFormSubmit()" novalidate>
+						<div class="form-group">
+							<h5><strong>Search Criteria</strong></h5>
+						</div>
+						<div class="form-group">
+							<label for="uname">Name</label>
+							<div>
+								<input
+									type="text"
+									class="form-control input-sm"
+									id="uname"
+									name="uname"
+									placeholder="Name"
+									ng-model="resetPasswordSbmtData.unameModel" />
+							</div>
+						</div>
+						<div class="form-group" ng-if="resetPasswordRESTData.uCategoryAr.length">
+							<label for="ucategory">User Category</label>
+							<div>
+								<select
+									class="form-control input-sm"
+									id="ucategory"
+									name="ucategory"
+									ng-model="resetPasswordSbmtData.ucategoryModel"
+									ng-options="ucategory.code as ucategory.name for ucategory in resetPasswordRESTData.uCategoryAr">
+									<option value="">Select</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="fdate">From Date</label>
+							<div>
+								<input
+									type="text"
+									class="form-control input-sm"
+									id="fdate"
+									name="fdate"
+									placeholder="From Date"
+									ng-model="resetPasswordSbmtData.fdateModel"
+									datetimepicker
+									datetimepicker-options="{{ dateTimePickerConf }}" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="tdate">To Date</label>
+							<div>
+								<input
+									type="text"
+									class="form-control input-sm"
+									id="tdate"
+									name="tdate"
+									ng-model="resetPasswordSbmtData.tdateModel"
+									placeholder="To Date"
+									datetimepicker
+									datetimepicker-options="{{ dateTimePickerConf }}" />
+							</div>
+						</div>
+						<div class="form-group">
+							<button type="submit" class="btn btn-primary btn-sm">Search</button>
+							<button type="button" class="btn btn-default btn-sm" ng-click="reset()">Reset</button>
+						</div>
+					</form>
+				</div>
+				<div class="table-cell" style="width: 80%;">
+					<h2 class="lead text-center font-light text-muted lead-md" style="opacity: 0.5;" ng-if="infoObj.msg">
+						{{ infoObj.msg }}
+					</h2>
+					<div ng-if="!infoObj.msg">
+					<dir-alert alert-type="msgObj.name" alert-msg="msgObj.msg" ng-if="msgObj.msg"></dir-alert>
+					<div class="row" style="margin: auto;">
+						<dir-pagination-header
+							noof-pages="noofPages"
+							current-page="currentPage"
+							table-search="tableSearch">
+						</dir-pagination-header>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<table class="table table-bordered table-striped">
+								<thead>
+									<tr>
+										<th>S.No</th>
+										<th
+											class="cursor-pointer"
+											ng-repeat="thead in theadAr"
+											ng-click="sortColumn(thead.code)">
+											{{ thead.name }}
+											<span
+												class="glyphicon glyphicon-triangle-top pull-right"
+												ng-if="(orderBy === thead.code) && orderByDir">
+											</span>
+											<span
+												class="glyphicon glyphicon-triangle-bottom pull-right"
+												ng-if="(orderBy === thead.code) && !orderByDir">
+											</span>
+										</th>
+										<th class="text-center">Options</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr
+										dir-paginate="tbody in tbodyAr | orderBy: orderBy : orderByDir | filter: tableSearch | itemsPerPage: noofPages"
+										current-page="currentPage"
+										pagination-id="usersResetPasswordPagination"
+										ng-class="{ 'active-tr': resetPasswordFormData.activetr === tbody.id }">
+										<th scope="row">{{ ((noofPages * (currentPage - 1)) + ($index + 1)) }}</th>
+										<td>
+											<button
+												type="button"
+												class="btn btn-link"
+												style="padding: 0;"
+												ng-click="viewUserDetails(tbody.id)">
+												{{ tbody.name }}
+											</button>
+										</td>
+										<td>{{ tbody.username }}</td>
+										<td>{{ tbody.ucategory }}</td>
+										<td>{{ tbody.mobileNo }}</td>
+										<td>{{ tbody.emailID }}</td>
+										<td>
+											<dir-epoch-to-date input-data="tbody.createdOn"></dir-epoch-to-date>
+										</td>
+										<td class="text-center">
+											<button
+												type="button"
+												class="btn btn-default btn-xs"
+												ng-click="resetPasswordFormData.activetr = tbody.id; resetPassword(tbody)">
+												Reset Password
+											</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12 text-center">
+							<dir-pagination-controls
+								boundary-links="true"
+								on-page-change="pageChangeHandler(newPageNumber)"
+								pagination-id="usersResetPasswordPagination">
+							</dir-pagination-controls>
+						</div>
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> 
+</div>
+</div>

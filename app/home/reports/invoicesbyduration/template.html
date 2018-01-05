@@ -1,0 +1,132 @@
+<div id="home_manage_reports_container">
+<div class="row">
+	<div class="col-xs-12">
+		<div class="page-header">
+			<h3>
+				{{ tabName }} <small class="hidden-xs">{{ tabDesc }}</small>
+			</h3>
+		</div>
+	</div>
+</div>
+
+<form class="form-horizontal" name="formSearch" style="margin-top: 15px;" ng-submit="searchFormSubmit()" novalidate>
+	<div class="form-group">
+		<div class="col-sm-offset-4 col-sm-4">
+			<div class="input-group input-group-sm">
+				<input
+					type="text"
+					class="form-control"
+					id="fdate"
+					name="fdate"
+					placeholder="From Date"
+					ng-model="reportsSbmtData.fdateModel"
+					ng-required="true"
+					datetimepicker
+					datetimepicker-options="{{ dateTimePickerConf }}" />
+				<span class="input-group-addon">to</span>
+				<input
+					type="text"
+					class="form-control"
+					id="tdate"
+					name="tdate"
+					ng-model="reportsSbmtData.tdateModel"
+					placeholder="To Date"
+					ng-required="true"
+					datetimepicker
+					datetimepicker-options="{{ dateTimePickerConf }}" />
+			</div>
+		</div>
+		<div class="col-sm-1">
+			<button type="submit" class="btn btn-primary btn-sm" ng-disabled="formSearch.$invalid">Search</button>
+		</div>
+	</div>
+</form>
+<div class="form-horizontal">
+	<div class="form-group">
+		<div class="col-sm-12">
+			<hr class="no-margin" />
+		</div>
+	</div>
+	<div ng-if="!infoObj.msg">
+	<div class="form-group" style="margin: auto;">
+		<dir-pagination-header
+			noof-pages="noofPages"
+			current-page="currentPage"
+			table-search="tableSearch">
+		</dir-pagination-header>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-12">
+			<table class="table table-bordered table-striped">
+				<caption style="padding-top: 0;">
+					<button type="button" class="btn btn-default btn-sm" ng-click="printReport()">
+						Print 
+						<span
+							class="glyphicon glyphicon-print text-muted"
+							style="margin-left: 5px;">
+						</span>
+					</button>
+				</caption>
+				<thead>
+					<tr>
+						<th>S.No</th>
+						<th
+							class="cursor-pointer"
+							ng-repeat="thead in theadAr"
+							ng-click="sortColumn(thead.code)">
+							<dir-compile-template input-data="thead.name"></dir-compile-template>
+							<span
+								class="glyphicon glyphicon-triangle-top pull-right"
+								ng-if="(orderBy === thead.code) && orderByDir">
+							</span>
+							<span
+								class="glyphicon glyphicon-triangle-bottom pull-right"
+								ng-if="(orderBy === thead.code) && !orderByDir">
+							</span>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr
+						dir-paginate="tbody in tbodyAr | orderBy: orderBy : orderByDir | filter: tableSearch | itemsPerPage: noofPages"
+						current-page="currentPage"
+						pagination-id="ordersByDurationPagination">
+						<th scope="row">{{ ((noofPages * (currentPage - 1)) + ($index + 1)) }}</th>
+						<td>{{ tbody.requestID }}</td>
+						<td>{{ tbody.client }}</td>
+						<td>
+							<dir-epoch-to-date input-data="tbody.createdOn"></dir-epoch-to-date>
+						</td>
+						<td>
+							<dir-epoch-to-date input-data="tbody.closedOn"></dir-epoch-to-date>
+						</td>
+						<td><span class="pull-right">{{ tbody.total }}</span></td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<th colspan="5"><span class="pull-right">Grand Totals</span></th>
+						<th><span class="pull-right">{{ reportsSbmtData.totalObj.total }}</span></th>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-12 text-center">
+			<dir-pagination-controls
+				boundary-links="true"
+				on-page-change="pageChangeHandler(newPageNumber)"
+				pagination-id="ordersByDurationPagination">
+			</dir-pagination-controls>
+		</div>
+	</div>
+	</div>
+</div>
+
+<h2 class="lead text-center font-light text-muted lead-md" style="opacity: 0.5;" ng-if="infoObj.msg">
+	{{ infoObj.msg }}
+</h2>
+</div>
+
+<div ng-include="basePath + 'print.html'" ng-hide="true"></div>

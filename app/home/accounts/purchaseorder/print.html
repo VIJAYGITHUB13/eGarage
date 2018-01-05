@@ -1,0 +1,78 @@
+<div id="home_accounts_purchaseorder_container_print">
+<dir-print-heading></dir-print-heading>
+<hr style="margin: 5px 0;" />
+<div>
+	<h4 style="text-align: center;"><strong>Order Invoice</strong></h4>
+</div>
+<hr style="margin: 5px 0;" />
+<div class="row">
+	<div class="col-xs-12">
+		<h4>
+			<span class="glyphicon glyphicon-file"></span>
+			<strong>{{ purchaseOrderSbmtData.printData.code }}</strong>
+			<strong class="pull-right">Dated: {{ purchaseOrderSbmtData.printData.dated }}</strong>
+		</h4>
+	</div>
+</div>
+<hr style="margin: 5px 0;" />
+<h5>
+	<strong>Order Summary</strong>
+</h5>
+<table class="margin-bottom" style="width: 100%;">
+	<tbody>
+		<tr style="border-top: 1px solid #ddd; border-bottom: 1px solid #ddd;">
+			<td style="width: 15%; padding: 5px;">
+				<span class="pull-right">Order Value:</span>
+			</td>
+			<td style="width: 30%; padding: 5px;">
+				<strong>{{ purchaseOrderSbmtData.printData.purchasedTotal }}</strong>
+				<span class="pull-right">Ordered by:</span>
+			</td>
+			<td style="width: 40%; padding: 5px;">
+				<strong>{{ purchaseOrderSbmtData.printData.orderedBy }}</strong>
+				<span class="pull-right">Ordered on:</span>
+			</td>
+			<td style="width: 15%; padding: 5px;">
+				<strong>{{ purchaseOrderSbmtData.printData.orderedDate }}</strong>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<h5>
+	<strong>Payment History</strong>
+</h5>
+<table style="width: 100%;">
+	<thead>
+		<tr style="border-top: 1px solid #ddd;">
+			<th style="width: 15%; padding: 5px;">Paid Date</th>
+			<th style="width: 30%; padding: 5px;">Payment Mode</th>
+			<th style="width: 20%; padding: 5px;">Paid Amount</th>
+			<th style="width: 30%; padding: 5px;">Paid by</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr
+			ng-repeat="tbody in purchaseOrderSbmtData.printData.tbodyAr"
+			style="border-top: 1px solid #ddd;">
+			<td style="padding: 5px;">
+				<dir-epoch-to-date input-data="tbody.paidDate"></dir-epoch-to-date>
+			</td>
+			<td style="padding: 5px;">{{ tbody.paymentMode }}</td>
+			<td style="padding: 5px;">{{ tbody.paidAmount }}</td>
+			<td style="padding: 5px;">{{ tbody.paidBy }}</td>
+		</tr>
+		<tr style="border-top: 1px solid #ddd;">
+			<th colspan="2" style="padding: 5px;">
+				<span class="pull-right">Total Paid Amount</span>
+			</th>
+			<th colspan="2" style="padding: 5px;">{{ purchaseOrderSbmtData.printData.totalPaidAmount }}</th>
+		</tr>
+		<tr>
+			<th colspan="2" style="padding: 5px;">
+				<span class="pull-right">Due Amount</span>
+			</th>
+			<th colspan="2" style="padding: 5px;">{{ (purchaseOrderSbmtData.printData.dueAmount || "NA") }}</th>
+		</tr>
+	</tbody>
+</table>
+</div>

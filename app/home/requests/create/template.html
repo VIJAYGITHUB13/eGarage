@@ -1,0 +1,923 @@
+<div id="home_servicereq_create_container">
+<div class="row">
+	<div class="col-xs-12">
+		<div class="page-header">
+			<h3>{{ tabName }} <small class="hidden-xs">{{ tabDesc }}</small></h3>
+		</div>
+	</div>
+</div>
+
+<dir-alert alert-type="infoObj.name" alert-msg="infoObj.msg" ng-if="infoObj.msg"></dir-alert>
+
+<form name="clientDetailsForm" novalidate>
+<div class="row">
+	<div class="col-xs-12">
+		<h5
+			class="lead font-light lead-md text-muted cursor-pointer"
+			data-toggle="collapse"
+			data-target="#clientdetails"
+			ng-click="reqCreateFormData.accordion.isClientDetails = !reqCreateFormData.accordion.isClientDetails">
+			<span class="accordion-icon" ng-if="!reqCreateFormData.accordion.isClientDetails">+</span>
+			<span class="accordion-icon" ng-if="reqCreateFormData.accordion.isClientDetails">-</span>
+			Client Details
+			<small>Select from the list or create new</small>
+			<span
+				class="glyphicon glyphicon-remove-circle pull-right text-danger validity-icon"
+				tooltip-placement="left"
+				uib-tooltip="Invalid Client Details"
+				ng-if="!(clientDetailsForm.$valid && reqCreateSbmtData.clientDetails.name)">
+			</span>
+			<span
+				class="glyphicon glyphicon-ok-circle pull-right text-success validity-icon"
+				tooltip-placement="left"
+				uib-tooltip="Valid Client Details"
+				ng-if="(clientDetailsForm.$valid && reqCreateSbmtData.clientDetails.name)">
+			</span>
+		</h5>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12">
+		<hr class="no-margin" />
+	</div>
+</div>
+<div class="row" class="collapse" id="clientdetails" ng-show="reqCreateFormData.accordion.isClientDetails">
+	<div class="col-xs-offset-1 col-xs-11">
+		<div class="form-horizontal" style="margin-top: 15px;">
+			<div class="form-group">
+				<div class="col-xs-6">
+					<span class="lead text-muted" ng-if="!reqCreateFormData.clientDetails.isCreate">Search</span>
+					<button
+						type="button"
+						class="btn btn-link"
+						style="padding: 0;"
+						ng-if="reqCreateFormData.clientDetails.isCreate"
+						ng-click="resetForm('clientdetails')">
+						<span class="lead">Search</span>
+					</button>
+				</div>
+				<div class="col-xs-6">
+					<span class="lead text-muted pull-right" ng-if="reqCreateFormData.clientDetails.isCreate">Create</span>
+					<button
+						type="button"
+						class="btn btn-link pull-right"
+						style="padding: 0;"
+						ng-if="!reqCreateFormData.clientDetails.isCreate"
+						ng-click="resetForm('clientdetails')">
+						<span class="lead">Create</span>
+					</button>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-xs-12">
+					<hr class="no-margin" />
+				</div>
+			</div>
+			<div class="form-group" ng-if="!reqCreateFormData.clientDetails.isCreate">
+				<div class="col-xs-2">
+					<input
+						type="text"
+						class="form-control input-sm"
+						id="requestid"
+						name="requestid"
+						placeholder="Request ID"
+						ng-model="reqCreateSbmtData.clientDetails.requestIDModel" />
+				</div>
+				<div class="col-xs-1 text-center">
+					<div class="form-control-static">OR</div>
+				</div>
+				<div class="col-xs-2">
+					<input
+						type="text"
+						class="form-control input-sm"
+						id="name"
+						name="name"
+						placeholder="Name"
+						ng-model="reqCreateSbmtData.clientDetails.nameModel" />
+				</div>
+				<div class="col-xs-1 text-center">
+					<div class="form-control-static">OR</div>
+				</div>
+				<div class="col-xs-2">
+					<input
+						type="text"
+						class="form-control input-sm"
+						id="mobileno"
+						name="mobileno"
+						placeholder="Mobile No"
+						ng-model="reqCreateSbmtData.clientDetails.mobileNoModel" />
+				</div>
+				<div class="col-xs-1 text-center">
+					<div class="form-control-static">OR</div>
+				</div>
+				<div class="col-xs-2">
+					<input
+						type="text"
+						class="form-control input-sm"
+						id="emailid"
+						name="emailid"
+						placeholder="Email ID"
+						ng-model="reqCreateSbmtData.clientDetails.emailIDModel" />
+				</div>
+				<div class="col-xs-1">
+					<button
+						type="button"
+						class="btn btn-info btn-sm"
+						ng-click="searchClient()"
+						ng-disabled="isSearchClient()">
+						Search
+					</button>
+				</div>
+			</div>
+			<div class="form-group" ng-if="!reqCreateFormData.clientDetails.isCreate">
+				<div class="col-xs-12">
+					<div class="row margin-bottom">
+						<div class="col-xs-12">
+							<hr class="no-margin" />
+						</div>
+					</div>
+					<h2
+						class="lead text-center font-light text-muted lead-md"
+						style="opacity: 0.5;"
+						ng-if="clientDetInfoObj.msg">
+						{{ clientDetInfoObj.msg }}
+					</h2>
+					<div ng-if="!clientDetInfoObj.msg">
+					<div class="row" style="margin: auto;">
+						<dir-pagination-header noof-pages="noofPages" table-search="tableSearch"></dir-pagination-header>
+					</div>
+					<div class="row">
+						<div class="col-xs-12">
+							<table class="table table-bordered table-striped">
+								<thead>
+									<tr>
+										<th>S.No</th>
+										<th
+											class="cursor-pointer"
+											ng-repeat="thead in theadAr"
+											ng-click="sortColumn(thead.code)">
+											{{ thead.name }}
+											<span
+												class="glyphicon glyphicon-triangle-top pull-right"
+												ng-if="(orderBy === thead.code) && orderByDir">
+											</span>
+											<span
+												class="glyphicon glyphicon-triangle-bottom pull-right"
+												ng-if="(orderBy === thead.code) && !orderByDir">
+											</span>
+										</th>
+										<th class="text-center">Options</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr
+										dir-paginate="tbody in clientDetTBodyAr | orderBy: orderBy : orderByDir | filter: tableSearch | itemsPerPage: noofPages"
+										pagination-id="clientsDetPagination"
+										ng-class="{ 'active-tr': reqCreateFormData.clientDetails.activetr === tbody.id }">
+										<th scope="row">{{ ($index + 1) }}</th>
+										<td>{{ tbody.name }}</td>
+										<td>{{ tbody.username }}</td>
+										<td>{{ tbody.mobileNo }}</td>
+										<td>{{ tbody.emailID }}</td>
+										<td>
+											<dir-epoch-to-date input-data="tbody.createdOn"></dir-epoch-to-date>
+										</td>
+										<td class="text-center">
+											<button
+												type="button"
+												class="btn btn-xs"
+												ng-click="reqCreateFormData.clientDetails.activetr = tbody.id; reqCreateSbmtData.clientDetails.clientIDModel = tbody.id; reqCreateSbmtData.clientDetails.name = tbody.name"
+												ng-class="reqCreateFormData.clientDetails.activetr === tbody.id ? 'btn-primary' : 'btn-default'">
+												Select
+											</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12 text-center">
+							<dir-pagination-controls
+								boundary-links="true"
+								on-page-change="pageChangeHandler(newPageNumber)"
+								pagination-id="clientsDetPagination">
+							</dir-pagination-controls>
+						</div>
+					</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group" ng-if="reqCreateFormData.clientDetails.isCreate">
+				<div class="col-xs-3">
+					<label for="fname">First Name</label>
+					<div ng-class="{ 'has-error': (clientDetailsForm.fname.$dirty && clientDetailsForm.fname.$invalid) }">
+						<input
+							type="text"
+							class="form-control input-sm"
+							id="fname"
+							name="fname"
+							maxlength="20"
+							placeholder="First Name"
+							ng-model="reqCreateSbmtData.clientDetails.firstNameModel"
+							ng-pattern="/^[a-zA-Z0-9\ ]*$/"
+							ng-change="formName()"
+							ng-required="true" />
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<label for="lname">Last Name<em class="text-muted"> - Optional</em></label>
+					<div ng-class="{ 'has-error': (clientDetailsForm.lname.$dirty && clientDetailsForm.lname.$invalid) }">
+						<input
+							type="text"
+							class="form-control input-sm"
+							id="lname"
+							name="lname"
+							maxlength="20"
+							placeholder="Last Name"
+							ng-model="reqCreateSbmtData.clientDetails.lastNameModel"
+							ng-change="formName()"
+							ng-pattern="/^[a-zA-Z0-9\ ]*$/" />
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<label for="mobileno">Mobile No</label>
+					<div ng-class="{ 'has-error': (clientDetailsForm.mobileno.$dirty && clientDetailsForm.mobileno.$invalid) }">
+						<input
+							type="number"
+							class="form-control input-sm"
+							id="mobileno"
+							name="mobileno"
+							placeholder="Ex: 9XX6XX3XX0"
+							ng-model="reqCreateSbmtData.clientDetails.mobileNoModel"
+							ng-pattern="/^[0-9]{10,10}$/"
+							ng-required="true" />
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<label for="emailid">Email ID</label>
+					<div ng-class="{ 'has-error': (clientDetailsForm.emailid.$dirty && clientDetailsForm.emailid.$invalid) }">
+						<input
+							type="email"
+							class="form-control input-sm"
+							id="emailid"
+							name="emailid"
+							placeholder="Ex: user@domain.extension"
+							ng-model="reqCreateSbmtData.clientDetails.emailIDModel"
+							ng-required="true" />
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-xs-12">
+					<hr class="no-margin" />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</form>
+
+<form name="vehicleDetailsForm" novalidate>
+<div class="row">
+	<div class="col-xs-12">
+		<h5
+			class="lead font-light lead-md text-muted cursor-pointer"
+			data-toggle="collapse"
+			data-target="#vehicledetails"
+			ng-click="reqCreateFormData.accordion.isVehicleDetails = !reqCreateFormData.accordion.isVehicleDetails">
+			<span class="accordion-icon" ng-if="!reqCreateFormData.accordion.isVehicleDetails">+</span>
+			<span class="accordion-icon" ng-if="reqCreateFormData.accordion.isVehicleDetails">-</span>
+			Vehicle Details
+			<span
+				class="glyphicon glyphicon-remove-circle pull-right text-danger validity-icon"
+				tooltip-placement="left"
+				uib-tooltip="Invalid Vehicle Details"
+				ng-if="!vehicleDetailsForm.$valid">
+			</span>
+			<span
+				class="glyphicon glyphicon-ok-circle pull-right text-success validity-icon"
+				tooltip-placement="left"
+				uib-tooltip="Valid Vehicle Details"
+				ng-if="vehicleDetailsForm.$valid">
+			</span>
+		</h5>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12">
+		<hr class="no-margin" />
+	</div>
+</div>
+<div class="row" class="collapse" id="vehicledetails" ng-show="reqCreateFormData.accordion.isVehicleDetails">
+	<div class="col-xs-offset-1 col-xs-11">
+		<div style="display: table; margin: 15px 0; width: 100%;">
+			<div style="display: table-row;">
+				<div class="table-cell" style="width: 33%;">
+					<div class="form-group">
+						<label for="vehicletype">Vehicle Type</label>
+						<div ng-class="{ 'has-error': (vehicleDetailsForm.vehicletype.$dirty && vehicleDetailsForm.vehicletype.$invalid) }">
+							<input
+								type="text"
+								class="form-control input-sm"
+								id="vehicletype"
+								name="vehicletype"
+								placeholder="Vehicle Type"
+								style="width: 80%;"
+								ng-model="reqCreateSbmtData.vehicleDetails.vehicleTypeModel"
+								ng-required="true" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="vehicleno">Vehicle No</label>
+						<div ng-class="{ 'has-error': (vehicleDetailsForm.vehicleno.$dirty && vehicleDetailsForm.vehicleno.$invalid) }">
+							<input
+								type="text"
+								class="form-control input-sm"
+								id="vehicleno"
+								name="vehicleno"
+								placeholder="Vehicle No"
+								style="width: 80%;"
+								ng-model="reqCreateSbmtData.vehicleDetails.vehicleNoModel"
+								ng-required="true" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="modelno">Model No</label>
+						<div ng-class="{ 'has-error': (vehicleDetailsForm.modelno.$dirty && vehicleDetailsForm.modelno.$invalid) }">
+							<input
+								type="text"
+								class="form-control input-sm"
+								id="modelno"
+								name="modelno"
+								placeholder="Model No"
+								style="width: 80%;"
+								ng-model="reqCreateSbmtData.vehicleDetails.modelNoModel"
+								ng-required="true" />
+						</div>
+					</div>
+				</div>
+				<div class="table-cell" style="width: 34%;">
+					<div class="form-group">
+						<label for="chasisno">Chasis No</label>
+						<div ng-class="{ 'has-error': (vehicleDetailsForm.chasisno.$dirty && vehicleDetailsForm.chasisno.$invalid) }">
+							<input
+								type="text"
+								class="form-control input-sm"
+								id="chasisno"
+								name="chasisno"
+								placeholder="Chasis No"
+								style="width: 80%;"
+								ng-model="reqCreateSbmtData.vehicleDetails.chasisNoModel"
+								ng-required="true" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="engineno">Engine No</label>
+						<div ng-class="{ 'has-error': (vehicleDetailsForm.engineno.$dirty && vehicleDetailsForm.engineno.$invalid) }">
+							<input
+								type="text"
+								class="form-control input-sm"
+								id="engineno"
+								name="engineno"
+								placeholder="Engine No"
+								style="width: 80%;"
+								ng-model="reqCreateSbmtData.vehicleDetails.engineNoModel"
+								ng-required="true" />
+						</div>
+					</div>
+				</div>
+				<div class="table-cell" style="width: 33%;">
+					<div class="form-group">
+						<label for="manufacturedyear">Manufactured Year</label>
+						<div ng-class="{ 'has-error': (vehicleDetailsForm.manufacturedyear.$dirty && vehicleDetailsForm.manufacturedyear.$invalid) }">
+							<input
+								type="number"
+								class="form-control input-sm"
+								id="manufacturedyear"
+								name="manufacturedyear"
+								placeholder="Ex: YYYY"
+								style="width: 80%;"
+								ng-model="reqCreateSbmtData.vehicleDetails.manufacturedYearModel"
+								ng-pattern="/^[0-9]{4,4}$/"
+								ng-required="true" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="odometerreading">Odometer Reading</label>
+						<div ng-class="{ 'has-error': (vehicleDetailsForm.odometerreading.$dirty && vehicleDetailsForm.odometerreading.$invalid) }">
+							<input
+								type="number"
+								class="form-control input-sm"
+								id="odometerreading"
+								name="odometerreading"
+								min="0"
+								style="width: 80%;"
+								ng-model="reqCreateSbmtData.vehicleDetails.odometerReadingModel"
+								ng-required="true" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- div.table-row -->
+		</div>
+		<!-- div.table -->
+	</div>
+</div>
+<div class="row" ng-show="reqCreateFormData.accordion.isVehicleDetails">
+	<div class="col-xs-offset-1 col-xs-11">
+		<hr class="no-margin" />
+	</div>
+</div>
+</form>
+
+<form name="recDetailsForm" novalidate>
+<div class="row">
+	<div class="col-xs-12">
+		<h5
+			class="lead font-light lead-md text-muted cursor-pointer"
+			data-toggle="collapse"
+			data-target="#receivingdetails"
+			ng-click="reqCreateFormData.accordion.isRecDetails = !reqCreateFormData.accordion.isRecDetails">
+			<span class="accordion-icon" ng-if="!reqCreateFormData.accordion.isRecDetails">+</span>
+			<span class="accordion-icon" ng-if="reqCreateFormData.accordion.isRecDetails">-</span>
+			Receiving Details
+			<span
+				class="glyphicon glyphicon-remove-circle pull-right text-danger validity-icon"
+				tooltip-placement="left"
+				uib-tooltip="Invalid Receiving Details"
+				ng-if="!recDetailsForm.$valid">
+			</span>
+			<span
+				class="glyphicon glyphicon-ok-circle pull-right text-success validity-icon"
+				tooltip-placement="left"
+				uib-tooltip="Valid Receiving Details"
+				ng-if="recDetailsForm.$valid">
+			</span>
+		</h5>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12">
+		<hr class="no-margin" />
+	</div>
+</div>
+<div class="row" class="collapse" id="receivingdetails" ng-show="reqCreateFormData.accordion.isRecDetails">
+	<div class="col-xs-offset-1 col-xs-11">
+		<div class="form-horizontal" style="margin-top: 15px;">
+			<div class="form-group">
+				<div class="col-xs-3">
+					<label for="receivingon">Receiving on</label>
+					<div ng-class="{ 'has-error': (recDetailsForm.receivingon.$dirty && recDetailsForm.receivingon.$invalid) }">
+						<input
+							type="text"
+							class="form-control input-sm"
+							id="receivingon"
+							name="receivingon"
+							placeholder="DD-MM-YYYY HH:MM AM/PM"
+							style="width: 80%;"
+							ng-model="reqCreateSbmtData.recDetails.receivingOnModel"
+							ng-required="true"
+							datetimepicker
+							datetimepicker-options="{{ datetimepickerOptions }}" />
+					</div>
+				</div>
+				<!-- <div class="col-xs-3">
+					<label for="receivingby">Receiving by</label>
+					<div ng-class="{ 'has-error': (recDetailsForm.receivingby.$dirty && recDetailsForm.receivingby.$invalid) }">
+						<select
+							class="form-control input-sm"
+							id="receivingby"
+							name="receivingby"
+							style="width: 80%;"
+							ng-model="reqCreateSbmtData.recDetails.receivingByModel"
+							ng-options="receivingby.id as receivingby.name group by receivingby.ucategory for receivingby in reqCreateRESTData.recDetails.receiversAr"
+							ng-required="true">
+							<option value="">Select</option>
+						</select>
+					</div>
+				</div> -->
+				<div class="col-xs-3">
+					<label for="assignee">Assign to</label>
+					<div ng-class="{ 'has-error': (recDetailsForm.assignee.$dirty && recDetailsForm.assignee.$invalid) }">
+						<select
+							class="form-control input-sm"
+							id="assignee"
+							name="assignee"
+							style="width: 80%;"
+							ng-model="reqCreateSbmtData.recDetails.assigneeModel"
+							ng-options="assignee.id as assignee.name group by assignee.ucategory for assignee in reqCreateRESTData.recDetails.assigneesAr"
+							ng-required="true">
+							<option value="">Select</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<label for="approver">Approved by</label>
+					<div ng-class="{ 'has-error': (recDetailsForm.approver.$dirty && recDetailsForm.approver.$invalid) }">
+						<select
+							class="form-control input-sm"
+							id="approver"
+							name="approver"
+							style="width: 80%;"
+							ng-model="reqCreateSbmtData.recDetails.approverModel"
+							ng-options="approver.id as approver.name group by approver.ucategory for approver in reqCreateRESTData.recDetails.approversAr"
+							ng-required="true">
+							<option value="">Select</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<!-- div.from-group -->
+		</div>
+		<!-- div.from-horizontal -->
+	</div>
+</div>
+<div class="row" ng-show="reqCreateFormData.accordion.isRecDetails">
+	<div class="col-xs-offset-1 col-xs-11">
+		<hr class="no-margin" />
+	</div>
+</div>
+</form>
+
+<form name="jobDetailsForm" novalidate>
+<div class="row">
+	<div class="col-xs-12">
+		<h5
+			class="lead font-light lead-md text-muted cursor-pointer"
+			data-toggle="collapse"
+			data-target="#jobdetails"
+			ng-click="reqCreateFormData.accordion.isJobDetails = !reqCreateFormData.accordion.isJobDetails">
+			<span class="accordion-icon" ng-if="!reqCreateFormData.accordion.isJobDetails">+</span>
+			<span class="accordion-icon" ng-if="reqCreateFormData.accordion.isJobDetails">-</span>
+			Job Details
+			<span
+				class="glyphicon glyphicon-remove-circle pull-right text-danger validity-icon"
+				tooltip-placement="left"
+				uib-tooltip="Invalid Job Details"
+				ng-if="!jobDetailsForm.$valid">
+			</span>
+			<span
+				class="glyphicon glyphicon-ok-circle pull-right text-success validity-icon"
+				tooltip-placement="left"
+				uib-tooltip="Valid Job Details"
+				ng-if="jobDetailsForm.$valid">
+			</span>
+		</h5>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12">
+		<hr class="no-margin" />
+	</div>
+</div>
+<div class="row" class="collapse" id="jobdetails" ng-show="reqCreateFormData.accordion.isJobDetails">
+	<div class="col-xs-offset-1 col-xs-11">
+		<ul class="list-group" style="margin-top: 15px;">
+			<li class="list-group-item lead">
+				<div class="row">
+					<div class="col-xs-1">
+						<span class="pull-right">#</span>
+					</div>
+					<div class="col-xs-4">Job</div>
+					<div class="col-xs-6">Remark</div>
+				</div>
+			</li>
+			<li class="list-group-item" ng-repeat="job in reqCreateSbmtData.jobDetails.jobsAr">
+				<div class="row">
+					<div class="col-xs-1 lead">
+						<span class="pull-right">
+							{{ ((($index + 1) < 10) ? ("0" + ($index + 1)) : ($index + 1)) }}
+						</span>
+					</div>
+					<div class="col-xs-4">
+						<div ng-if="!job.isAddJob">
+							<div>
+								<select
+									class="form-control input-sm"
+									id="job_{{ $index }}"
+									name="job_{{ $index }}"
+									style="margin-bottom: 5px;"
+									ng-model="job.job"
+									ng-options="jobtype.id as jobtype.name for jobtype in reqCreateRESTData.jobDetails.jobTypesAr | orderBy: 'name'"
+									ng-required="true">
+									<option value="">Select</option>
+								</select>
+							</div>
+							<div>
+								<span
+									class="glyphicon glyphicon-plus-sign cursor-pointer text-primary"
+									tooltip-placement="right"
+									uib-tooltip="Enter new job"
+									ng-click="(job.isAddJob = !job.isAddJob); (job.job = ''); (job.jobName = '');">
+								</span>
+							</div>
+						</div>
+						<div ng-if="job.isAddJob">
+							<div>
+								<input
+									type="text"
+									class="form-control input-sm"
+									id="job_{{ $index }}"
+									name="job_{{ $index }}"
+									placeholder="Job"
+									style="margin-bottom: 5px;"
+									ng-model="job.jobName"
+									ng-required="true" />
+							</div>
+							<div>
+								<span
+									class="glyphicon glyphicon-search cursor-pointer text-primary"
+									tooltip-placement="right"
+									uib-tooltip="Select a job from the list"
+									ng-click="(job.isAddJob = !job.isAddJob); (job.job = ''); (job.jobName = '');">
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<textarea
+							class="form-control input-sm"
+							id="remark_{{ $index }}"
+							name="remark_{{ $index }}"
+							placeholder="Remark"
+							ng-model="job.remark"
+							ng-required="true">
+						</textarea>
+					</div>
+					<div class="col-xs-1 lead">
+						<span
+							class="pull-right text-danger cursor-pointer"
+							tooltip-placement="left"
+							uib-tooltip="Remove row"
+							ng-if="(reqCreateSbmtData.jobDetails.jobsAr.length > 1)"
+							ng-click="reqCreateSbmtData.jobDetails.jobsAr.splice($index, 1)">
+							&otimes;
+						</span>
+					</div>
+				</div>
+			</li>
+			<li class="list-group-item lead">
+				<div class="row">
+					<div class="col-xs-offset-11 col-xs-1">
+						<span
+							class="pull-right text-primary cursor-pointer"
+							tooltip-placement="left"
+							uib-tooltip="Add row"
+							ng-click="reqCreateSbmtData.jobDetails.jobsAr.push({ job: '', isAddJob: false, jobName: '', remark: '' })">
+							&oplus;
+						</span>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="row" ng-show="reqCreateFormData.accordion.isJobDetails">
+	<div class="col-xs-offset-1 col-xs-11">
+		<hr class="no-margin" />
+	</div>
+</div>
+</form>
+
+<div class="row">
+	<div class="col-xs-12">
+		<h5
+			class="lead font-light lead-md text-muted cursor-pointer"
+			data-toggle="collapse"
+			data-target="#summary"
+			ng-click="reqCreateFormData.accordion.isSummary = !reqCreateFormData.accordion.isSummary">
+			<span class="accordion-icon" ng-if="!reqCreateFormData.accordion.isSummary">+</span>
+			<span class="accordion-icon" ng-if="reqCreateFormData.accordion.isSummary">-</span>
+			Summary
+		</h5>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12">
+		<hr class="no-margin" />
+	</div>
+</div>
+<div class="row" class="collapse" id="summary" ng-if="reqCreateFormData.accordion.isSummary">
+	<div class="col-xs-offset-1 col-xs-11">
+		<div class="form-horizontal" style="margin-top: 15px;">
+			<div class="form-group">
+				<div class="col-xs-12 lead-md font-light">Client Details</div>
+			</div>
+			<div class="form-group" ng-if="!reqCreateFormData.clientDetails.isCreate">
+				<div class="col-xs-3">
+					<label>Name</label>
+					<div class="font-light lead">
+						<span class="text-danger" ng-if="reqCreateSbmtData.clientDetails.name">
+							<span class="glyphicon glyphicon-user text-danger" style="margin-right: 5px;"></span>
+							{{ reqCreateSbmtData.clientDetails.name }}
+						</span>
+						<span ng-if="!reqCreateSbmtData.clientDetails.name">-</span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group" ng-if="reqCreateFormData.clientDetails.isCreate">
+				<div class="col-xs-3">
+					<label>First Name</label>
+					<div class="font-light lead">
+						{{ (reqCreateSbmtData.clientDetails.firstNameModel || "-") }}
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<label>Last Name</label>
+					<div class="font-light lead">
+						{{ (reqCreateSbmtData.clientDetails.lastNameModel || "-") }}
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<label>Mobile No</label>
+					<div class="font-light lead">
+						{{ (reqCreateSbmtData.clientDetails.mobileNoModel || "-") }}
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<label>Email ID</label>
+					<div class="font-light lead">
+						{{ (reqCreateSbmtData.clientDetails.emailIDModel || "-") }}
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-xs-12">
+					<hr class="no-margin" />
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-xs-12 lead-md font-light">Vehicle Details</div>
+			</div>
+			<div class="form-group">
+				<div class="col-xs-12">
+					<div style="display: table; width: 100%;">
+						<div style="display: table-row;">
+							<div class="table-cell" style="width: 33%;">
+								<div class="form-group">
+									<label>Vehicle Type</label>
+									<div class="font-light lead">
+										{{ (reqCreateSbmtData.vehicleDetails.vehicleTypeModel || "-") }}
+									</div>
+								</div>
+								<div class="form-group">
+									<label>Vehicle No</label>
+									<div class="font-light lead">
+										{{ (reqCreateSbmtData.vehicleDetails.vehicleNoModel || "-") }}
+									</div>
+								</div>
+								<div class="form-group">
+									<label>Model No</label>
+									<div class="font-light lead">
+										{{ (reqCreateSbmtData.vehicleDetails.modelNoModel || "-") }}
+									</div>
+								</div>
+							</div>
+							<div class="table-cell" style="width: 34%;">
+								<div class="form-group">
+									<label>Chasis No</label>
+									<div class="font-light lead">
+										{{ (reqCreateSbmtData.vehicleDetails.chasisNoModel || "-") }}
+									</div>
+								</div>
+								<div class="form-group">
+									<label>Engine No</label>
+									<div class="font-light lead">
+										{{ (reqCreateSbmtData.vehicleDetails.engineNoModel || "-") }}
+									</div>
+								</div>
+							</div>
+							<div class="table-cell" style="width: 33%;">
+								<div class="form-group">
+									<label>Manufactured Year</label>
+									<div class="font-light lead">
+										{{ (reqCreateSbmtData.vehicleDetails.manufacturedYearModel || "-") }}
+									</div>
+								</div>
+								<div class="form-group">
+									<label>Odometer Reading</label>
+									<div class="font-light lead">
+										{{ (reqCreateSbmtData.vehicleDetails.odometerReadingModel || "-") }}
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- div.table-row -->
+					</div>
+					<!-- div.table -->
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-xs-12">
+					<hr class="no-margin" />
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-xs-12 lead-md font-light">Receiving Details</div>
+			</div>
+			<div class="form-group">
+				<div class="col-xs-3">
+					<label>Receiving on</label>
+					<div class="font-light lead">
+						{{ (reqCreateSbmtData.recDetails.receivingOnModel || "-") }}
+					</div>
+				</div>
+				<!-- <div class="col-xs-3">
+					<label>Receiving by</label>
+					<div class="font-light lead">
+						<span ng-if="reqCreateSbmtData.recDetails.receivingByModel">
+							{{ filterData(reqCreateRESTData.recDetails.receiversAr, "id", reqCreateSbmtData.recDetails.receivingByModel)[0].name }}
+						</span>
+						<span ng-if="!reqCreateSbmtData.recDetails.receivingByModel">-</span>
+					</div>
+				</div> -->
+				<div class="col-xs-3">
+					<label>Assign to</label>
+					<div class="font-light lead">
+						<span ng-if="reqCreateSbmtData.recDetails.assigneeModel">
+							{{ filterData(reqCreateRESTData.recDetails.assigneesAr, "id", reqCreateSbmtData.recDetails.assigneeModel)[0].name }}
+						</span>
+						<span ng-if="!reqCreateSbmtData.recDetails.assigneeModel">-</span>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<label>Approved by</label>
+					<div class="font-light lead">
+						<span ng-if="reqCreateSbmtData.recDetails.approverModel">
+							{{ filterData(reqCreateRESTData.recDetails.approversAr, "id", reqCreateSbmtData.recDetails.approverModel)[0].name }}
+						</span>
+						<span ng-if="!reqCreateSbmtData.recDetails.approverModel">-</span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-xs-12">
+					<hr class="no-margin" />
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-xs-12 lead-md font-light">Job Details</div>
+			</div>
+			<div class="form-group">
+				<div class="col-xs-12">
+					<ul class="list-group">
+						<li class="list-group-item lead">
+							<div class="row">
+								<div class="col-xs-1">
+									<span class="pull-right">#</span>
+								</div>
+								<div class="col-xs-4">Job</div>
+								<div class="col-xs-7">Remark</div>
+							</div>
+						</li>
+						<li class="list-group-item font-light lead" ng-repeat="job in reqCreateSbmtData.jobDetails.jobsAr">
+							<div class="row">
+								<div class="col-xs-1">
+									<span class="pull-right">
+										{{ ((($index + 1) < 10) ? ("0" + ($index + 1)) : ($index + 1)) }}
+									</span>
+								</div>
+								<div class="col-xs-4">
+									<span ng-if="job.job">
+										{{ filterData(reqCreateRESTData.jobDetails.jobTypesAr, "id", job.job)[0].name }}
+									</span>
+									<span ng-if="job.jobName">{{ job.jobName }}</span>
+									<span ng-if="!(job.job || job.jobName)">-</span>
+								</div>
+								<div class="col-xs-7">{{ (job.remark || "-") }}</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<!-- div.form-group -->
+		</div>
+		<!-- div.form-horizontal -->
+	</div>
+</div>
+<div class="row margin-bottom">
+	<div class="col-xs-12">
+		<hr class="no-margin" />
+	</div>
+</div>
+<div class="row margin-bottom">
+	<div class="col-xs-12 text-center">
+		<button
+			type="button"
+			class="btn btn-primary btn-sm"
+			ng-disabled="!((clientDetailsForm.$valid && reqCreateSbmtData.clientDetails.name) && vehicleDetailsForm.$valid && recDetailsForm.$valid && jobDetailsForm.$valid)"
+			ng-click="userCreateSubmit()">
+			Create
+		</button>
+		<button type="button" class="btn btn-default btn-sm" ng-click="reset()">Reset</button>
+	</div>
+</div>
+<div class="row margin-bottom">
+	<div class="col-xs-12">
+		<hr class="no-margin" />
+	</div>
+</div>
+
+<dir-alert alert-type="infoObj.name" alert-msg="infoObj.msg" ng-if="infoObj.msg"></dir-alert>
+</div>

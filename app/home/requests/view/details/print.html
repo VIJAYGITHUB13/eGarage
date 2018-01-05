@@ -1,0 +1,324 @@
+<div id="home_servicereq_details_container_print">
+<dir-print-heading></dir-print-heading>
+<hr style="margin: 5px 0;" />
+<div>
+	<h4 style="text-align: center;"><strong>Invoice</strong></h4>
+</div>
+<hr style="margin: 5px 0;" />
+<div class="row">
+	<div class="col-xs-12">
+		<h4>
+			<span class="glyphicon glyphicon-file"></span>
+			<strong>{{ reqDetailsSbmtData.request }}</strong>
+			<span class="glyphicon glyphicon-stop pull-right"></span>
+			<strong class="pull-right">{{ reqDetailsSbmtData.status }}</strong>
+		</h4>
+	</div>
+</div>
+<hr style="margin: 5px 0;" />
+<div class="row">
+	<div class="col-xs-12">
+		<h5><strong>Client Details:</strong></h5>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-offset-1 col-xs-11">
+		<div class="col-xs-2">
+			<label>Client ID</label>
+			<div>{{ reqDetailsSbmtData.clientID }}</div>
+		</div>
+		<div class="col-xs-3">
+			<label>Name</label>
+			<div>{{ reqDetailsSbmtData.client }}</div>
+		</div>
+		<div class="col-xs-2">
+			<label>Mobile No</label>
+			<div>{{ reqDetailsSbmtData.mobileNo }}</div>
+		</div>
+		<div class="col-xs-5">
+			<label>Email ID</label>
+			<div>{{ reqDetailsSbmtData.emailID }}</div>
+		</div>
+	</div>
+</div>
+<hr style="margin: 5px 0;" />
+<div class="row">
+	<div class="col-xs-12">
+		<h5><strong>Vehicle Details:</strong></h5>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-offset-1 col-xs-11">
+		<div class="col-xs-12">
+			<div style="display: table; width: 100%;">
+				<div style="display: table-row;">
+					<div class="table-cell" style="width: 33%; padding-left: 0;">
+						<div class="form-group">
+							<label>Vehicle Type</label>
+							<div>{{ reqDetailsSbmtData.vehicleType }}</div>
+						</div>
+						<div class="form-group">
+							<label>Vehicle No</label>
+							<div>{{ reqDetailsSbmtData.vehicleNo }}</div>
+						</div>
+						<div class="form-group">
+							<label>Model No</label>
+							<div>{{ reqDetailsSbmtData.modelNo }}</div>
+						</div>
+					</div>
+					<div class="table-cell" style="width: 34%;">
+						<div class="form-group">
+							<label>Chasis No</label>
+							<div>{{ reqDetailsSbmtData.chasisNo }}</div>
+						</div>
+						<div class="form-group">
+							<label>Engine No</label>
+							<div>{{ reqDetailsSbmtData.engineNo }}</div>
+						</div>
+					</div>
+					<div class="table-cell" style="width: 33%;">
+						<div class="form-group">
+							<label>Manufactured Year</label>
+							<div>{{ reqDetailsSbmtData.manufacturedYear }}</div>
+						</div>
+						<div class="form-group">
+							<label>Odometer Reading</label>
+							<div>{{ reqDetailsSbmtData.odometerReading }}</div>
+						</div>
+					</div>
+				</div>
+				<!-- div.table-row -->
+			</div>
+			<!-- div.table -->
+		</div>
+	</div>
+</div>
+<hr style="margin: 5px 0;" />
+<div class="row">
+	<div class="col-xs-12">
+		<h5><strong>Receiving Details:</strong></h5>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-offset-1 col-xs-11">
+		<div class="col-xs-3">
+			<label>Received on</label>
+			<div>
+				<dir-epoch-to-datetime
+					ng-if="reqDetailsSbmtData.receivedOn"
+					input-data="reqDetailsSbmtData.receivedOn">
+				</dir-epoch-to-datetime>
+				<span ng-if="!reqDetailsSbmtData.receivedOn">-</span>
+			</div>
+		</div>
+		<div class="col-xs-4">
+			<label>Assigned to</label>
+			<div>{{ reqDetailsSbmtData.assignee }}</div>
+		</div>
+		<div class="col-xs-4">
+			<label>Approved by</label>
+			<div>{{ reqDetailsSbmtData.approver }}</div>
+		</div>
+	</div>
+</div>
+<hr style="margin: 5px 0;" />
+<div class="row">
+	<div class="col-xs-12">
+		<h5><strong>Receiving Details:</strong></h5>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12">
+		<ul class="list-group no-margin" style="margin-top: 15px;">
+			<li class="list-group-item" ng-repeat="job in reqDetailsSbmtData.jobsAr">
+				<div class="row">
+					<div class="col-xs-1 lead">
+						<span class="pull-right">
+							#{{ ((($index + 1) < 10) ? ("0" + ($index + 1)) : ($index + 1)) }}
+						</span>
+					</div>
+					<div class="col-xs-11">
+						<div class="row margin-bottom" style="margin-top: 20px;">
+							<div class="col-xs-3">
+								<label>
+									<dir-compile-template
+										input-data="filterData(jobDetailsManageLabelsAr, 'code', 'jobType')[0].name">
+									</dir-compile-template>
+								</label>
+								<div>{{ job.jobType }}</div>
+							</div>
+							<div class="col-xs-5">
+								<label>
+									<dir-compile-template
+										input-data="filterData(jobDetailsManageLabelsAr, 'code', 'clientRemark')[0].name">
+									</dir-compile-template>
+								</label>
+								<div>{{ job.clientRemark }}</div>
+							</div>
+							<div class="col-xs-4">
+								<label>
+									<dir-compile-template
+										input-data="filterData(jobDetailsManageLabelsAr, 'code', 'assigneeRemark')[0].name">
+									</dir-compile-template>
+								</label>
+								<div>{{ job.assigneeRemark }}</div>
+							</div>
+						</div>
+						<div class="row" style="margin-bottom: 5px;">
+							<div class="col-xs-12">
+								<hr class="no-margin" />
+							</div>
+						</div>
+						<div class="row margin-bottom">
+							<div class="col-xs-4">
+								<label>
+									<dir-compile-template
+										input-data="filterData(jobDetailsManageLabelsAr, 'code', 'startedOn')[0].name">
+									</dir-compile-template>
+								</label>
+								<div>{{ job.startedOn }}</div>
+							</div>
+							<div class="col-xs-4">
+								<label>
+									<dir-compile-template
+										input-data="filterData(jobDetailsManageLabelsAr, 'code', 'endedOn')[0].name">
+									</dir-compile-template>
+								</label>
+								<div>{{ job.endedOn }}</div>
+							</div>
+							<div class="col-xs-4">
+								<label>Duration</label>
+								<div>{{ job.duration }}</div>
+							</div>
+						</div>
+						<div class="row" style="margin-bottom: 5px;">
+							<div class="col-xs-12">
+								<hr class="no-margin" />
+							</div>
+						</div>
+						<div class="row margin-bottom">
+							<div class="col-xs-4">
+								<label>Item</label>
+								<div>{{ job.item }}</div>
+							</div>
+							<div class="col-xs-2">
+								<label>
+									<dir-compile-template
+										input-data="filterData(jobDetailsManageLabelsAr, 'code', 'itemPrice')[0].name">
+									</dir-compile-template>
+								</label>
+								<div>{{ job.itemPrice }}</div>
+							</div>
+							<div class="col-xs-2">
+								<label>
+									<dir-compile-template
+										input-data="filterData(jobDetailsManageLabelsAr, 'code', 'itemQuantity')[0].name">
+									</dir-compile-template>
+								</label>
+								<div>{{ job.itemQuantity }}</div>
+							</div>
+							<div class="col-xs-4">
+								<label>
+									<dir-compile-template
+										input-data="filterData(jobDetailsManageLabelsAr, 'code', 'itemDiscount')[0].name">
+									</dir-compile-template>
+								</label>
+								<div>{{ job.itemDiscount }}</div>
+							</div>
+						</div>
+						<div class="row" style="margin-bottom: 5px;">
+							<div class="col-xs-12">
+								<hr class="no-margin" />
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								<label>
+									<dir-compile-template
+										input-data="filterData(jobDetailsManageLabelsAr, 'code', 'itemTotal')[0].name">
+									</dir-compile-template>
+									<!-- Discount&nbsp;on&nbsp;(Price&nbsp;X&nbsp;Quantity) -->
+								</label>
+								<div>{{ job.itemTotal }}</div>
+							</div>
+							<div class="col-xs-3">
+								<label>
+									<dir-compile-template
+										input-data="filterData(jobDetailsManageLabelsAr, 'code', 'serviceCharge')[0].name">
+									</dir-compile-template>
+								</label>
+								<div>{{ job.serviceCharge }}</div>
+							</div>
+							<div class="col-xs-2">
+								<label>
+									<dir-compile-template
+										input-data="filterData(jobDetailsManageLabelsAr, 'code', 'vat')[0].name">
+									</dir-compile-template>
+									<!-- var&nbsp;amount&nbsp;=&nbsp;(Item Total&nbsp;+&nbsp;Service Charge); Total:&nbsp;(amount&nbsp;+&nbsp;(VAT&nbsp;on&nbsp;amount)) -->
+								</label>
+								<div>{{ job.vat }}</div>
+							</div>
+							<div class="col-xs-4">
+								<label>
+									<dir-compile-template
+										input-data="filterData(jobDetailsManageLabelsAr, 'code', 'total')[0].name">
+									</dir-compile-template>
+									<!-- (Item Total&nbsp;+&nbsp;Service Charge) -->
+								</label>
+								<div>{{ job.total }}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</li>
+			<li class="list-group-item">
+				<div class="row">
+					<div class="col-xs-offset-1 col-xs-11">
+						<div class="row">
+							<div class="col-xs-4">
+								<strong class="pull-right">
+									Total Duration
+									<small class="text-muted">(HH:MM)</small>:
+								</strong>
+							</div>
+							<div class="col-xs-4">
+								<strong>{{ reqDetailsSbmtData.totalDuration }}</strong>
+								<strong class="pull-right">Grand Total:</strong>
+							</div>
+							<div class="col-xs-4">
+								<strong>{{ reqDetailsSbmtData.grandTotal }}</strong>
+							</div>
+						</div>
+					</div>
+				</div>
+			</li>
+			<li class="list-group-item">
+				<div class="row">
+					<div class="col-xs-offset-1 col-xs-11">
+						<div class="row">
+							<div class="col-xs-12">
+								<div>
+									<small class="glyphicon glyphicon-info-sign"></small>
+									<label style="margin-left: 5px;"><small>Item Total:</small></label>
+									<small style="margin-left: 5px;">Discount&nbsp;on&nbsp;(Price&nbsp;X&nbsp;Quantity)</small>
+								</div>
+								<div>
+									<small class="glyphicon glyphicon-info-sign"></small>
+									<label style="margin-left: 5px;"><small>VAT:</small></label>
+									<small style="margin-left: 5px;">var&nbsp;amount&nbsp;=&nbsp;(Item Total&nbsp;+&nbsp;Service Charge); Total:&nbsp;(amount&nbsp;+&nbsp;(VAT&nbsp;on&nbsp;amount))</small>
+								</div>
+								<div>
+									<small class="glyphicon glyphicon-info-sign"></small>
+									<label style="margin-left: 5px;"><small>Total:</small></label>
+									<small style="margin-left: 5px;">(Item Total&nbsp;+&nbsp;Service Charge)</small>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+<hr style="margin: 5px 0;" />
+</div>

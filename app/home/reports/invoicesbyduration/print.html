@@ -1,0 +1,45 @@
+<div id="home_manage_reports_container_print">
+<dir-print-heading></dir-print-heading>
+<hr style="margin: 5px 0;" />
+<div>
+	<h4 style="text-align: center;"><strong>Invoices</strong></h4>
+</div>
+<hr style="margin: 5px 0;" />
+<div>
+	<h4 ng-bind-html="printReportTitle()"></h4>
+</div>
+<hr style="margin: 5px 0;" />
+<div class="row">
+<div class="col-sm-12">
+	<table class="table table-bordered table-striped">
+		<thead>
+			<tr>
+				<th>S.No</th>
+				<th ng-repeat="thead in theadAr">
+					<dir-compile-template input-data="thead.name"></dir-compile-template>
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="tbody in tbodyAr">
+				<th scope="row">{{ ($index + 1) }}</th>
+				<td>{{ tbody.requestID }}</td>
+				<td>{{ tbody.client }}</td>
+				<td>
+					<dir-epoch-to-date input-data="tbody.createdOn"></dir-epoch-to-date>
+				</td>
+				<td>
+					<dir-epoch-to-date input-data="tbody.closedOn"></dir-epoch-to-date>
+				</td>
+				<td><span class="pull-right">{{ tbody.total }}</span></td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<th colspan="5"><span class="pull-right">Grand Totals</span></th>
+				<th><span class="pull-right">{{ reportsSbmtData.totalObj.total }}</span></th>
+			</tr>
+		</tfoot>
+	</table>
+</div>
+</div>

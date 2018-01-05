@@ -1,0 +1,117 @@
+<div id="home_container">
+<div class="container app_header_container">
+	<div class="row">
+		<div class="col-xs-4" ng-if="homeFormData.estdName">
+			<h5 style="color: #777;">
+				<small>{{ homeFormData.estdName }}</small>
+			</h5>
+		</div>
+		<div class="col-xs-4" ng-class="{ 'col-xs-offset-4': !homeFormData.estdName }">
+			<h4 class="text-center"><strong>{{ homeFormData.appName }}</strong></h4>
+		</div>
+		<div class="col-xs-4">
+			<h5 class="pull-right" style="color: #777;">
+				<small>{{ homeFormData.appVersion }}</small>
+			</h5>
+		</div>
+	</div>
+	<div class="row hidden-xs">
+		<nav class="navbar navbar-default navbar-inverse">
+			<div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button
+						type="button"
+						class="navbar-toggle collapsed"
+						data-toggle="collapse"
+						data-target="#navbar-index"
+						aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">{{ homeFormData.appBand }}</a>
+				</div>
+
+				<div class="collapse navbar-collapse" id="navbar-index">
+					<ul class="nav navbar-nav">
+						<li ng-repeat="menu in homeRESTData.menusAr" ng-class="{ 'dropdown': menu.subMenusAr.length }">
+							<a ui-sref="{{ menu.path }}" ng-if="!menu.subMenusAr.length" ng-class="menu.rwd">
+								{{ menu.displayName }}
+							</a>
+							<a
+								class="dropdown-toggle"
+								data-toggle="dropdown"
+								role="button"
+								aria-haspopup="true"
+								aria-expanded="false"
+								ng-if="menu.subMenusAr.length"
+								ng-class="menu.rwd">
+								{{ menu.displayName }} <span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu" ng-if="menu.subMenusAr.length" ng-class="menu.rwd">
+								<li ng-repeat="submenu in menu.subMenusAr" ng-class="submenu.rwd">
+									<a ui-sref="{{ submenu.path }}">{{ submenu.displayName }}</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown">
+							<a
+								class="dropdown-toggle"
+								data-toggle="dropdown"
+								role="button"
+								aria-haspopup="true"
+								aria-expanded="false">
+								{{ ("Hi, " + homeFormData.uname) }} <span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li><a class="cursor-pointer" ui-sref="home.myprofile">My Profile</a></li>
+								<li><a class="cursor-pointer" ui-sref="home.changepassword">Change Password</a></li>
+								<!-- <li><a ui-sref="home.changepassword">Change Password</a></li> -->
+								<li class="divider" role="separator"></li>
+								<li><a ui-sref="public">Logout</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div><!-- /.navbar-collapse -->
+			</div><!-- /.container-fluid -->
+		</nav>
+	</div>
+	<div class="row hidden-xs">
+		<div class="col-xs-6">
+			<ui-breadcrumbs displayname-property="data.displayName" abstract-proxy-property="data.proxy"></ui-breadcrumbs>
+		</div>
+		<div class="col-xs-6">
+			<span class="pull-right" style="margin-bottom: 7px; font-size: 80%;">
+				<span class="hidden-xs">
+					{{ homeFormData.dateTime | date: "MMMM dd, yyyy, " }}
+					<ds-widget-clock show-digital digital-format="'hh:mm:ss a'"></ds-widget-clock>
+				</span>
+				<span class="visible-xs">
+					{{ homeFormData.dateTime | date: "dd-MM-yyyy, " }}
+					<ds-widget-clock show-digital digital-format="'hh:mm:ss a'"></ds-widget-clock>
+				</span>
+			</span>
+		</div>
+	</div>
+</div>
+
+<div class="container visible-xs app_body_container">
+	<div class="row" style="margin: 25px 0;">
+		<div class="col-xs-12 text-center">
+			<h1><div class="glyphicon glyphicon-alert text-warning"></div></h1>
+			<h3>
+				<div class="text-primary margin-bottom">Recommended devices: IPads, Tablets, Laptops, Monitors or Desktops alone please.</div>
+				<div class="text-danger">Regret for the inconvenience :(</div>
+			</h3>
+		</div>
+	</div>
+</div>
+
+<div class="container hidden-xs app_body_container">
+	<div ui-view="index"></div>
+</div>
+</div>

@@ -1,0 +1,287 @@
+<div id="home_manage_suppliers_container">
+<div class="row">
+	<div class="col-xs-12">
+		<div class="page-header">
+			<h3>
+				{{ tabName }} <small class="hidden-xs">{{ tabDesc }}</small>
+				<span class="pull-right text-info cursor-pointer" ng-click="addSupplier()">Add New</span>
+			</h3>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-xs-12">
+		<div style="display: table; margin: 15px 0; width: 100%;">
+			<div style="display: table-row;">
+				<div class="table-cell" style="width: 20%;">
+					<form class="form-horizontal" name="formSearch" ng-submit="searchFormSubmit()" novalidate>
+						<div class="form-group">
+							<h5><strong>Search Criteria</strong></h5>
+						</div>
+						<div class="form-group">
+							<label for="supcode">Code</label>
+							<div>
+								<input
+									type="text"
+									class="form-control input-sm"
+									id="supcode"
+									name="supcode"
+									placeholder="Code"
+									ng-model="suppliersSbmtData.supCodeModel" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="supname">Name</label>
+							<div>
+								<input
+									type="text"
+									class="form-control input-sm"
+									id="supname"
+									name="supname"
+									placeholder="Name"
+									ng-model="suppliersSbmtData.supNameModel" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="supcontactno">Contact No</label>
+							<div>
+								<input
+									type="number"
+									class="form-control input-sm"
+									id="supcontactno"
+									name="supcontactno"
+									maxlength="20"
+									placeholder="Contact No"
+									ng-model="suppliersSbmtData.supContactNoModel" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="fdate">From Date</label>
+							<div>
+								<input
+									type="text"
+									class="form-control input-sm"
+									id="fdate"
+									name="fdate"
+									placeholder="From Date"
+									ng-model="suppliersSbmtData.fdateModel"
+									datetimepicker
+									datetimepicker-options="{{ dateTimePickerConf }}" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="tdate">To Date</label>
+							<div>
+								<input
+									type="text"
+									class="form-control input-sm"
+									id="tdate"
+									name="tdate"
+									ng-model="suppliersSbmtData.tdateModel"
+									placeholder="To Date"
+									datetimepicker
+									datetimepicker-options="{{ dateTimePickerConf }}" />
+							</div>
+						</div>
+						<div class="form-group">
+							<button type="submit" class="btn btn-primary btn-sm">Search</button>
+							<button type="button" class="btn btn-default btn-sm" ng-click="reset()">Reset</button>
+						</div>
+					</form>
+				</div>
+				<div class="table-cell" style="width: 80%;">
+					<h2 class="lead text-center font-light text-muted lead-md" style="opacity: 0.5;" ng-if="infoObj.msg">
+						{{ infoObj.msg }}
+					</h2>
+					<div ng-if="!infoObj.msg">
+					<dir-alert alert-type="msgObj.name" alert-msg="msgObj.msg" ng-if="msgObj.msg"></dir-alert>
+					<div class="row" style="margin: auto;">
+						<dir-pagination-header
+							noof-pages="noofPages"
+							current-page="currentPage"
+							table-search="tableSearch">
+						</dir-pagination-header>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<table class="table table-bordered table-striped">
+								<caption style="padding-top: 0;">
+									<em class="pull-right">
+										<span class="glyphicon glyphicon-info-sign"></span>
+										Disabled suppliers possess Invoice(s).
+									</em>
+								</caption>
+								<thead>
+									<tr>
+										<th>S.No</th>
+										<th
+											class="cursor-pointer"
+											ng-repeat="thead in theadAr"
+											ng-click="sortColumn(thead.code)">
+											<dir-compile-template input-data="thead.name"></dir-compile-template>
+											<span
+												class="glyphicon glyphicon-triangle-top pull-right"
+												ng-if="(orderBy === thead.code) && orderByDir">
+											</span>
+											<span
+												class="glyphicon glyphicon-triangle-bottom pull-right"
+												ng-if="(orderBy === thead.code) && !orderByDir">
+											</span>
+										</th>
+										<th class="text-center">Options</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr
+										dir-paginate="tbody in tbodyAr | orderBy: orderBy : orderByDir | filter: tableSearch | itemsPerPage: noofPages"
+										current-page="currentPage"
+										pagination-id="suppliersPagination"
+										ng-class="{ 'active-tr': suppliersFormData.activetr === tbody.id }">
+										<th scope="row">{{ ((noofPages * (currentPage - 1)) + ($index + 1)) }}</th>
+										<td>{{ tbody.code }}</td>
+										<td>{{ tbody.name }}</td>
+										<td>{{ tbody.contactNo }}</td>
+										<td>{{ tbody.emailID }}</td>
+										<td>{{ tbody.address }}</td>
+										<td>
+											<dir-epoch-to-date input-data="tbody.createdOn"></dir-epoch-to-date>
+										</td>
+										<td class="text-center">
+											<button
+												type="button"
+												class="btn btn-link"
+												style="padding: 0;"
+												ng-click="suppliersFormData.activetr = tbody.id; updateSupplier(tbody)">
+												<span class="glyphicon glyphicon-edit"></span>
+											</button>
+											<button
+												type="button"
+												class="btn btn-link"
+												style="padding: 0;"
+												ng-if="!tbody.invoiceCount"
+												ng-click="suppliersFormData.activetr = tbody.id; deleteSupplier(tbody)">
+												<span class="glyphicon glyphicon glyphicon-trash text-danger"></span>
+											</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12 text-center">
+							<dir-pagination-controls
+								boundary-links="true"
+								on-page-change="pageChangeHandler(newPageNumber)"
+								pagination-id="suppliersPagination">
+							</dir-pagination-controls>
+						</div>
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> 
+</div>
+</div>
+
+<script type="text/ng-template" id="suppliers.tpl.html">
+	<div class="modal-header">
+		<h5 class="modal-title" id="modal-title" ng-if="(modalSbmtData.type === 'add')">Add Supplier</h5>
+		<h5 class="modal-title" id="modal-title" ng-if="(modalSbmtData.type === 'update')">
+			Update Supplier <strong>{{ modalSbmtData.supCodeModel }}</strong>
+		</h5>
+	</div>
+	<div class="modal-body" id="modal-body">
+		<form class="form-horizontal" name="modalForm" novalidate>
+			<div class="form-group" ng-if="(modalSbmtData.type === 'update')">
+				<div class="col-sm-offset-1 col-sm-4">
+					<label>Code</label>
+					<div class="form-control-static">{{ modalSbmtData.supCodeModel }}</div>
+				</div>
+			</div>
+			<div class="form-group" ng-if="((modalSbmtData.type === 'update') && modalSbmtData.invoiceCountModel)">
+				<div class="col-sm-offset-1 col-sm-8">
+					<label>Name<em class="text-muted"> - This field is read-only as its being used.</em></label>
+					<div class="form-control-static">{{ modalSbmtData.supNameModel }}</div>
+				</div>
+			</div>
+			<div class="form-group" ng-if="!modalSbmtData.invoiceCountModel">
+				<div class="col-sm-offset-1 col-sm-8">
+					<label for="supname">Name</label>
+					<div ng-class="{ 'has-error': (modalForm.supname.$dirty && modalForm.supname.$invalid) }">
+						<input
+							type="text"
+							class="form-control input-sm"
+							id="supname"
+							name="supname"
+							maxlength="30"
+							placeholder="Name"
+							ng-model="modalSbmtData.supNameModel"
+							ng-pattern="/^[a-zA-Z0-9\ ]*$/"
+							ng-required="true" />
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-1 col-sm-6">
+					<label for="supcontactno">Contact No</label>
+					<div ng-class="{ 'has-error': (modalForm.supcontactno.$dirty && modalForm.supcontactno.$invalid) }">
+						<input
+							type="text"
+							class="form-control input-sm"
+							id="supcontactno"
+							name="supcontactno"
+							maxlength="20"
+							placeholder="Contact No"
+							ng-model="modalSbmtData.supContactNoModel"
+							ng-pattern="/^[0-9]+$/"
+							ng-required="true" />
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-1 col-sm-8">
+					<label for="supemailid">Email ID</label>
+					<div ng-class="{ 'has-error': (modalForm.supemailid.$dirty && modalForm.supemailid.$invalid) }">
+						<input
+							type="email"
+							class="form-control input-sm"
+							id="supemailid"
+							name="supemailid"
+							placeholder="Ex: user@domain.extension"
+							ng-model="modalSbmtData.supEmailIDModel"
+							ng-required="true" />
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-1 col-sm-8">
+					<label for="supaddress">Address</label>
+					<div ng-class="{ 'has-error': (modalForm.supaddress.$dirty && modalForm.supaddress.$invalid) }">
+						<textarea
+							class="form-control input-sm max-width"
+							id="supaddress"
+							name="supaddress"
+							placeholder="Address"
+							ng-model="modalSbmtData.supAddressModel"
+							ng-required="true">
+						</textarea>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button
+			type="button"
+			class="btn btn-primary btn-sm"
+			ng-click="(modalForm.$valid && modalSubmit())"
+			ng-disabled="modalForm.$invalid">
+			<span ng-if="(modalSbmtData.type === 'add')">Add</span>
+			<span ng-if="(modalSbmtData.type === 'update')">Update</span>
+		</button>
+		<button type="button" class="btn btn-default" ng-click="modalClose()">Cancel</button>
+	</div>
+</script>

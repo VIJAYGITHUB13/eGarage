@@ -1,0 +1,213 @@
+[
+{
+	"statesAr":
+	[
+		{
+			"paths": ["home.users"],
+			"default": "home.users.view"
+		},
+		{
+			"paths": ["home.requests"],
+			"default": "home.requests.view"
+		},
+		{
+			"paths": ["home.manage"],
+			"default": "home.manage.storageitems"
+		}
+	],
+	"genderAr": [
+		{ "id": 0, "name": "Male" },
+		{ "id": 1, "name": "Female" }
+	],
+	"maritalStatusAr": [
+		{ "id": 0, "name": "Unmarried" },
+		{ "id": 1, "name": "Married" }
+	],
+	"usersTHeadAr":
+	[
+		{ "code": "name", "name": "Name" },
+		{ "code": "username", "name": "Username" },
+		{ "code": "ucategory", "name": "Category" },
+		{ "code": "mobileNo", "name": "Mobile No" },
+		{ "code": "emailID", "name": "Email ID" },
+		{ "code": "createdOn", "name": "Created on" }
+	],
+	"usersResetPasswordTHeadAr":
+	[
+		{ "code": "name", "name": "Name" },
+		{ "code": "username", "name": "Username" },
+		{ "code": "ucategory", "name": "Category" },
+		{ "code": "mobileNo", "name": "Mobile No" },
+		{ "code": "emailID", "name": "Email ID" },
+		{ "code": "createdOn", "name": "Created on" }
+	],
+	"requestsTHeadAr":
+	[
+		{ "code": "requestID", "name": "Request ID" },
+		{ "code": "status", "name": "Status" },
+		{ "code": "client", "name": "Client" },
+		{ "code": "vehicleNo", "name": "Vehicle No" },
+		{ "code": "createdOn", "name": "Created on" }
+	],
+	"reguploadTHeadAr":
+	[
+		{ "code": "fname", "name": "First Name" },
+		{ "code": "lname", "name": "Last Name" },
+		{ "code": "mobile_no", "name": "Mobile No" },
+		{ "code": "alt_mobile_no", "name": "Alt Mobile No" },
+		{ "code": "email_id", "name": "Email ID" },
+		{ "code": "alt_email_id", "name": "Alt Email ID" },
+		{ "code": "dob", "name": "Date of Birth" },
+		{ "code": "pob", "name": "Place of Birth" },
+		{ "code": "gender", "name": "Gender" },
+		{ "code": "marital_status", "name": "Marital Status" },
+		{ "code": "present_add_line1", "name": "Present Add Line1" },
+		{ "code": "present_add_line2", "name": "Present Add Line2" },
+		{ "code": "present_add_landmark", "name": "Present Add Landmark" },
+		{ "code": "present_add_country", "name": "Present Add Country" },
+		{ "code": "present_add_state", "name": "Present Add State" },
+		{ "code": "present_add_district", "name": "Present Add District" },
+		{ "code": "present_add_pincode", "name": "Present Add Pincode" },
+		{ "code": "permanent_add_line1", "name": "Permanent Add Line1" },
+		{ "code": "permanent_add_line2", "name": "Permanent Add Line2" },
+		{ "code": "permanent_add_landmark", "name": "Permanent Add Landmark" },
+		{ "code": "permanent_add_country", "name": "Permanent Add Country" },
+		{ "code": "permanent_add_state", "name": "Permanent Add State" },
+		{ "code": "permanent_add_district", "name": "Permanent Add District" },
+		{ "code": "permanent_add_pincode", "name": "Permanent Add Pincode" }
+	],
+	"clientsDetTHeadAr":
+	[
+		{ "code": "name", "name": "Name" },
+		{ "code": "username", "name": "Username" },
+		{ "code": "mobileNo", "name": "Mobile No" },
+		{ "code": "emailID", "name": "Email ID" },
+		{ "code": "createdOn", "name": "Created on" }
+	],
+	"jobDetailsTHeadAr":
+	[
+		{ "code": "jobType", "name": "Job" },
+		{ "code": "clientRemark", "name": "Client Remark" },
+		{ "code": "assigneeRemark", "name": "Assignee Remark" },
+		{ "code": "startedOn", "name": "Started on" },
+		{ "code": "endedOn", "name": "Ended by" },
+		{ "code": "duration", "name": "Duration<br /><small class='text-muted'>(HH:MM)</small>" },
+		{ "code": "item", "name": "Item" },
+		{ "code": "itemPrice", "name": "Price" },
+		{ "code": "itemQuantity", "name": "Quantity" },
+		{ "code": "itemDiscount", "name": "Discount<br /><small class='text-muted'>(in %)</small>" },
+		{ "code": "itemTotal", "name": "Item Total" },
+		{ "code": "serviceCharge", "name": "Service Charge" },
+		{ "code": "vat", "name": "VAT<br /><small class='text-muted'>(in %)</small>" },
+		{ "code": "total", "name": "Total" }
+	],
+	"jobDetailsManageLabelsAr":
+	[
+		{ "code": "jobType", "name": "Job" },
+		{ "code": "clientRemark", "name": "Client Remark" },
+		{ "code": "assigneeRemark", "name": "Assignee Remark" },
+		{ "code": "startedOn", "name": "Started on" },
+		{ "code": "endedOn", "name": "Ended by" },
+		{ "code": "item", "name": "Item" },
+		{ "code": "itemPrice", "name": "Price" },
+		{ "code": "itemQuantity", "name": "Quantity" },
+		{ "code": "itemDiscount", "name": "Discount<small class='text-muted'> (in %)</small>" },
+		{ "code": "itemTotal", "name": "Item Total" },
+		{ "code": "serviceCharge", "name": "Service Charge" },
+		{ "code": "vat", "name": "VAT<small class='text-muted'> (in %)</small>" },
+		{ "code": "total", "name": "Total" }
+	],
+	"jobDetailsSummaryTHeadAr":
+	[
+		{ "code": "jobType", "name": "Job" },
+		{ "code": "clientRemark", "name": "Client Remark" },
+		{ "code": "assigneeRemark", "name": "Assignee Remark" },
+		{ "code": "startedOn", "name": "Started on" },
+		{ "code": "endedOn", "name": "Ended by" },
+		{ "code": "duration", "name": "Duration<br /><small class='text-muted'>(HH:MM)</small>" },
+		{ "code": "item", "name": "Item" },
+		{ "code": "itemPrice", "name": "Price" },
+		{ "code": "itemQuantity", "name": "Quantity" },
+		{ "code": "itemDiscount", "name": "Discount<br /><small class='text-muted'>(in %)</small>" },
+		{ "code": "itemTotal", "name": "Item Total" },
+		{ "code": "serviceCharge", "name": "Service Charge" },
+		{ "code": "vat", "name": "VAT<small class='text-muted'> (in %)</small>" },
+		{ "code": "total", "name": "Total" }
+	],
+	"storageItemCatsTHeadAr":
+	[
+		{ "code": "catcode", "name": "Code" },
+		{ "code": "catname", "name": "Name" },
+		{ "code": "itemcount", "name": "Storage Items" },
+		{ "code": "createdOn", "name": "Created on" }
+	],
+	"modalStorageItemsTHeadAr":
+	[
+		{ "code": "itemcode", "name": "Code" },
+		{ "code": "itemname", "name": "Name" },
+		{ "code": "createdOn", "name": "Created on" }
+	],
+	"storageItemsTHeadAr":
+	[
+		{ "code": "itemcatcode", "name": "Category Code" },
+		{ "code": "itemcatname", "name": "Category Name" },
+		{ "code": "itemcode", "name": "Code" },
+		{ "code": "itemname", "name": "Name" },
+		{ "code": "createdOn", "name": "Created on" }
+	],
+	"suppliersTHeadAr":
+	[
+		{ "code": "supcode", "name": "Code" },
+		{ "code": "supname", "name": "Name" },
+		{ "code": "supcontactno", "name": "Contact No" },
+		{ "code": "supemailid", "name": "Email ID" },
+		{ "code": "supaddress", "name": "Address" },
+		{ "code": "createdOn", "name": "Created on" }
+	],
+	"purchaseOrderTHeadAr":
+	[
+		{ "code": "code", "name": "Code" },
+		{ "code": "supplier", "name": "Supplier" },
+		{ "code": "category", "name": "Category" },
+		{ "code": "item", "name": "Item" },
+		{ "code": "quantity", "name": "Purchased Quantity" },
+		{ "code": "orderedDate", "name": "Ordered Date" }
+	],
+	"ordersTHeadAr":
+	[
+		{ "code": "code", "name": "Code" },
+		{ "code": "supplier", "name": "Supplier" },
+		{ "code": "category", "name": "Category" },
+		{ "code": "item", "name": "Item" },
+		{ "code": "purchasedquantity", "name": "Purchased Quantity" },
+		{ "code": "soldquantity", "name": "Sold Quantity" },
+		{ "code": "purchasedtotal", "name": "Purchased Total" },
+		{ "code": "soldtotal", "name": "Sold Total" },
+		{ "code": "paidamount", "name": "Paid Amount" },
+		{ "code": "orderedDate", "name": "Ordered Date" },
+		{ "code": "dueamount", "name": "Due Amount" }
+	],
+	"ordersByDurationTHeadAr":
+	[
+		{ "code": "code", "name": "Code" },
+		{ "code": "supplier", "name": "Supplier" },
+		{ "code": "category", "name": "Category" },
+		{ "code": "item", "name": "Item" },
+		{ "code": "purchasedquantity", "name": "Purchased Quantity" },
+		{ "code": "soldquantity", "name": "Sold Quantity" },
+		{ "code": "purchasedtotal", "name": "Purchased Total" },
+		{ "code": "soldtotal", "name": "Sold Total" },
+		{ "code": "paidamount", "name": "Paid Amount" },
+		{ "code": "orderedDate", "name": "Ordered Date" },
+		{ "code": "dueamount", "name": "Due Amount" }
+	],
+	"invoicesByDurationTHeadAr":
+	[
+		{ "code": "requestID", "name": "Request ID" },
+		{ "code": "client", "name": "Client" },
+		{ "code": "createdOn", "name": "Created on" },
+		{ "code": "closedOn", "name": "Closed on" },
+		{ "code": "total", "name": "Invoice Total" }
+	]
+}
+]

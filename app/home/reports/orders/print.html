@@ -1,0 +1,62 @@
+<div id="home_manage_reports_container_print">
+<dir-print-heading></dir-print-heading>
+<hr style="margin: 5px 0;" />
+<div>
+	<h4 style="text-align: center;"><strong>Orders</strong></h4>
+</div>
+<hr style="margin: 5px 0;" />
+<div>
+	<h4 ng-bind-html="printReportTitle()"></h4>
+</div>
+<hr style="margin: 5px 0;" />
+<div class="row">
+<div class="col-sm-12">
+	<table class="table table-bordered table-striped">
+		<caption style="padding-top: 0;">
+			<em class="pull-right">
+				<span class="glyphicon glyphicon-info-sign"></span>
+				Sold Total: Excluding Service Charge and VAT.
+			</em>
+		</caption>
+		<thead>
+			<tr>
+				<th>S.No</th>
+				<th ng-repeat="thead in theadAr">
+					<dir-compile-template input-data="thead.name"></dir-compile-template>
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="tbody in tbodyAr">
+				<th scope="row">{{ ($index + 1) }}</th>
+				<td>{{ tbody.code }}</td>
+				<td>{{ tbody.supplier }}</td>
+				<td>{{ tbody.category }}</td>
+				<td>{{ tbody.item }}</td>
+				<td><span class="pull-right">{{ tbody.purchasedQuantity }}</span></td>
+				<td><span class="pull-right">{{ tbody.soldQuantity }}</span></td>
+				<td><span class="pull-right">{{ tbody.purchasedTotal }}</span></td>
+				<td><span class="pull-right">{{ tbody.soldTotal }}</span></td>
+				<td><span class="pull-right">{{ tbody.paidAmount }}</span></td>
+				<td>
+					<dir-epoch-to-date input-data="tbody.paymentDate"></dir-epoch-to-date>
+				</td>
+				<td><span class="pull-right">{{ tbody.dueAmount }}</span></td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<th colspan="5"><span class="pull-right">Grand Totals</span></th>
+				<th><span class="pull-right">{{ reportsSbmtData.totalObj.totalPurchasedQuantity }}</span></th>
+				<th><span class="pull-right">{{ reportsSbmtData.totalObj.totalSoldQuantity }}</span></th>
+				<th><span class="pull-right">{{ reportsSbmtData.totalObj.totalPurchasedTotal }}</span></th>
+				<th><span class="pull-right">{{ reportsSbmtData.totalObj.totalSoldTotal }}</span></th>
+				<th><span class="pull-right">{{ reportsSbmtData.totalObj.totalPaidAmount }}</span></th>
+				<th colspan="2">
+					<span class="pull-right">{{ reportsSbmtData.totalObj.totalDueAmount }}</span>
+				</th>
+			</tr>
+		</tfoot>
+	</table>
+</div>
+</div>

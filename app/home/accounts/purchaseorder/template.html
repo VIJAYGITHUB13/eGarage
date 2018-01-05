@@ -1,0 +1,870 @@
+<div id="home_accounts_purchaseorder_container">
+<div class="row">
+	<div class="col-xs-12">
+		<div class="page-header">
+			<h3>
+				{{ tabName }} <small class="hidden-xs">{{ tabDesc }}</small>
+				<button type="button" class="btn btn-primary pull-right" ng-click="purchaseOrder()">
+					Purchase Order
+					<span class="badge" style="margin-left: 5px;">
+						<span class="glyphicon glyphicon-shopping-cart text-primary"></span>
+					</span>
+				</button>
+			</h3>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-xs-12">
+		<div style="display: table; margin: 15px 0; width: 100%;">
+			<div style="display: table-row;">
+				<div class="table-cell" style="width: 20%;">
+					<form class="form-horizontal" name="formSearch" ng-submit="searchFormSubmit()" novalidate>
+						<div class="form-group">
+							<h5><strong>Search Criteria</strong></h5>
+						</div>
+						<div class="form-group">
+							<label for="invoicecode">Code</label>
+							<div>
+								<input
+									type="text"
+									class="form-control input-sm"
+									id="invoicecode"
+									name="invoicecode"
+									placeholder="Code"
+									ng-model="purchaseOrderSbmtData.invoiceCodeModel" />
+							</div>
+						</div>
+						<div class="form-group" ng-if="purchaseOrderRESTData.suppliersAr.length">
+							<label for="supplier">Supplier</label>
+							<div>
+								<select
+									class="form-control input-sm"
+									id="supplier"
+									name="supplier"
+									ng-model="purchaseOrderSbmtData.supIDModel"
+									ng-options="supplier.id as supplier.name for supplier in purchaseOrderRESTData.suppliersAr">
+									<option value="">Select</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group" ng-if="purchaseOrderRESTData.storageItemCatsAr.length">
+							<label for="category">Category</label>
+							<div>
+								<select
+									class="form-control input-sm"
+									id="category"
+									name="category"
+									ng-model="purchaseOrderSbmtData.catIDModel"
+									ng-options="category.id as category.name for category in purchaseOrderRESTData.storageItemCatsAr">
+									<option value="">Select</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group" ng-if="purchaseOrderRESTData.storageItemsAr.length">
+							<label for="item">Item</label>
+							<div>
+								<select
+									class="form-control input-sm"
+									id="item"
+									name="item"
+									ng-model="purchaseOrderSbmtData.itemIDModel"
+									ng-options="item.id as item.name for item in filterData(purchaseOrderRESTData.storageItemsAr, 'catID', purchaseOrderSbmtData.catIDModel)">
+									<option value="">Select</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="fdate">Purchased From Date</label>
+							<div>
+								<input
+									type="text"
+									class="form-control input-sm"
+									id="fdate"
+									name="fdate"
+									placeholder="From Date"
+									ng-model="purchaseOrderSbmtData.fdateModel"
+									datetimepicker
+									datetimepicker-options="{{ dateTimePickerConf }}" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="tdate">Purchased To Date</label>
+							<div>
+								<input
+									type="text"
+									class="form-control input-sm"
+									id="tdate"
+									name="tdate"
+									ng-model="purchaseOrderSbmtData.tdateModel"
+									placeholder="To Date"
+									datetimepicker
+									datetimepicker-options="{{ dateTimePickerConf }}" />
+							</div>
+						</div>
+						<div class="form-group">
+							<button type="submit" class="btn btn-primary btn-sm">Search</button>
+							<button type="button" class="btn btn-default btn-sm" ng-click="reset()">Reset</button>
+						</div>
+					</form>
+				</div>
+				<div class="table-cell" style="width: 80%;">
+					<h2 class="lead text-center font-light text-muted lead-md" style="opacity: 0.5;" ng-if="infoObj.msg">
+						{{ infoObj.msg }}
+					</h2>
+					<div ng-if="!infoObj.msg">
+					<dir-alert alert-type="msgObj.name" alert-msg="msgObj.msg" ng-if="msgObj.msg"></dir-alert>
+					<div class="row" style="margin: auto;">
+						<dir-pagination-header
+							noof-pages="noofPages"
+							current-page="currentPage"
+							table-search="tableSearch">
+						</dir-pagination-header>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<table class="table table-bordered table-striped">
+								<thead>
+									<tr>
+										<th>S.No</th>
+										<th
+											class="cursor-pointer"
+											ng-repeat="thead in theadAr"
+											ng-click="sortColumn(thead.code)">
+											<dir-compile-template input-data="thead.name"></dir-compile-template>
+											<span
+												class="glyphicon glyphicon-triangle-top pull-right"
+												ng-if="(orderBy === thead.code) && orderByDir">
+											</span>
+											<span
+												class="glyphicon glyphicon-triangle-bottom pull-right"
+												ng-if="(orderBy === thead.code) && !orderByDir">
+											</span>
+										</th>
+										<th class="text-center">Action(s)</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr
+										dir-paginate="tbody in tbodyAr | orderBy: orderBy : orderByDir | filter: tableSearch | itemsPerPage: noofPages"
+										current-page="currentPage"
+										pagination-id="purchaseOrderPagination"
+										ng-class="{ 'active-tr': purchaseOrderFormData.activetr === tbody.id }">
+										<th scope="row">{{ ((noofPages * (currentPage - 1)) + ($index + 1)) }}</th>
+										<td>
+											<button
+												type="button"
+												class="btn btn-link"
+												style="padding: 0;"
+												ng-click="viewInvoiceDetails(tbody)">
+												<strong>{{ tbody.code }}</strong>
+											</button>
+										</td>
+										<td>{{ tbody.supplier }}</td>
+										<td>{{ tbody.category }}</td>
+										<td>{{ tbody.item }}</td>
+										<td>{{ tbody.quantity }}</td>
+										<td>
+											<dir-epoch-to-date input-data="tbody.orderedDate"></dir-epoch-to-date>
+										</td>
+										<td class="text-center">
+											<button
+												type="button"
+												class="btn btn-link"
+												style="padding: 0;"
+												tooltip-placement="left"
+												uib-tooltip="View and Make Payment(s)"
+												ng-click="payments(tbody); (purchaseOrderFormData.activetr = tbody.id);">
+												<span class="glyphicon glyphicon-modal-window"></span>
+											</button>
+											<button
+												type="button"
+												class="btn btn-link"
+												style="padding: 0;"
+												tooltip-placement="left"
+												uib-tooltip="Print Order"
+												ng-click="printOrder(tbody); (purchaseOrderFormData.activetr = tbody.id);">
+												<span class="glyphicon glyphicon-print"></span>
+											</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12 text-center">
+							<dir-pagination-controls
+								boundary-links="true"
+								on-page-change="pageChangeHandler(newPageNumber)"
+								pagination-id="purchaseOrderPagination">
+							</dir-pagination-controls>
+						</div>
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> 
+</div>
+</div>
+
+<div ng-include="basePath + 'print.html'" ng-hide="true"></div>
+
+<script type="text/ng-template" id="purchaseOrder.tpl.html">
+	<div class="modal-header">
+		<h5 class="modal-title" id="modal-title">
+			<span class="glyphicon glyphicon-shopping-cart"></span>
+			Purchase Order
+			<label class="pull-right">
+				<small>
+					<strong>
+						<span class="glyphicon glyphicon-info-sign text-primary"></span>
+						All amounts are in INR
+					</strong>
+				</small>
+			</label>
+		</h5>
+	</div>
+	<div class="modal-body purchase-order" id="modal-body">
+		<form class="form-horizontal text-center" name="modalForm" novalidate>
+			<div class="form-group">
+				<div class="col-sm-offset-1 col-sm-3">
+					<label for="supplier">Supplier</label>
+					<div>
+						<select
+							class="form-control input-sm"
+							id="supplier"
+							name="supplier"
+							ng-model="modalSbmtData.supIDModel"
+							ng-options="supplier.id as supplier.name for supplier in modalRESTData.suppliersAr"
+							ng-required="true">
+							<option value="">Select</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<label for="category">Category</label>
+					<div>
+						<select
+							class="form-control input-sm"
+							id="category"
+							name="category"
+							ng-model="modalSbmtData.catIDModel"
+							ng-options="category.id as category.name for category in modalRESTData.storageItemCatsAr"
+							ng-required="true">
+							<option value="">Select</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<label for="item">Item</label>
+					<div>
+						<select
+							class="form-control input-sm"
+							id="item"
+							name="item"
+							ng-model="modalSbmtData.itemIDModel"
+							ng-options="item.id as item.name for item in filterData(modalRESTData.storageItemsAr, 'catID', modalSbmtData.catIDModel)"
+							ng-required="true">
+							<option value="">Select</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-2">
+					<label for="itemquantity">Quantity<small class="text-muted"> (Nos.)</small></label>
+					<div ng-class="{ 'has-error': (modalForm.itemquantity.$dirty && modalForm.itemquantity.$invalid) }">
+						<input
+							type="number"
+							class="form-control input-sm"
+							id="itemquantity"
+							name="itemquantity"
+							ng-min="1"
+							step="1"
+							placeholder="#"
+							ng-pattern="/^\d+$/"
+							ng-model="modalSbmtData.itemQuantityModel"
+							ng-required="true" />
+					</div>
+				</div>
+				<div class="col-sm-1">
+					<span class="lead-lg text-muted">&Cross;</span>
+				</div>
+				<div class="col-sm-2">
+					<label for="itemprice">Purchasing Price</label>
+					<div ng-class="{ 'has-error': (modalForm.itemprice.$dirty && modalForm.itemprice.$invalid) }">
+						<input
+							type="number"
+							class="form-control input-sm"
+							id="itemprice"
+							name="itemprice"
+							ng-model="modalSbmtData.itemPurchasingPriceModel"
+							ng-required="true" />
+					</div>
+				</div>
+				<div class="col-sm-1">
+					<span class="lead-lg text-muted">&plus;</span>
+				</div>
+				<div class="col-sm-2">
+					<label for="servicetax">
+						Service Tax
+						<small class="text-muted"> (%)</small>
+						<span
+							class="glyphicon glyphicon-info-sign text-primary cursor-pointer"
+							tooltip-placement="top-right"
+							uib-tooltip="% on (Quantity &Cross; Purchasing Price)">
+						</span>
+					</label>
+					<div ng-class="{ 'has-error': (modalForm.servicetax.$dirty && modalForm.servicetax.$invalid) }">
+						<input
+							type="number"
+							class="form-control input-sm"
+							id="servicetax"
+							name="servicetax"
+							ng-model="modalSbmtData.itemServiceTaxModel"
+							ng-required="true" />
+					</div>
+				</div>
+				<div class="col-sm-1">
+					<span class="lead-lg text-muted">&equals;</span>
+				</div>
+				<div class="col-sm-3">
+					<label>Total Purchase Amount</label>
+					<div class="form-control-static lead">{{ getItemPurchasingTotal() }}</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-3">
+					<label>
+						Suggest Offer Price
+						<span
+							class="glyphicon glyphicon-info-sign text-primary cursor-pointer"
+							tooltip-placement="top-left"
+							uib-tooltip="(Total Purchase Amount / Quantity)">
+						</span>
+					</label>
+					<div class="form-control-static lead">{{ suggestItemOfferPrice() }}</div>
+				</div>
+				<div class="col-sm-2">
+					<label for="offerprice">Offer Price</label>
+					<div ng-class="{ 'has-error': (modalForm.offerprice.$dirty && modalForm.offerprice.$invalid) }">
+						<input
+							type="number"
+							class="form-control input-sm"
+							id="offerprice"
+							name="offerprice"
+							ng-min="suggestItemOfferPrice()"
+							ng-model="modalSbmtData.itemOfferPriceModel"
+							ng-required="true" />
+					</div>
+				</div>
+				<div class="col-sm-7">
+					<div class="media">
+						<div class="media-left">
+							<span class="glyphicon glyphicon-warning-sign text-warning"></span>
+						</div>
+						<div class="media-body text-muted" style="text-align: left;">
+							<div>
+								<em>
+									<code>Offer Price</code>: The price that will be offered to a client while utilising the item(s) at places such as <code>Update Service Request</code>.
+								</em>
+							</div>
+							<div>
+								<em>
+									And the <code>Offer Price</code> must be greater than or equal to <code>Suggest Offer Price</code>.
+								</em>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="row" style="margin-bottom: 15px;">
+					<div class="col-sm-3" style="border-right: 1px solid #ddd;">
+						<label>Payment Mode</label>
+						<div>
+							<div class="btn-group btn-group-sm">
+								<button
+									type="button"
+									class="btn btn-default"
+									ng-repeat="paymentmode in modalRESTData.paymentModesAr"
+									ng-click="modalSbmtData.paymentModeModel = paymentmode.id"
+									ng-class="{ 'active': modalSbmtData.paymentModeModel === paymentmode.id }">
+									{{ paymentmode.name }}
+								</button>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<label for="paymentdate">Payment Date</label>
+						<div
+							style="margin-bottom: 15px;"
+							ng-class="{ 'has-error': (modalForm.paymentdate.$dirty && modalForm.paymentdate.$invalid) }">
+							<input
+								type="text"
+								class="form-control input-sm"
+								id="paymentdate"
+								name="paymentdate"
+								ng-model="modalSbmtData.paymentDateModel"
+								ng-required="true"
+								placeholder="Payment Date"
+								datetimepicker
+								datetimepicker-options="{{ dateTimePickerConf }}" />
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<label for="paymentamount">Payment Amount</label>
+						<div ng-class="{ 'has-error': (modalForm.paymentamount.$dirty && modalForm.paymentamount.$invalid) }">
+							<input
+								type="number"
+								class="form-control input-sm"
+								id="paymentamount"
+								name="paymentamount"
+								ng-min="0"
+								ng-max="getItemPurchasingTotal()"
+								ng-model="modalSbmtData.paymentAmountModel"
+								ng-required="true" />
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<label>
+							Due Amount
+							<span
+								class="glyphicon glyphicon-info-sign text-primary cursor-pointer"
+								tooltip-placement="top-right"
+								uib-tooltip="(Total Purchase Amount - Payment Amount)">
+							</span>
+						</label>
+						<div class="form-control-static">{{ getDueAmount() }}</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-3" ng-if="(modalSbmtData.paymentModeModel === 2)">
+						<label for="chequeno">Cheque No</label>
+						<div ng-class="{ 'has-error': (modalForm.chequeno.$dirty && modalForm.chequeno.$invalid) }">
+							<input
+								type="number"
+								class="form-control input-sm"
+								id="chequeno"
+								name="chequeno"
+								ng-model="modalSbmtData.chequeNoModel"
+								ng-required="true" />
+						</div>
+					</div>
+					<div
+						class="col-sm-8"
+						style="tex-align: left;"
+						ng-class="{ 'col-sm-offset-3': modalSbmtData.paymentModeModel !== 2 }">
+						<div class="media">
+							<div class="media-left">
+								<span class="glyphicon glyphicon-warning-sign text-warning"></span>
+							</div>
+							<div class="media-body" style="text-align: left;">
+								<label class="text-muted">
+									<em>
+										<code>Payment Date</code>: The item(s) will get effective to utilise on or post the <code>Payment Date</code> alone.
+									</em>
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-12">
+					<div class="media">
+						<div class="media-left">
+							<input
+								type="checkbox"
+								class="cursor-pointer"
+								ng-model="modalFormData.isDecleration"
+								ng-required="true" />
+						</div>
+						<div class="media-body text-muted" style="text-align: left;">
+							<div>
+								<label>
+									I have entered and verified the order details carefully.
+									<span class="text-danger">And also I am aware that the action cannot be undone.</span>
+								</label>
+							</div>
+							<div>
+								<label>
+									Please proceed with purchasing.
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button
+			type="button"
+			class="btn btn-primary btn-sm"
+			ng-click="(modalForm.$valid && modalSubmit())"
+			ng-disabled="modalForm.$invalid || !modalSbmtData.paymentModeModel">
+			Purchase
+		</button>
+		<button type="button" class="btn btn-default" ng-click="modalClose()">Cancel</button>
+	</div>
+</script>
+
+<script type="text/ng-template" id="viewInvoice.tpl.html">
+	<div class="modal-header">
+		<h5 class="modal-title" id="modal-title">
+			<span class="glyphicon glyphicon-shopping-cart"></span>
+			View Purchased Order <strong>{{ modalSbmtData.code }}</strong> by <strong>{{ modalSbmtData.orderedBy }}</strong>
+			<label class="pull-right">
+				<small>
+					<strong>
+						<span class="glyphicon glyphicon-info-sign text-primary"></span>
+						All amounts are in INR
+					</strong>
+				</small>
+			</label>
+		</h5>
+	</div>
+	<div class="modal-body purchase-order" id="modal-body">
+		<form class="form-horizontal text-center" name="modalForm" novalidate>
+			<div class="form-group">
+				<div class="col-sm-4">
+					<label for="supplier">Supplier</label>
+					<div class="form-control-static">{{ modalSbmtData.supplier }}</div>
+				</div>
+				<div class="col-sm-4">
+					<label for="category">Category</label>
+					<div class="form-control-static">{{ modalSbmtData.category }}</div>
+				</div>
+				<div class="col-sm-4">
+					<label for="item">Item</label>
+					<div class="form-control-static">{{ modalSbmtData.item }}</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-2">
+					<label for="itemquantity">Quantity<small class="text-muted"> (Nos.)</small></label>
+					<div class="form-control-static">{{ modalSbmtData.quantity }}</div>
+				</div>
+				<div class="col-sm-1">
+					<span class="lead-lg text-muted">&Cross;</span>
+				</div>
+				<div class="col-sm-2">
+					<label for="itemprice">Purchased Price</label>
+					<div class="form-control-static">{{ modalSbmtData.purchasedPrice }}</div>
+				</div>
+				<div class="col-sm-1">
+					<span class="lead-lg text-muted">&plus;</span>
+				</div>
+				<div class="col-sm-2">
+					<label for="servicetax">
+						Service Tax
+						<small class="text-muted"> (%)</small>
+						<span
+							class="glyphicon glyphicon-info-sign text-primary cursor-pointer"
+							tooltip-placement="top-right"
+							uib-tooltip="% on (Quantity &Cross; Purchased Price)">
+						</span>
+					</label>
+					<div class="form-control-static">{{ modalSbmtData.serviceTax }}</div>
+				</div>
+				<div class="col-sm-1">
+					<span class="lead-lg text-muted">&equals;</span>
+				</div>
+				<div class="col-sm-3">
+					<label>Total Purchased Amount</label>
+					<div class="form-control-static lead">{{ modalSbmtData.totalPurchasedPrice }}</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-3">
+					<label>
+						Suggested Offer Price
+						<span
+							class="glyphicon glyphicon-info-sign text-primary cursor-pointer"
+							tooltip-placement="top-left"
+							uib-tooltip="(Total Purchased Amount / Quantity)">
+						</span>
+					</label>
+					<div class="form-control-static">{{ modalSbmtData.suggestedPrice }}</div>
+				</div>
+				<div class="col-sm-2">
+					<label for="offerprice">Offered Price</label>
+					<div class="form-control-static lead">{{ modalSbmtData.offeredPrice }}</div>
+				</div>
+				<div class="col-sm-7">
+					<div class="media">
+						<div class="media-left">
+							<span class="glyphicon glyphicon-warning-sign text-warning"></span>
+						</div>
+						<div class="media-body text-muted" style="text-align: left;">
+							<div>
+								<em>
+									<code>Offered Price</code>: The price that has been offered to a client while utilising the item(s) at places such as <code>Update Service Request</code>.
+								</em>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-default" ng-click="modalClose()">Close</button>
+	</div>
+</script>
+
+<script type="text/ng-template" id="payments.tpl.html">
+	<div class="modal-header">
+		<h5 class="modal-title" id="modal-title">
+			Payments Details of <strong>{{ modalSbmtData.invoiceCodeModel }}</strong>
+		</h5>
+	</div>
+	<div class="modal-body" id="modal-body">
+		<h5>
+			<strong>Order Summary</strong>
+		</h5>
+		<div class="well well-sm">
+			<div class="row">
+				<div class="col-sm-2">
+					<span class="pull-right">Order Value:</span>
+				</div>
+				<div class="col-sm-3">
+					<strong>{{ modalRESTData.purchasedTotal }}</strong>
+					<span class="pull-right">Ordered by:</span>
+				</div>
+				<div class="col-sm-5">
+					<strong>{{ modalRESTData.orderedBy }}</strong>
+					<span class="pull-right">Ordered on:</span>
+				</div>
+				<div class="col-sm-2">
+					<strong>{{ modalRESTData.orderedDate }}</strong>
+				</div>
+			</div>
+		</div>
+		<h5>
+			<strong>Payment History</strong>
+		</h5>
+		<div class="container-fluid">
+			<ul class="list-group">
+				<li
+					class="list-group-item row"
+					style="background-color: #f9f9f9; border-radius: 0; border-left: 0; border-right: 0;">
+					<div class="col-sm-3">
+						<strong>Paid Date</strong>
+					</div>
+					<div class="col-sm-3">
+						<strong>Payment Mode</strong>
+					</div>
+					<div class="col-sm-3">
+						<strong>Paid Amount</strong>
+					</div>
+					<div class="col-sm-3">
+						<strong>Paid by</strong>
+					</div>
+				</li>
+				<li
+					class="list-group-item row"
+					style="border-radius: 0; border-left: 0; border-right: 0;"
+					ng-repeat="tbody in tbodyAr">
+					<div class="col-sm-3">
+						<dir-epoch-to-date input-data="tbody.paidDate"></dir-epoch-to-date>
+					</div>
+					<div class="col-sm-3">{{ tbody.paymentMode }}</div>
+					<div class="col-sm-3">{{ tbody.paidAmount }}</div>
+					<div class="col-sm-3">{{ tbody.paidBy }}</div>
+				</li>
+				<li
+					class="list-group-item row"
+					style="border-radius: 0; border-left: 0; border-right: 0; border-bottom: 0;">
+					<div class="col-sm-offset-3 col-sm-3">
+						<strong class="pull-right">Total Paid Amount</strong>
+					</div>
+					<div class="col-sm-3">
+						<strong>{{ modalRESTData.totalPaidAmount }}</strong>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<h5>
+			<strong>Make Payment(s)</strong>
+			<label class="text-muted pull-right" ng-if="modalRESTData.dueAmount > 0">
+				<em>
+					<span class="glyphicon glyphicon-info-sign"></span>
+					The <code>Ordered on</code> above will be the minimum date for <code>Payment Date(s)</code> below.
+				</em>
+			</label>
+		</h5>
+		<h2
+			class="lead font-light text-muted lead-md"
+			style="opacity: 0.5;"
+			ng-if="modalRESTData.dueAmount <= 0">
+			No payment(s) required.
+		</h2>
+		<form
+			class="form-horizontal container-fluid"
+			name="modalForm"
+			ng-show="modalRESTData.dueAmount > 0"
+			novalidate>
+			<ul class="list-group" style="margin-bottom: 0;">
+				<li
+					class="list-group-item row"
+					style="background-color: #f9f9f9; border-radius: 0; border-left: 0; border-right: 0;">
+					<div class="col-sm-3">
+						<strong>Payment Date</strong>
+					</div>
+					<div class="col-sm-3">
+						<strong>Payment Mode</strong>
+					</div>
+					<div class="col-sm-3">
+						<strong>Payment Amount</strong>
+					</div>
+				</li>
+				<li
+					class="list-group-item row"
+					style="border-radius: 0; border-left: 0; border-right: 0;"
+					ng-repeat="payment in modalSbmtData.paymentsAr">
+					<div class="col-sm-3">
+						<div ng-class="{ 'has-error': (modalForm['paymentdate_' + $index].$dirty && modalForm['paymentdate_' + $index].$invalid) }">
+							<input
+								type="text"
+								class="form-control input-sm"
+								id="paymentdate_{{ $index }}"
+								name="paymentdate_{{ $index }}"
+								ng-model="payment.paymentDate"
+								ng-required="true"
+								placeholder="Payment Date"
+								datetimepicker
+								datetimepicker-options="{{ dateTimePickerConf }}" />
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div>
+							<div class="btn-group btn-group-sm">
+								<button
+									type="button"
+									class="btn btn-default"
+									ng-repeat="paymentmode in modalRESTData.paymentModesAr"
+									ng-click="payment.paymentMode = paymentmode.id"
+									ng-class="{ 'active': payment.paymentMode === paymentmode.id }">
+									{{ paymentmode.name }}
+								</button>
+							</div>
+						</div>
+						<div ng-if="(payment.paymentMode === 2)">
+						<div
+							ng-class="{ 'has-error': (modalForm['chequeno_' + $index].$dirty && modalForm['chequeno_' + $index].$invalid) }"
+							style="margin-top: 15px;">
+							<input
+								type="number"
+								class="form-control input-sm"
+								id="chequeno_{{ $index }}"
+								name="chequeno_{{ $index }}"
+								ng-model="payment.chequeNo"
+								ng-required="true" />
+						</div>
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div ng-class="{ 'has-error': (modalForm['paymentamount_' + $index].$dirty && modalForm['paymentamount_' + $index].$invalid) }">
+							<input
+								type="number"
+								class="form-control input-sm"
+								id="paymentamount_{{ $index }}"
+								name="paymentamount_{{ $index }}"
+								ng-min="1"
+								ng-model="payment.paymentAmount"
+								ng-required="true" />
+						</div>
+						<em
+							class="text-danger"
+							ng-if="(modalForm['paymentamount_' + $index].$dirty && modalForm['paymentamount_' + $index].$invalid)">
+							<span ng-if="modalForm['paymentamount_' + $index].$error.min">Min value should be 1.</span>
+						</em>
+					</div>
+					<div class="col-sm-offset-2 col-sm-1">
+						<span
+							class="pull-right text-danger cursor-pointer lead"
+							style="margin-bottom: 0;"
+							tooltip-placement="left"
+							uib-tooltip="Remove row"
+							ng-if="(modalSbmtData.paymentsAr.length > 1)"
+							ng-click="modalSbmtData.paymentsAr.splice($index, 1);">
+							&otimes;
+						</span>
+					</div>
+				</li>
+				<li
+					class="list-group-item row"
+					style="border-radius: 0; border-left: 0; border-bottom: 0; border-right: 0;">
+					<div class="col-sm-6">
+						<label class="text-muted">
+							<em>
+								<span class="glyphicon glyphicon-info-sign"></span>
+								Due amount should be greater than or equal to 0.
+							</em>
+						</label>
+					</div>
+					<div class="col-sm-5">
+						<strong class="pull-right" style="margin-left: 5px;">{{ getDueAmount() }}</strong>
+						<strong class="pull-right" style="margin-left: 5px;">Due Amount:</strong>
+					</div>
+					<div
+						class="col-sm-1"
+						ng-if="(getDueAmount() > 0)">
+						<span
+							class="pull-right text-primary cursor-pointer lead"
+							style="margin-bottom: 0;"
+							tooltip-placement="left"
+							uib-tooltip="Add row"
+							ng-click="addRow();">
+							&oplus;
+						</span>
+					</div>
+				</li>
+				<li
+					class="list-group-item row"
+					style="border-radius: 0; border: 0;">
+					<div class="col-sm-12">
+						<div class="media">
+							<div class="media-left">
+								<input
+									type="checkbox"
+									class="cursor-pointer"
+									ng-model="modalFormData.isDecleration"
+									ng-required="true" />
+							</div>
+							<div class="media-body text-muted" style="text-align: left;">
+								<div>
+									<label>
+										I have entered and verified the payment details carefully.
+										<span class="text-danger">And also I am aware that the action cannot be undone.</span>
+									</label>
+								</div>
+								<div>
+									<label>
+										Please proceed with making the payment(s).
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button
+			type="button"
+			class="btn btn-primary btn-sm"
+			ng-if="modalRESTData.dueAmount > 0"
+			ng-click="(modalForm.$valid && modalSubmit())"
+			ng-disabled="(modalForm.$invalid || (getDueAmount() < 0))">
+			Pay
+		</button>
+		<button type="button" class="btn btn-default" ng-click="modalClose()">Cancel</button>
+	</div>
+</script>

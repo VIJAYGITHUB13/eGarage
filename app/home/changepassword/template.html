@@ -1,0 +1,113 @@
+<div class="row">
+	<div class="col-xs-12">
+		<div class="page-header" style="margin: 0; margin-bottom: 15px;">
+			<h3>
+				{{ tabName }} <small class="hidden-xs">{{ tabDesc }}</small>
+				<span class="glyphicon glyphicon-user text-primary pull-right" style="margin-left: 5px;"></span>
+				<span class="pull-right text-info">{{ changePasswordRESTData.name }}</span>
+			</h3>
+		</div>
+	</div>
+</div>
+
+<dir-alert alert-type="infoObj.name" alert-msg="infoObj.msg" ng-if="infoObj.msg"></dir-alert>
+
+<div class="row">
+	<div class="col-xs-12">
+		<form
+			class="form-horizontal"
+			name="changePasswordForm"
+			ng-submit="changePasswordFormSbmt()"
+			novalidate>
+			<div class="form-group">
+				<div class="col-sm-offset-4 col-sm-3">
+					<h2 class="form-control-static font-light text-center no-margin">
+						{{ changePasswordRESTData.userName }}
+					</h2>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-4 col-sm-3">
+					<hr class="no-margin" />
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-4 col-sm-3">
+					<div class="alert alert-info dir-alert no-margin">
+						<div class="media">
+							<div class="media-left">
+								<span class="glyphicon glyphicon-info-sign text-primary"></span>
+							</div>
+							<div class="media-body">
+								<span class="text-primary">
+									<div>Valid password will have</div>
+									<ul style="-webkit-padding-start: 20px;">
+										<li>Length between 8 and 20</li>
+										<li>Alphanumeric value alone</li>
+									</ul>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-4 col-sm-3">
+					<hr class="no-margin" />
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-4 col-sm-3">
+					<!-- <label for="password">Password</label> -->
+					<div ng-class="{ 'has-error': (changePasswordForm.password.$dirty && changePasswordForm.password.$invalid) }">
+						<input
+							type="password"
+							class="form-control input-sm"
+							id="password"
+							name="password"
+							minlength="8"
+							maxlength="20"
+							placeholder="Password"
+							ng-model="changePasswordSbmtData.passwordModel"
+							ng-pattern="/^[a-zA-Z0-9]*$/"
+							ng-required="true" />
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-4 col-sm-3">
+					<!-- <label for="confirmpassword">Confirm Password</label> -->
+					<div ng-class="{ 'has-error': (changePasswordForm.confirmpassword.$dirty && changePasswordForm.confirmpassword.$invalid) }">
+						<input
+							type="password"
+							class="form-control input-sm"
+							id="confirmpassword"
+							name="confirmpassword"
+							minlength="8"
+							maxlength="20"
+							placeholder="Confirm Password"
+							ng-model="changePasswordSbmtData.confirmPasswordModel"
+							ng-pattern="/^[a-zA-Z0-9]*$/"
+							ng-required="true" />
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-4 col-sm-3">
+					<hr class="no-margin" />
+				</div>
+			</div>
+			<div class="form-group text-center">
+				<div class="col-sm-offset-4 col-sm-3">
+					<button
+						type="submit"
+						class="btn btn-primary btn-sm"
+						ng-disabled="changePasswordForm.$invalid">
+						Change Password
+					</button>
+					<button type="button" class="btn btn-default btn-sm" ng-click="reset()">Reset</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

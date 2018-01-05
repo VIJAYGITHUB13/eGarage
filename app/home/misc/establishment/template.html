@@ -1,0 +1,134 @@
+<div class="row">
+	<div class="col-xs-12">
+		<div class="page-header" style="margin: 0; margin-bottom: 15px;">
+			<h3>
+				{{ tabName }} <small class="hidden-xs">{{ tabDesc }}</small>
+				<span class="glyphicon glyphicon-home text-primary pull-right"></span>
+			</h3>
+		</div>
+	</div>
+</div>
+
+<dir-alert alert-type="infoObj.name" alert-msg="infoObj.msg" ng-if="infoObj.msg"></dir-alert>
+
+<div class="row">
+	<div class="col-xs-8">
+		<form
+			class="form-horizontal"
+			name="establishmentForm"
+			ng-submit="establishmentFormSbmt()"
+			novalidate>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-8">
+					<label for="establishmentname">Name</label>
+					<div ng-class="{ 'has-error': (establishmentForm.establishmentname.$dirty && establishmentForm.establishmentname.$invalid) }">
+						<textarea
+							class="form-control input-sm"
+							id="establishmentname"
+							name="establishmentname"
+							rows="1"
+							placeholder="Name"
+							style="max-width: 100%;"
+							ng-model="establishmentSbmtData.nameModel"
+							ng-required="true">
+						</textarea>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-8">
+					<label for="address">Address</label>
+					<div ng-class="{ 'has-error': (establishmentForm.address.$dirty && establishmentForm.address.$invalid) }">
+						<textarea
+							class="form-control input-sm"
+							id="address"
+							name="address"
+							rows="2"
+							placeholder="Address"
+							style="max-width: 100%;"
+							ng-model="establishmentSbmtData.addressModel"
+							ng-required="true">
+						</textarea>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-8">
+					<label for="contact">Contact</label>
+					<div ng-class="{ 'has-error': (establishmentForm.contact.$dirty && establishmentForm.contact.$invalid) }">
+						<textarea
+							class="form-control input-sm"
+							id="contact"
+							name="contact"
+							rows="1"
+							placeholder="Contact"
+							style="max-width: 100%;"
+							ng-model="establishmentSbmtData.contactModel"
+							ng-required="true">
+						</textarea>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-8">
+					<hr class="no-margin" />
+				</div>
+			</div>
+			<div class="form-group text-center">
+				<div class="col-sm-offset-2 col-sm-8">
+					<button
+						type="submit"
+						class="btn btn-primary btn-sm"
+						ng-disabled="establishmentForm.$invalid">
+						Update
+					</button>
+					<button type="button" class="btn btn-default btn-sm" ng-click="reset()">Reset</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="col-xs-4" style="border-left: 1px solid #ddd;">
+		<form
+			class="form-horizontal"
+			name="logoUploadForm"
+			ng-submit="logoUploadFormSbmt()"
+			novalidate>
+			<div class="form-group text-center">
+				<div class="col-sm-offset-2 col-sm-8">
+					<!-- For the preview -->
+					<!-- <img ng-src="{{ logoUploaded }}" style="width: 200px;"> -->
+					<img
+						ng-src="{{ basePath + 'images/' + establishmentSbmtData.logoModel }}"
+						style="width: 200px;" />
+				</div>
+				<div class="col-sm-2">
+					<span
+						class="glyphicon glyphicon-info-sign text-primary pull-right cursor-pointer"
+						tooltip-placement="top-right"
+						uib-tooltip-html="establishmentFormData.fileInfo">
+					</span>
+				</div>
+			</div>
+			<div class="form-group text-center">
+				<div class="col-sm-offset-2 col-sm-8">
+					<input
+						type="file"
+						class="form-control input-sm"
+						accept="image/*"
+						ng-model="form.image"
+						onchange="angular.element(this).scope().previewUploadedLogo(this)" />
+				</div>
+			</div>
+			<div class="form-group text-center">
+				<div class="col-sm-offset-3 col-sm-6">
+					<button
+						type="submit"
+						class="btn btn-primary btn-sm"
+						ng-disabled="establishmentForm.$invalid">
+						Upload
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

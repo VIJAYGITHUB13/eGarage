@@ -1,0 +1,151 @@
+<div id="public_main_container">
+<div class="row">
+	<div class="col-xs-12 col-sm-6 col-md-7 col-lg-8">
+		<img src="assets/images/1.jpg" class="img-responsive" style="margin: 15px auto;" alt="Responsive image">
+	</div>
+	<div class="visible-xs">
+		<div class="container text-center">
+			<h5 style="color: rgb(0, 173, 239);">{{ publicMainRESTData.tagLine }}</h5>
+		</div>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
+		<div class="form-horizontal col-xs-12 col-sm-offset-1 col-sm-8 col-md-offset-4 col-md-8">
+			<div class="form-group">
+				<h3
+					class="col-xs-6"
+					style="padding-left: 0;"
+					ng-click="refreshModule('signin')"
+					ng-class="{ 'cursor-pointer': !publicMainFormData.isSignin }">
+					<span ng-style="!publicMainFormData.isSignin && { 'opacity': '0.3' }">Sign In</span>
+				</h3>
+				<h3
+					class="col-xs-6 container-border-left"
+					style="padding-right: 0;"
+					ng-click="refreshModule('signup')"
+					ng-class="{ 'cursor-pointer': publicMainFormData.isSignin }">
+					<span class="pull-right" ng-style="publicMainFormData.isSignin && { 'opacity': '0.3' }">Sign Up</span>
+				</h3>
+			</div>
+		</div>
+		<br />
+		<form
+			class="form-horizontal col-xs-12 col-sm-offset-1 col-sm-8 col-md-offset-4 col-md-8"
+			name="signinForm"
+			ng-submit="signinSubmit()"
+			ng-show="publicMainFormData.isSignin"
+			novalidate>
+			<div class="form-group" ng-class="{ 'has-error': signinForm.$submitted && signinForm.uname.$invalid }">
+				<label for="uname">Username</label>
+				<div>
+					<input
+						type="text"
+						class="form-control input-sm"
+						id="uname"
+						name="uname"
+						placeholder="Username"
+						autocomplete="off"
+						ng-model="publicMainSbmtData.signinObj.unameModel"
+						ng-required="true" />
+				</div>
+			</div>
+			<div class="form-group" ng-class="{ 'has-error': signinForm.$submitted && signinForm.pwd.$invalid }">
+				<label for="pwd">Password</label>
+				<div>
+					<input
+						type="password"
+						class="form-control input-sm"
+						id="pwd"
+						name="pwd"
+						placeholder="Password"
+						autocomplete="off"
+						ng-model="publicMainSbmtData.signinObj.pwdModel"
+						ng-required="true" />
+				</div>
+			</div>
+			<!-- <div class="form-group">
+				<button type="button" class="btn btn-link btn-sm" style="margin-left: -10px;">Forgot Password?</button>
+			</div> -->
+			<div class="form-group">
+				<button type="submit" class="btn btn-default btn-sm">Sign In</button>
+			</div>
+			<div class="form-group" ng-if="publicMainFormData.signinInfoObj.msg">
+				<dir-alert alert-type="publicMainFormData.signinInfoObj.name" alert-msg="publicMainFormData.signinInfoObj.msg"></dir-alert>
+			</div>
+		</form>
+		<form
+			class="form-horizontal col-xs-12 col-sm-offset-1 col-sm-8 col-md-offset-4 col-md-8"
+			name="signupForm"
+			ng-submit="signupSubmit()"
+			ng-hide="publicMainFormData.isSignin"
+			novalidate>
+			<div class="form-group" ng-class="{ 'has-error': signupForm.$submitted && signupForm.username.$invalid }">
+				<label for="username">Name</label>
+				<div>
+					<input
+						type="text"
+						class="form-control input-sm"
+						id="username"
+						name="username"
+						ng-model="publicMainSbmtData.signupObj.unameModel"
+						placeholder="Name"
+						ng-required="true" />
+				</div>
+			</div>
+			<div class="form-group" ng-class="{ 'has-error': signupForm.$submitted && signupForm.mobileno.$invalid }">
+				<label for="mobileno">Mobile No</label>
+				<div>
+					<input
+						type="text"
+						class="form-control input-sm"
+						id="mobileno"
+						name="mobileno"
+						ng-model="publicMainSbmtData.signupObj.mobileNoModel"
+						placeholder="Mobile No"
+						ng-required="true" />
+				</div>
+			</div>
+			<div class="form-group" ng-class="{ 'has-error': signupForm.$submitted && signupForm.emailid.$invalid }">
+				<label for="emailid">Email ID</label>
+				<div>
+					<input
+						type="text"
+						class="form-control input-sm"
+						id="emailid"
+						name="emailid"
+						ng-model="publicMainSbmtData.signupObj.ngEmailIDMdl"
+						placeholder="Email ID"
+						ng-required="true" />
+				</div>
+			</div>
+			<div class="form-group" ng-class="{ 'has-error': signupForm.$submitted && signupForm.comments.$invalid }">
+				<label for="comments">Comments</label>
+				<div>
+					<textarea
+						class="form-control input-sm"
+						id="comments"
+						name="comments"
+						rows="2"
+						placeholder="Comments"
+						style="max-width: 100%;"
+						ng-model="publicMainSbmtData.signupObj.commentsModel"
+						ng-required="true">
+					</textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-default btn-sm">Sign Up</button>
+			</div>
+			<div class="form-group" ng-if="publicMainFormData.signupInfoObj.msg">
+				<dir-alert alert-type="publicMainFormData.signupInfoObj.name" alert-msg="publicMainFormData.signupInfoObj.msg"></dir-alert>
+			</div>
+		</form>
+	</div>
+</div>
+<div class="row hidden-xs">
+	<div class="col-sm-12">
+		<div class="container text-center">
+			<h3 style="color: rgb(0, 173, 239);">{{ publicMainRESTData.tagLine }}</h3>
+		</div>
+	</div>
+</div>
+</div>
