@@ -60,5 +60,6 @@ Goto http://localhost/egarage/
 This will land the application **eGarage v1.0**
 
 To run the application make sure the XAMPP is running as described in Server Installation.
-
+<br />
 > Install the fonts *segoi\*.\** stored at *C:\xampp\htdocs\egarage\assets\fonts* for better UI.
+<br />
